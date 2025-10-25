@@ -1,0 +1,17 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: intro
+
+chapters:
+  - file: notebooks/aux
+    sections:
+      - file: notebooks/aux/imshow/imshow
+      - file: notebooks/aux/sliceregion/sliceregion
+      - file: notebooks/aux/elapsedtime/elapsedtime
+  - file: notebooks/simulateccd/simulateccd
+  - file: docs/cleanest/cleanest
+  - file: notebooks/cr2images/cr2images
+  - file: notebooks/wavecalib/wavecalib
+  - file: notebooks/adaptivespl/adaptivespl
