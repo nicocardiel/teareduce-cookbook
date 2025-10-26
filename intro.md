@@ -8,7 +8,8 @@ Degree in Astrophysics](https://www.ucm.es/masterastrofisica) at the
 
 Different people at UCM have also contributed to the development and testing of
 this package: Sergio Pascual, María Chillarón, Cristina Cabello, Jesús Gallego
-and Jaime Zamorano.
+and Jaime Zamorano. Acknowledgment is also given to Maite Ceballos (IFCA) for
+her help in setting up this documentation website.
 
 Thanks are also extended to many students of the Master's in Astrophysics at
 UCM who, in recent years, have used this code in their practical work
