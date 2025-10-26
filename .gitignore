@@ -1,3 +1,23 @@
 _build/
 .ipynb_checkpoints
 .DS_Store
+.gitignore~
+
+# auxiliary files or files generated during the execution of the notebooks
+docs/cleanest/images/detail_after.png
+docs/cleanest/images/detail_before.png
+docs/cleanest/images/example.key
+docs/cleanest/images/mainwindow.png
+
+notebooks/cr2images/cccftdz_45243.fits
+notebooks/cr2images/ccftdz_45243.fits
+notebooks/cr2images/ccftdz_45244.fits
+notebooks/cr2images/cftdz_45243.fits
+notebooks/cr2images/cftdz_45244.fits
+
+notebooks/wavecalib/dummy.fits
+notebooks/wavecalib/plot_ftdz_45324_identified_lines.pdf
+notebooks/wavecalib/plot_ftdz_45324_wavecalib.pdf
+notebooks/wavecalib/wavecal_ftdz_45324.fits
+notebooks/wavecalib/wftdz_45324.fits
+notebooks/wavecalib/wwftdz_45324.fits
