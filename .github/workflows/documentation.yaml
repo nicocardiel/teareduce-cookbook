@@ -13,7 +13,7 @@ jobs:
       - uses: actions/setup-python@v5
       - name: Install dependencies
         run: |
-          pip install jupyter-book astropy matplotlib numpy teareduce
+          pip install jupyter-book astropy matplotlib numpy teareduce ipywidgets
       - name: Book build
         run: |
           jupyter-book build .
