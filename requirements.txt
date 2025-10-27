@@ -1,5 +1,6 @@
-jupyter-book
 astropy
+ipywidgets
+jupyter-book
 matplotlib
 numpy
 teareduce
