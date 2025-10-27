@@ -1,0 +1,1204 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Adaptive spline fit &#8212; Teareduce cookbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/adaptivespl/adaptivespl';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Bibliography" href="../../bibliography.html" />
+    <link rel="prev" title="C distortion and wavelength calibration" href="../wavecalib/wavecalib.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Teareduce cookbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Teareduce cookbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    The package teareduce
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../aux.html">Auxiliary functions and classes</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../aux/imshow/imshow.html">The imshow wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../aux/sliceregion/sliceregion.html">Auxiliary classes for image slicing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../aux/elapsedtime/elapsedtime.html">Elapsed time and system information</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulateccd/simulateccd.html">Simulation of CCD images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../docs/cleanest/cleanest.html">Interactive Cosmic Ray Removal in Single Exposures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cr2images/cr2images.html">Cosmic Ray Removal in Double Exposures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wavecalib/wavecalib.html">C distortion and wavelength calibration</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Adaptive spline fit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../bibliography.html">Bibliography</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/adaptivespl/adaptivespl.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Adaptive spline fit</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-computation-of-response-curve">Example: computation of response curve</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="adaptive-spline-fit">
+<h1>Adaptive spline fit<a class="headerlink" href="#adaptive-spline-fit" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">astropy.io</span> <span class="kn">import</span> <span class="n">fits</span>
+<span class="kn">from</span> <span class="nn">astropy.table</span> <span class="kn">import</span> <span class="n">QTable</span>
+<span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">matplotlib.patches</span> <span class="k">as</span> <span class="nn">patches</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">teareduce</span> <span class="k">as</span> <span class="nn">tea</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">time_ini</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Download the required files</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="p">[</span>
+    <span class="s1">&#39;notebooks/adaptivespl/response_data_BD33d2642_G100.fits&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;notebooks/adaptivespl/skycalc_transmission_R20000_400-800nm.txt&#39;</span>
+<span class="p">]:</span>
+    <span class="n">tea</span><span class="o">.</span><span class="n">get_cookbook_file</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>File response_data_BD33d2642_G100.fits downloaded!
+File skycalc_transmission_R20000_400-800nm.txt downloaded!
+</pre></div>
+</div>
+</div>
+</div>
+<p>There are many situations in which it is useful to perform a smooth fit to a series of points, but a polynomial fit does not provide the necessary flexibility. In such cases, spline fitting is often used. To facilitate this task, <strong>teareduce</strong> provides a class, named <code class="docutils literal notranslate"><span class="pre">AdaptiveLSQUnivariateSpline</span></code> that allows performing this type of fit without having to predefine the locations of the <em>knots</em> (the points where the different polynomial segments join to create a continuous and smooth curve), requiring only the specification of the number of intermediate knots to use.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">AdaptiveLSQUnivariateSpline</span></code> inherits from  <code class="docutils literal notranslate"><span class="pre">LSQUnivariateSpline</span></code> from the <a class="reference external" href="https://docs.scipy.org/doc/scipy-1.16.2/reference/generated/scipy.interpolate.LSQUnivariateSpline.html">scipy</a> package, introducing two new parameters:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">adaptive</span></code> (bool): if True, optimize the knot location numerically</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tolerance</span></code> (float): value to be employed in the minimisation process</p></li>
+</ul>
+<p>The numerical minimisation procedure is carried out with the help of the <a class="reference external" href="https://lmfit.github.io//lmfit-py/">lmfit</a> package, following the procedure described in <a class="reference external" href="https://articles.adsabs.harvard.edu/pdf/2009MNRAS.396..680C">Cardiel (2009)</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">tea</span><span class="o">.</span><span class="n">AdaptiveLSQUnivariateSpline</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on class AdaptiveLSQUnivariateSpline in module teareduce.numsplines:
+
+class AdaptiveLSQUnivariateSpline(scipy.interpolate._fitpack2.LSQUnivariateSpline)
+ |  AdaptiveLSQUnivariateSpline(x, y, t, w=None, bbox=(None, None), k=3, ext=0, check_finite=False, adaptive=True, tolerance=1e-07)
+ |
+ |  Extend scipy.interpolate.LSQUnivariateSpline.
+ |
+ |  One-dimensional spline with explicit internal knots.
+ |
+ |  This is actually a wrapper of
+ |  `scipy.interpolate.LSQUnivariateSpline`
+ |  with the addition of using adaptive knot location determined
+ |  numerically (after normalising the x and y arrays before
+ |  the minimisation process).
+ |
+ |  Parameters
+ |  ----------
+ |  x : (N,) array_like
+ |      Input dimension of data points -- must be increasing
+ |  y : (N,) array_like
+ |      Input dimension of data points
+ |  t : (M,) array_like or int
+ |      When integer it indicates the number of equidistant
+ |      interior knots. When array_like it provides the location
+ |      of the interior knots of the spline; must be in ascending
+ |      order and::
+ |
+ |       bbox[0] &lt; t[0] &lt; ... &lt; t[-1] &lt; bbox[-1]
+ |
+ |  w : (N,) array_like, optional
+ |      weights for spline fitting.  Must be positive.
+ |      If None (default), weights are all equal.
+ |  bbox : (2,) array_like, optional
+ |      2-sequence specifying the boundary of the approximation
+ |      interval. If None (default), ``bbox = [x[0], x[-1]]``.
+ |  k : int, optional
+ |      Degree of the smoothing spline.  Must be 1 &lt;= `k` &lt;= 5.
+ |      Default is k=3, a cubic spline.
+ |  ext : int or str, optional
+ |      Controls the extrapolation mode for elements
+ |      not in the interval defined by the knot sequence.
+ |
+ |      * if ext=0 or &#39;extrapolate&#39;, return the extrapolated value.
+ |      * if ext=1 or &#39;zeros&#39;, return 0
+ |      * if ext=2 or &#39;raise&#39;, raise a ValueError
+ |      * if ext=3 of &#39;const&#39;, return the boundary value.
+ |
+ |      The default value is 0.
+ |
+ |  check_finite : bool, optional
+ |      Whether to check that the input arrays contain only finite
+ |      numbers, that the x array is increasing and that the
+ |      x and y arrays are 1-D and with the same length.
+ |      Disabling may give a performance gain, but may
+ |      result in problems (crashes, non-termination or non-sensical
+ |      results) if the inputs do contain infinities or NaNs.
+ |      Default is True.
+ |  adaptive : bool, optional
+ |      Whether to optimise knot location following the procedure
+ |      described in Cardiel (2009); see:
+ |      http://cdsads.u-strasbg.fr/abs/2009MNRAS.396..680C
+ |      Default is True.
+ |  tolerance : float, optional
+ |      Tolerance for Nelder-Mead minimisation process.
+ |
+ |  Attributes
+ |  ----------
+ |  _params : instance of Parameters()
+ |      Initial parameters before minimisation.
+ |  _result : Minimizer output
+ |      Result of the minimisation process.
+ |
+ |  See also
+ |  --------
+ |  LSQUnivariateSpline : Superclass
+ |
+ |  Method resolution order:
+ |      AdaptiveLSQUnivariateSpline
+ |      scipy.interpolate._fitpack2.LSQUnivariateSpline
+ |      scipy.interpolate._fitpack2.UnivariateSpline
+ |      builtins.object
+ |
+ |  Methods defined here:
+ |
+ |  __init__(self, x, y, t, w=None, bbox=(None, None), k=3, ext=0, check_finite=False, adaptive=True, tolerance=1e-07)
+ |      One-dimensional spline with explicit internal knots.
+ |
+ |  get_params(self)
+ |      Return initial parameters for minimisation process.
+ |
+ |  get_result(self)
+ |      Return result of minimisation process.
+ |
+ |  ----------------------------------------------------------------------
+ |  Methods inherited from scipy.interpolate._fitpack2.UnivariateSpline:
+ |
+ |  __call__(self, x, nu=0, ext=None)
+ |      Evaluate spline (or its nu-th derivative) at positions x.
+ |
+ |      Parameters
+ |      ----------
+ |      x : array_like
+ |          A 1-D array of points at which to return the value of the smoothed
+ |          spline or its derivatives. Note: `x` can be unordered but the
+ |          evaluation is more efficient if `x` is (partially) ordered.
+ |      nu  : int
+ |          The order of derivative of the spline to compute.
+ |      ext : int
+ |          Controls the value returned for elements of `x` not in the
+ |          interval defined by the knot sequence.
+ |
+ |          * if ext=0 or &#39;extrapolate&#39;, return the extrapolated value.
+ |          * if ext=1 or &#39;zeros&#39;, return 0
+ |          * if ext=2 or &#39;raise&#39;, raise a ValueError
+ |          * if ext=3 or &#39;const&#39;, return the boundary value.
+ |
+ |          The default value is 0, passed from the initialization of
+ |          UnivariateSpline.
+ |
+ |  antiderivative(self, n=1)
+ |      Construct a new spline representing the antiderivative of this spline.
+ |
+ |      Parameters
+ |      ----------
+ |      n : int, optional
+ |          Order of antiderivative to evaluate. Default: 1
+ |
+ |      Returns
+ |      -------
+ |      spline : UnivariateSpline
+ |          Spline of order k2=k+n representing the antiderivative of this
+ |          spline.
+ |
+ |      Notes
+ |      -----
+ |
+ |      .. versionadded:: 0.13.0
+ |
+ |      See Also
+ |      --------
+ |      splantider, derivative
+ |
+ |      Examples
+ |      --------
+ |      &gt;&gt;&gt; import numpy as np
+ |      &gt;&gt;&gt; from scipy.interpolate import UnivariateSpline
+ |      &gt;&gt;&gt; x = np.linspace(0, np.pi/2, 70)
+ |      &gt;&gt;&gt; y = 1 / np.sqrt(1 - 0.8*np.sin(x)**2)
+ |      &gt;&gt;&gt; spl = UnivariateSpline(x, y, s=0)
+ |
+ |      The derivative is the inverse operation of the antiderivative,
+ |      although some floating point error accumulates:
+ |
+ |      &gt;&gt;&gt; spl(1.7), spl.antiderivative().derivative()(1.7)
+ |      (array(2.1565429877197317), array(2.1565429877201865))
+ |
+ |      Antiderivative can be used to evaluate definite integrals:
+ |
+ |      &gt;&gt;&gt; ispl = spl.antiderivative()
+ |      &gt;&gt;&gt; ispl(np.pi/2) - ispl(0)
+ |      2.2572053588768486
+ |
+ |      This is indeed an approximation to the complete elliptic integral
+ |      :math:`K(m) = \int_0^{\pi/2} [1 - m\sin^2 x]^{-1/2} dx`:
+ |
+ |      &gt;&gt;&gt; from scipy.special import ellipk
+ |      &gt;&gt;&gt; ellipk(0.8)
+ |      2.2572053268208538
+ |
+ |  derivative(self, n=1)
+ |      Construct a new spline representing the derivative of this spline.
+ |
+ |      Parameters
+ |      ----------
+ |      n : int, optional
+ |          Order of derivative to evaluate. Default: 1
+ |
+ |      Returns
+ |      -------
+ |      spline : UnivariateSpline
+ |          Spline of order k2=k-n representing the derivative of this
+ |          spline.
+ |
+ |      See Also
+ |      --------
+ |      splder, antiderivative
+ |
+ |      Notes
+ |      -----
+ |
+ |      .. versionadded:: 0.13.0
+ |
+ |      Examples
+ |      --------
+ |      This can be used for finding maxima of a curve:
+ |
+ |      &gt;&gt;&gt; import numpy as np
+ |      &gt;&gt;&gt; from scipy.interpolate import UnivariateSpline
+ |      &gt;&gt;&gt; x = np.linspace(0, 10, 70)
+ |      &gt;&gt;&gt; y = np.sin(x)
+ |      &gt;&gt;&gt; spl = UnivariateSpline(x, y, k=4, s=0)
+ |
+ |      Now, differentiate the spline and find the zeros of the
+ |      derivative. (NB: `sproot` only works for order 3 splines, so we
+ |      fit an order 4 spline):
+ |
+ |      &gt;&gt;&gt; spl.derivative().roots() / np.pi
+ |      array([ 0.50000001,  1.5       ,  2.49999998])
+ |
+ |      This agrees well with roots :math:`\pi/2 + n\pi` of
+ |      :math:`\cos(x) = \sin&#39;(x)`.
+ |
+ |  derivatives(self, x)
+ |      Return all derivatives of the spline at the point x.
+ |
+ |      Parameters
+ |      ----------
+ |      x : float
+ |          The point to evaluate the derivatives at.
+ |
+ |      Returns
+ |      -------
+ |      der : ndarray, shape(k+1,)
+ |          Derivatives of the orders 0 to k.
+ |
+ |      Examples
+ |      --------
+ |      &gt;&gt;&gt; import numpy as np
+ |      &gt;&gt;&gt; from scipy.interpolate import UnivariateSpline
+ |      &gt;&gt;&gt; x = np.linspace(0, 3, 11)
+ |      &gt;&gt;&gt; y = x**2
+ |      &gt;&gt;&gt; spl = UnivariateSpline(x, y)
+ |      &gt;&gt;&gt; spl.derivatives(1.5)
+ |      array([2.25, 3.0, 2.0, 0])
+ |
+ |  get_coeffs(self)
+ |      Return spline coefficients.
+ |
+ |  get_knots(self)
+ |      Return positions of interior knots of the spline.
+ |
+ |      Internally, the knot vector contains ``2*k`` additional boundary knots.
+ |
+ |  get_residual(self)
+ |      Return weighted sum of squared residuals of the spline approximation.
+ |
+ |      This is equivalent to::
+ |
+ |           sum((w[i] * (y[i]-spl(x[i])))**2, axis=0)
+ |
+ |  integral(self, a, b)
+ |      Return definite integral of the spline between two given points.
+ |
+ |      Parameters
+ |      ----------
+ |      a : float
+ |          Lower limit of integration.
+ |      b : float
+ |          Upper limit of integration.
+ |
+ |      Returns
+ |      -------
+ |      integral : float
+ |          The value of the definite integral of the spline between limits.
+ |
+ |      Examples
+ |      --------
+ |      &gt;&gt;&gt; import numpy as np
+ |      &gt;&gt;&gt; from scipy.interpolate import UnivariateSpline
+ |      &gt;&gt;&gt; x = np.linspace(0, 3, 11)
+ |      &gt;&gt;&gt; y = x**2
+ |      &gt;&gt;&gt; spl = UnivariateSpline(x, y)
+ |      &gt;&gt;&gt; spl.integral(0, 3)
+ |      9.0
+ |
+ |      which agrees with :math:`\int x^2 dx = x^3 / 3` between the limits
+ |      of 0 and 3.
+ |
+ |      A caveat is that this routine assumes the spline to be zero outside of
+ |      the data limits:
+ |
+ |      &gt;&gt;&gt; spl.integral(-1, 4)
+ |      9.0
+ |      &gt;&gt;&gt; spl.integral(-1, 0)
+ |      0.0
+ |
+ |  roots(self)
+ |      Return the zeros of the spline.
+ |
+ |      Notes
+ |      -----
+ |      Restriction: only cubic splines are supported by FITPACK. For non-cubic
+ |      splines, use `PPoly.root` (see below for an example).
+ |
+ |      Examples
+ |      --------
+ |
+ |      For some data, this method may miss a root. This happens when one of
+ |      the spline knots (which FITPACK places automatically) happens to
+ |      coincide with the true root. A workaround is to convert to `PPoly`,
+ |      which uses a different root-finding algorithm.
+ |
+ |      For example,
+ |
+ |      &gt;&gt;&gt; x = [1.96, 1.97, 1.98, 1.99, 2.00, 2.01, 2.02, 2.03, 2.04, 2.05]
+ |      &gt;&gt;&gt; y = [-6.365470e-03, -4.790580e-03, -3.204320e-03, -1.607270e-03,
+ |      ...      4.440892e-16,  1.616930e-03,  3.243000e-03,  4.877670e-03,
+ |      ...      6.520430e-03,  8.170770e-03]
+ |      &gt;&gt;&gt; from scipy.interpolate import UnivariateSpline
+ |      &gt;&gt;&gt; spl = UnivariateSpline(x, y, s=0)
+ |      &gt;&gt;&gt; spl.roots()
+ |      array([], dtype=float64)
+ |
+ |      Converting to a PPoly object does find the roots at `x=2`:
+ |
+ |      &gt;&gt;&gt; from scipy.interpolate import splrep, PPoly
+ |      &gt;&gt;&gt; tck = splrep(x, y, s=0)
+ |      &gt;&gt;&gt; ppoly = PPoly.from_spline(tck)
+ |      &gt;&gt;&gt; ppoly.roots(extrapolate=False)
+ |      array([2.])
+ |
+ |      See Also
+ |      --------
+ |      sproot
+ |      PPoly.roots
+ |
+ |  set_smoothing_factor(self, s)
+ |      Continue spline computation with the given smoothing
+ |      factor s and with the knots found at the last call.
+ |
+ |      This routine modifies the spline in place.
+ |
+ |  ----------------------------------------------------------------------
+ |  Static methods inherited from scipy.interpolate._fitpack2.UnivariateSpline:
+ |
+ |  validate_input(x, y, w, bbox, k, s, ext, check_finite)
+ |
+ |  ----------------------------------------------------------------------
+ |  Data descriptors inherited from scipy.interpolate._fitpack2.UnivariateSpline:
+ |
+ |  __dict__
+ |      dictionary for instance variables
+ |
+ |  __weakref__
+ |      list of weak references to the object
+</pre></div>
+</div>
+</div>
+</div>
+<section id="example-computation-of-response-curve">
+<h2>Example: computation of response curve<a class="headerlink" href="#example-computation-of-response-curve" title="Link to this heading">#</a></h2>
+<p>Read input data</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">input_file</span> <span class="o">=</span> <span class="s1">&#39;response_data_BD33d2642_G100.fits&#39;</span>
+
+<span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">input_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdul</span><span class="p">:</span>
+    <span class="n">hdul</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+    <span class="n">header</span> <span class="o">=</span> <span class="n">hdul</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">header</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filename: response_data_BD33d2642_G100.fits
+No.    Name      Ver    Type      Cards   Dimensions   Format
+  0  PRIMARY       1 PrimaryHDU       9   ()      
+  1                1 BinTableHDU     14   2048R x 2C   [D, D]   
+</pre></div>
+</div>
+</div>
+</div>
+<p>The first FITS extension contains a binary table with the initial response curve obtained</p>
+<p>The first extension contains a binary table with the initial response curve, calculated as the ratio between the observed spectrum (in <span class="math notranslate nohighlight">\({\rm ADU}/{\rm s}\)</span>) and the tabulated spectrum (in <span class="math notranslate nohighlight">\({\rm erg}\,{\rm cm}^{-2}\,{\rm s}^{-1}\,\unicode{x212B}^{-1}\)</span>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">header</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>XTENSION= &#39;BINTABLE&#39;           / binary table extension                         
+BITPIX  =                    8 / array data type                                
+NAXIS   =                    2 / number of array dimensions                     
+NAXIS1  =                   16 / length of dimension 1                          
+NAXIS2  =                 2048 / length of dimension 2                          
+PCOUNT  =                    0 / number of group parameters                     
+GCOUNT  =                    1 / number of groups                               
+TFIELDS =                    2 / number of table fields                         
+TTYPE1  = &#39;wavelength&#39;                                                          
+TFORM1  = &#39;D       &#39;                                                            
+TUNIT1  = &#39;Angstrom&#39;                                                            
+TTYPE2  = &#39;response_data&#39;                                                       
+TFORM2  = &#39;D       &#39;                                                            
+TUNIT2  = &#39;ADU/s/FLAM&#39;                                                          
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">response_data</span> <span class="o">=</span> <span class="n">QTable</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="n">hdu</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: UnitsWarning: &#39;ADU/s/FLAM&#39; did not parse as fits unit: At col 0, Unit &#39;ADU&#39; not supported by the FITS standard. Did you mean AU or adu? If this is meant to be a custom unit, define it with &#39;u.def_unit&#39;. To have it recognized inside a file reader or other code, enable it with &#39;u.add_enabled_units&#39;. For details, see https://docs.astropy.org/en/latest/units/combining_and_defining.html [astropy.units.core]
+</pre></div>
+</div>
+</div>
+</div>
+<p>We received a warning because the units <code class="docutils literal notranslate"><span class="pre">'ADU/s/FLAM'</span></code> in the second column of the table are not part of the FITS standard. To avoid problems in the code we will use next, we redefine this expression using valid units.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">response_units</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">def_unit</span><span class="p">(</span><span class="s1">&#39;ADU/s/FLAM&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">response_data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>QTable length=2048</i>
+<table id="table140650921985328" class="table-striped table-bordered table-condensed">
+<thead><tr><th>wavelength</th><th>response_data</th></tr></thead>
+<thead><tr><th>Angstrom</th><th>ADU/s/FLAM</th></tr></thead>
+<thead><tr><th>float64</th><th>float64</th></tr></thead>
+<tr><td>4220.0</td><td>39427588791206.695</td></tr>
+<tr><td>4222.0</td><td>39714436792249.06</td></tr>
+<tr><td>4224.0</td><td>39784267391699.305</td></tr>
+<tr><td>4226.0</td><td>40587338329114.48</td></tr>
+<tr><td>4228.0</td><td>40123370683430.62</td></tr>
+<tr><td>4230.0</td><td>42073303260572.02</td></tr>
+<tr><td>4232.0</td><td>41331589582946.73</td></tr>
+<tr><td>4234.0</td><td>41229670352075.2</td></tr>
+<tr><td>4236.0</td><td>41948512903698.836</td></tr>
+<tr><td>...</td><td>...</td></tr>
+<tr><td>8298.0</td><td>129111894057217.53</td></tr>
+<tr><td>8300.0</td><td>129530065711286.72</td></tr>
+<tr><td>8302.0</td><td>142369449268286.38</td></tr>
+<tr><td>8304.0</td><td>134472112423705.3</td></tr>
+<tr><td>8306.0</td><td>135941949777498.97</td></tr>
+<tr><td>8308.0</td><td>132715306899843.95</td></tr>
+<tr><td>8310.0</td><td>139485355521601.33</td></tr>
+<tr><td>8312.0</td><td>137408614652947.81</td></tr>
+<tr><td>8314.0</td><td>138341505029212.25</td></tr>
+</table></div></div></div>
+</div>
+<p>We also read an ASCII file containing information on the transmission of the Earth’s atmosphere.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">telluric_tabulated</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="s1">&#39;skycalc_transmission_R20000_400-800nm.txt&#39;</span><span class="p">)</span>
+<span class="n">telluric_tabulated</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[4.00007171e+02, 7.33015000e-01],
+       [4.00027172e+02, 7.33056000e-01],
+       [4.00047174e+02, 7.33099000e-01],
+       ...,
+       [8.99898946e+02, 9.74310000e-01],
+       [8.99943942e+02, 9.73631000e-01],
+       [8.99988940e+02, 9.73231000e-01]], shape=(16219, 2))
+</pre></div>
+</div>
+</div>
+</div>
+<p>Prepare the data to be displayed</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># response data</span>
+<span class="n">wavelength</span> <span class="o">=</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;wavelength&#39;</span><span class="p">]</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;response_data&#39;</span><span class="p">]</span>
+
+<span class="c1"># transmission data</span>
+<span class="n">xtelluric</span> <span class="o">=</span> <span class="n">telluric_tabulated</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span>  <span class="c1"># convert from nm to Angstrom</span>
+<span class="n">ytelluric</span> <span class="o">=</span> <span class="n">telluric_tabulated</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
+<span class="c1"># extract data in the required wavelength range</span>
+<span class="n">iok</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">xtelluric</span> <span class="o">&gt;=</span> <span class="n">wavelength</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">xtelluric</span> <span class="o">&lt;=</span> <span class="n">wavelength</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">max</span><span class="p">()))</span>
+<span class="n">xtelluric</span> <span class="o">=</span> <span class="n">xtelluric</span><span class="p">[</span><span class="n">iok</span><span class="p">]</span>
+<span class="n">ytelluric</span> <span class="o">=</span> <span class="n">ytelluric</span><span class="p">[</span><span class="n">iok</span><span class="p">]</span>
+<span class="c1"># normalize data</span>
+<span class="n">ytelluric</span> <span class="o">=</span> <span class="n">ytelluric</span> <span class="o">/</span> <span class="n">ytelluric</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Define functions to plot data and legend (in this way we avoid repeating code)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_data</span><span class="p">(</span><span class="n">ax1</span><span class="p">):</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;response curve&#39;</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Wavelength (</span><span class="si">{</span><span class="n">wavelength</span><span class="o">.</span><span class="n">unit</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">unit</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;ADU/s/FLAM&#39;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;unexpected response units: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">unit</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Response (ADU/s) / (${\rm erg}\;{\rm cm}^{−2}\; {\rm s}^{−1}\;{\rm\AA}^{−1}$)&#39;</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">input_file</span><span class="p">)</span>
+    
+    <span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xtelluric</span><span class="p">,</span> <span class="n">ytelluric</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C2&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;telluric lines&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;relative atmosphere transmission&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C2&#39;</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">wavelength</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">wavelength</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="n">ax2</span>
+
+<span class="k">def</span> <span class="nf">display_legend</span><span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">):</span>
+    <span class="c1"># merge labels</span>
+    <span class="n">handles1</span><span class="p">,</span> <span class="n">labels1</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
+    <span class="n">handles2</span><span class="p">,</span> <span class="n">labels2</span> <span class="o">=</span> <span class="n">ax2</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">handle</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">handles2</span><span class="p">,</span> <span class="n">labels2</span><span class="p">):</span>
+        <span class="n">handles1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+        <span class="n">labels1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles1</span><span class="p">,</span> <span class="n">labels1</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Display the data</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">plot_data</span><span class="p">(</span><span class="n">ax1</span><span class="p">)</span>
+<span class="n">display_legend</span><span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/df179a1f48066f9d22a294c99e08a2ed67dafc0ba0eb52a3f96565d45f1b9963.png" src="../../_images/df179a1f48066f9d22a294c99e08a2ed67dafc0ba0eb52a3f96565d45f1b9963.png" />
+</div>
+</div>
+<p>The previous graph shows the relative transmission of the atmosphere (green curve), which provides a very good explanation for the observed telluric lines. Note that we know the atmospheric transmission with very high spectral resolution, significantly higher than the spectral resolution of our observed spectrum. In principle, we would need to convolve the relative atmospheric transmission (for example, with a Gaussian kernel) in order to better reproduce the telluric absorptions. However, it is not worthwhile to spend time on this. Telluric absorptions also depend on the airmass, and correcting these regions of spectra is a formidable challenge; in this example we are simply going to ignore these regions of the spectra.</p>
+<p>The response curve we will use will be a smooth fit to the resulting spectrum. But before performing the fit, we will remove problematic regions (particularly those affected by telluric absorptions). We define these regions as intervals in wavelength (Ångström).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># wavelength ranges</span>
+<span class="n">list_bad_regions</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="mi">4200</span><span class="p">,</span> <span class="mi">4250</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">6260</span><span class="p">,</span> <span class="mi">6350</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">6450</span><span class="p">,</span> <span class="mi">6600</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">6850</span><span class="p">,</span> <span class="mi">7050</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">7160</span><span class="p">,</span> <span class="mi">7400</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">7520</span><span class="p">,</span> <span class="mi">7770</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">8100</span><span class="p">,</span> <span class="mi">8270</span><span class="p">),</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Auxiliary function to plot the problematic telluric windows.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_telluric_windows</span><span class="p">(</span><span class="n">ax1</span><span class="p">):</span>
+    <span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="n">ymax</span> <span class="o">-</span> <span class="n">ymin</span>
+    <span class="k">for</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="ow">in</span> <span class="n">list_bad_regions</span><span class="p">:</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="n">w2</span> <span class="o">-</span> <span class="n">w1</span>
+        <span class="n">rect</span> <span class="o">=</span> <span class="n">patches</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">(</span><span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">w1</span><span class="p">,</span> <span class="n">ymin</span><span class="p">),</span> 
+                                 <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> 
+                                 <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C1&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Repeat plot overplotting the telluric windows</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">plot_data</span><span class="p">(</span><span class="n">ax1</span><span class="p">)</span>
+<span class="n">display_legend</span><span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span>
+<span class="n">plot_telluric_windows</span><span class="p">(</span><span class="n">ax1</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/5b49cfa65d99e8b8767b4e3b274ce5fd104d7c22265d54477844f6d4ad5b0088.png" src="../../_images/5b49cfa65d99e8b8767b4e3b274ce5fd104d7c22265d54477844f6d4ad5b0088.png" />
+</div>
+</div>
+<p>We assign a very small weight to the spectral data points corresponding to the problematic regions (<code class="docutils literal notranslate"><span class="pre">weight_bad_region</span> <span class="pre">=</span> <span class="pre">0.001</span></code>; the weight of a normal point will be <code class="docutils literal notranslate"><span class="pre">1.0</span></code>). Note that we keep these points nonetheless, so that the fit is computed over the entire spectral range.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">naxis1</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">wavelength</span><span class="p">)</span>
+
+<span class="n">weight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">naxis1</span><span class="p">))</span>
+<span class="n">weight_bad_region</span> <span class="o">=</span> <span class="mf">0.001</span>
+
+<span class="k">for</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="ow">in</span> <span class="n">list_bad_regions</span><span class="p">:</span>
+    <span class="n">i1</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">wavelength</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="n">w1</span><span class="p">))</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
+    <span class="n">i2</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">wavelength</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="n">w2</span><span class="p">))</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
+    <span class="n">weight</span><span class="p">[</span><span class="n">i1</span><span class="p">:(</span><span class="n">i2</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="n">weight_bad_region</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We perform a fit using an adaptive spline (spline fit with movable knots). By trial and error we find that 11 intermediate knots work well.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">number_of_intermediate_knots</span> <span class="o">=</span> <span class="mi">11</span>
+
+<span class="n">spl</span> <span class="o">=</span> <span class="n">tea</span><span class="o">.</span><span class="n">AdaptiveLSQUnivariateSpline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">wavelength</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span> 
+                                      <span class="n">t</span><span class="o">=</span><span class="n">number_of_intermediate_knots</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Evaluate fit and determine location of knots.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">response_curve</span> <span class="o">=</span> <span class="n">spl</span><span class="p">(</span><span class="n">wavelength</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">*</span> <span class="n">response_units</span>
+
+<span class="n">xknots</span> <span class="o">=</span> <span class="n">spl</span><span class="o">.</span><span class="n">get_knots</span><span class="p">()</span>
+<span class="n">yknots</span> <span class="o">=</span> <span class="n">spl</span><span class="p">(</span><span class="n">xknots</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Display data and fit (with knots)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">plot_data</span><span class="p">(</span><span class="n">ax1</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xknots</span><span class="p">,</span> <span class="n">yknots</span><span class="p">,</span> <span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;spline knots&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">response_curve</span><span class="p">,</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;spline fit&#39;</span><span class="p">)</span>
+<span class="n">display_legend</span><span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span>
+<span class="n">plot_telluric_windows</span><span class="p">(</span><span class="n">ax1</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/4734ba052c9575443176543949989c1edf02ebc77380dae3e512a5a9e7d27366.png" src="../../_images/4734ba052c9575443176543949989c1edf02ebc77380dae3e512a5a9e7d27366.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tea</span><span class="o">.</span><span class="n">elapsed_time_since</span><span class="p">(</span><span class="n">time_ini</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>system...........: Linux
+release..........: 6.11.0-1018-azure
+machine..........: x86_64
+node.............: runnervmwhb2z
+Python executable: /usr/bin/python3
+teareduce version: 0.4.9
+Initial time.....: 2025-10-27 16:50:20.526460
+Final time.......: 2025-10-27 16:50:22.386217
+Elapsed time.....: 0:00:01.859757
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/adaptivespl"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../wavecalib/wavecalib.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">C distortion and wavelength calibration</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../bibliography.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Bibliography</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-computation-of-response-curve">Example: computation of response curve</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Nicolás Cardiel
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

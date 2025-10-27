@@ -1,0 +1,941 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Simulation of CCD images &#8212; Teareduce cookbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/simulateccd/simulateccd';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Interactive Cosmic Ray Removal in Single Exposures" href="../../docs/cleanest/cleanest.html" />
+    <link rel="prev" title="Elapsed time and system information" href="../aux/elapsedtime/elapsedtime.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Teareduce cookbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Teareduce cookbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    The package teareduce
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../aux.html">Auxiliary functions and classes</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../aux/imshow/imshow.html">The imshow wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../aux/sliceregion/sliceregion.html">Auxiliary classes for image slicing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../aux/elapsedtime/elapsedtime.html">Elapsed time and system information</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Simulation of CCD images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../docs/cleanest/cleanest.html">Interactive Cosmic Ray Removal in Single Exposures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cr2images/cr2images.html">Cosmic Ray Removal in Double Exposures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wavecalib/wavecalib.html">C distortion and wavelength calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../adaptivespl/adaptivespl.html">Adaptive spline fit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../bibliography.html">Bibliography</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/simulateccd/simulateccd.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Simulation of CCD images</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-usage">Simple usage</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="simulation-of-ccd-images">
+<h1>Simulation of CCD images<a class="headerlink" href="#simulation-of-ccd-images" title="Link to this heading">#</a></h1>
+<p>With the goal of making it easier to generate simulated astronomical images, <strong>teareduce</strong> provides a class called <code class="docutils literal notranslate"><span class="pre">SimulateCCDExposure</span></code> that simplifies this task.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">teareduce</span> <span class="k">as</span> <span class="nn">tea</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">tea</span><span class="o">.</span><span class="n">SimulateCCDExposure</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on class SimulateCCDExposure in module teareduce.simulateccdexposure:
+
+class SimulateCCDExposure(builtins.object)
+ |  SimulateCCDExposure(naxis1=None, naxis2=None, bitpix=None, bias=&lt;Quantity nan adu&gt;, gain=&lt;Quantity nan electron / adu&gt;, readout_noise=&lt;Quantity nan adu&gt;, dark=&lt;Quantity nan adu&gt;, flatfield=nan, data_model=&lt;Quantity nan adu&gt;, seed=None)
+ |
+ |  Simulated image generator from first principles.
+ |
+ |  CCD exposures are simulated making use of basic CCD parameters,
+ |  such as gain, readout noise, bias, dark and flat field.
+ |  A data model can also be employed to simulate more realising
+ |  CCD exposures.
+ |
+ |  The saturated pixels in &#39;data_model&#39; are returned as 2**bitpix - 1
+ |  in the simulated image (for instance, 65535 when bitpix=16).
+ |
+ |  By initializing the seed of the random number generator
+ |  when instantiating this class, there is in principle no need to
+ |  use another seed for the run() method. This is useful for
+ |  generating reproducible sets of consecutive exposures. In any case,
+ |  it is also possible to provide a particular seed to the run()
+ |  method in order to initialize the execution of single exposures.
+ |
+ |  Attributes
+ |  ----------
+ |  naxis1 : int
+ |      NAXIS1 value.
+ |  naxis2 : int
+ |      NAXIS2 value.
+ |  bitpix : int
+ |      BITPIX value.
+ |  bias : Quantity
+ |      Numpy array with the detector bias level (ADU).
+ |  gain : Quantity
+ |      Numpy array with the detector gain (electrons/ADU).
+ |  readout_noise : Quantity
+ |      Numpy array with the readout noise (ADU).
+ |  dark : Quantity
+ |      Numpy array with the total dark current (ADU) for each pixel.
+ |      These numbers should not be the dark current rate (ADU/s).
+ |      The provided numbers must correspond to the total dark current
+ |      since the exposure time is not defined.
+ |  flatfield : numpy.ndarray
+ |      Numpy array with the pixel to pixel sensitivity (without units).
+ |  data_model : Quantity
+ |      Numpy array with the model of the source to be simulated (ADU).
+ |  seed : int or None
+ |      Random number generator seed.
+ |  _rng : np.random.RandomState
+ |      Random number generator.
+ |
+ |  Methods
+ |  -------
+ |  set_constant(parameter, value, region)
+ |      Set the value of a particular CCD parameter to a constant
+ |      value. The parameter can be any of VALID_PARAMETERS. The
+ |      constant value can be employed for all pixels or in a specific
+ |      region.
+ |  set_array2d(parameter, value, region)
+ |      Set the value of a particular CCD parameter to a 2D array.
+ |      The parameter can be any of VALID_PARAMETERS. The 2D array
+ |      may correspond to the whole simulated array or to a specific
+ |      region.
+ |  run(imgtype, seed, method)
+ |      Execute the generation of the simulated CCD exposure of
+ |      type &#39;imgtype&#39;, where &#39;imgtype&#39; is one of VALID_IMAGE_TYPES.
+ |      The signal can be generated using either method: Poisson
+ |      or Gaussian. It is possible to set the seed in order to
+ |      initialize the random number generator.
+ |
+ |  Methods defined here:
+ |
+ |  __init__(self, naxis1=None, naxis2=None, bitpix=None, bias=&lt;Quantity nan adu&gt;, gain=&lt;Quantity nan electron / adu&gt;, readout_noise=&lt;Quantity nan adu&gt;, dark=&lt;Quantity nan adu&gt;, flatfield=nan, data_model=&lt;Quantity nan adu&gt;, seed=None)
+ |      Initialize the class attributes.
+ |
+ |      The simulated array dimensions are mandatory. If any additional
+ |      parameter is not provided, all the pixel values are set to NaN.
+ |      The values of each parameter can be subsequently modified using
+ |      methods that allow these values to be changed in specific regions
+ |      of the CCD.
+ |
+ |      The input parameters must be a Quantity whose value is either
+ |      a single number, which is expanded to fill the numpy.array,
+ |      or a numpy.array with the expected shape (NAXIS2, NAXIS1).
+ |
+ |      Parameters
+ |      ----------
+ |      naxis1 : int
+ |          NAXIS1 value.
+ |      naxis2 : int
+ |          NAXIS2 value.
+ |      bitpix : int
+ |          BITPIX value.
+ |      bias : Quantity
+ |          Detector bias level (ADU).
+ |      gain : Quantity
+ |          Detector gain (electrons/ADU).
+ |      readout_noise : Quantity
+ |          Readout noise (ADU).
+ |      dark : Quantity
+ |          Total dark current (ADU). This number should not be the
+ |          dark current rate (ADU/s). The provided number must
+ |          be the total dark current since the exposure time is not
+ |          defined.
+ |      flatfield : float or numpy.ndarray
+ |          Pixel to pixel sensitivity (without units).
+ |      data_model : Quantity
+ |          Model of the source to be simulated (ADU).
+ |      seed : int or None
+ |          Random number generator seed.
+ |
+ |  __repr__(self)
+ |      Return repr(self).
+ |
+ |  run(self, imgtype, method=&#39;Poisson&#39;, seed=None)
+ |      Execute the generation of the simulated CCD exposure.
+ |
+ |      This function generates an image of type &#39;imgtype&#39;, which must
+ |      be one of VALID_IMAGE_TYPES. The signal can be generated using
+ |      either method: Poisson or Gaussian. It is possible to set the
+ |      seed in order to initialize the random number generator.
+ |
+ |      Parameters
+ |      ----------
+ |      imgtype : str
+ |          Type of image to be generated. It must be one of
+ |          VALID_IMAGE_TYPES.
+ |      method : str
+ |          Method to generate the simulated data. It must be one of
+ |          VALID_METHODS.
+ |      seed : int, optional
+ |          Seed for the random number generator. The default is None.
+ |
+ |      Returns
+ |      -------
+ |      result : SimulatedCCDResult
+ |          Instance of SimulatedCCDResult to store the simulated image
+ |          and the associated parameters employed to define how to
+ |          generate the simulated CCD exposure.
+ |
+ |  set_array2d(self, parameter, array2d, region=None)
+ |      Set the value of a particular parameter to a 2D array.
+ |
+ |      The parameter can be any of VALID_PARAMETERS. The 2D array
+ |      may correspond to the whole simulated array or to a specific
+ |      region.
+ |
+ |      Parameters
+ |      ----------
+ |      parameter : str
+ |          CCD parameter to set. It must be any of VALID_PARAMETERS.
+ |      array2d : Quantity
+ |          Array of values to be used to define &#39;parameter&#39;.
+ |      region : SliceRegion2D
+ |          Region in which to define de parameter. When it is None, it
+ |          indicates that &#39;quantity&#39; has the same shape as the simulated
+ |          image.
+ |
+ |  set_constant(self, parameter, constant, region=None)
+ |      Set the value of a particular parameter to a constant value.
+ |
+ |      The parameter can be any of VALID_PARAMETERS. The constant
+ |      value can be employed for all pixels or in a specific region.
+ |
+ |      Parameters
+ |      ----------
+ |      parameter : str
+ |          CCD parameter to set. It must be any of VALID_PARAMETERS.
+ |      constant : Quantity or float
+ |          Constant value for the parameter.
+ |      region : SliceRegion2D or None
+ |          Region in which to define de parameter. When it is None, it
+ |          indicates that &#39;value&#39; should be set for all pixels.
+ |
+ |  ----------------------------------------------------------------------
+ |  Data descriptors defined here:
+ |
+ |  __dict__
+ |      dictionary for instance variables
+ |
+ |  __weakref__
+ |      list of weak references to the object
+</pre></div>
+</div>
+</div>
+</div>
+<section id="simple-usage">
+<h2>Simple usage<a class="headerlink" href="#simple-usage" title="Link to this heading">#</a></h2>
+<p>Define image basic parameters (dimensions, BITPIX)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">naxis1</span><span class="p">,</span> <span class="n">naxis2</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span>
+<span class="n">bitpix</span> <span class="o">=</span> <span class="mi">16</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Each instance of the <code class="docutils literal notranslate"><span class="pre">SimulateCCDExposure</span></code> class becomes an image generator with the specified properties.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">generator</span> <span class="o">=</span> <span class="n">tea</span><span class="o">.</span><span class="n">SimulateCCDExposure</span><span class="p">(</span>
+    <span class="n">naxis1</span><span class="o">=</span><span class="n">naxis1</span><span class="p">,</span>
+    <span class="n">naxis2</span><span class="o">=</span><span class="n">naxis2</span><span class="p">,</span>
+    <span class="n">bitpix</span><span class="o">=</span><span class="n">bitpix</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The generator we have just created contains information about the image dimensions and the BITPIX value, but there are still many attributes left undefined:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">generator</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SimulateCCDExposure(
+    naxis1=5,
+    naxis2=5,
+    bitpix=16,
+    bias=&lt;Quantity [[nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan]] adu&gt;,
+    gain=&lt;Quantity [[nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan]] electron / adu&gt;,
+    readout_noise=&lt;Quantity [[nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan]] adu&gt;,
+    dark=&lt;Quantity [[nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan]] adu&gt;,
+    flatfield=array([[nan, nan, nan, nan, nan],
+       [nan, nan, nan, nan, nan],
+       [nan, nan, nan, nan, nan],
+       [nan, nan, nan, nan, nan],
+       [nan, nan, nan, nan, nan]]),
+    data_model=&lt;Quantity [[nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan]] adu&gt;,
+    seed=None,
+)
+</pre></div>
+</div>
+</div>
+</div>
+<p>If we try to use the generator as defined so far to create a bias image, we should encounter an error message.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">exposure_bias</span> <span class="o">=</span> <span class="n">generator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">imgtype</span><span class="o">=</span><span class="s1">&#39;bias&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">exposure_bias</span> <span class="o">=</span> <span class="n">generator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">imgtype</span><span class="o">=</span><span class="s1">&#39;bias&#39;</span><span class="p">)</span>
+
+<span class="nn">File ~/.local/lib/python3.12/site-packages/teareduce/simulateccdexposure.py:587,</span> in <span class="ni">SimulateCCDExposure.run</span><span class="nt">(self, imgtype, method, seed)</span>
+<span class="g g-Whitespace">    </span><span class="mi">585</span> <span class="c1"># BIAS and Readout Noise</span>
+<span class="g g-Whitespace">    </span><span class="mi">586</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+<span class="ne">--&gt; </span><span class="mi">587</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The parameter &#39;bias&#39; contains NaN&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">588</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">readout_noise</span><span class="o">.</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+<span class="g g-Whitespace">    </span><span class="mi">589</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The parameter &#39;readout_noise&#39; contains NaN&quot;</span><span class="p">)</span>
+
+<span class="ne">ValueError</span>: The parameter &#39;bias&#39; contains NaN
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can see, then, that to generate a BIAS image we need to construct a generator that includes this information. For example, we can define the generator by specifying, in addition to the dimensions and BITPIX, the bias signal and the readout noise.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">generator</span> <span class="o">=</span> <span class="n">tea</span><span class="o">.</span><span class="n">SimulateCCDExposure</span><span class="p">(</span>
+    <span class="n">naxis1</span><span class="o">=</span><span class="n">naxis1</span><span class="p">,</span> <span class="n">naxis2</span><span class="o">=</span><span class="n">naxis2</span><span class="p">,</span> <span class="n">bitpix</span><span class="o">=</span><span class="n">bitpix</span><span class="p">,</span>
+    <span class="n">bias</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">naxis2</span><span class="p">,</span> <span class="n">naxis1</span><span class="p">))</span><span class="o">*</span><span class="mi">1000</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">adu</span><span class="p">,</span>
+    <span class="n">readout_noise</span><span class="o">=</span><span class="mi">5</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">adu</span>
+<span class="p">)</span>
+
+<span class="n">generator</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SimulateCCDExposure(
+    naxis1=5,
+    naxis2=5,
+    bitpix=16,
+    bias=&lt;Quantity [[1000., 1000., 1000., 1000., 1000.],
+           [1000., 1000., 1000., 1000., 1000.],
+           [1000., 1000., 1000., 1000., 1000.],
+           [1000., 1000., 1000., 1000., 1000.],
+           [1000., 1000., 1000., 1000., 1000.]] adu&gt;,
+    gain=&lt;Quantity [[nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan]] electron / adu&gt;,
+    readout_noise=&lt;Quantity [[5., 5., 5., 5., 5.],
+           [5., 5., 5., 5., 5.],
+           [5., 5., 5., 5., 5.],
+           [5., 5., 5., 5., 5.],
+           [5., 5., 5., 5., 5.]] adu&gt;,
+    dark=&lt;Quantity [[nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan]] adu&gt;,
+    flatfield=array([[nan, nan, nan, nan, nan],
+       [nan, nan, nan, nan, nan],
+       [nan, nan, nan, nan, nan],
+       [nan, nan, nan, nan, nan],
+       [nan, nan, nan, nan, nan]]),
+    data_model=&lt;Quantity [[nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan]] adu&gt;,
+    seed=None,
+)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can then generate a simulated BIAS image using the method <code class="docutils literal notranslate"><span class="pre">run(imgtype='bias')</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">exposure_bias</span> <span class="o">=</span> <span class="n">generator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">imgtype</span><span class="o">=</span><span class="s1">&#39;bias&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The result is an object of type <code class="docutils literal notranslate"><span class="pre">SimulatedCCDResult</span></code>, which contains not only the simulated image but also all the information used to define the generator that was employed.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">exposure_bias</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>teareduce.simulateccdexposure.SimulatedCCDResult
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">exposure_bias</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SimulatedCCDResult(
+    data=array([[1006.34599058, 1000.04214332,  998.95802374,  994.90680195,
+        1000.83249513],
+       [ 995.77092624,  995.6226939 ,  997.15719209,  990.58087951,
+        1007.73440446],
+       [ 999.65218455, 1006.28065105, 1003.13738173,  998.7719936 ,
+         994.18388558],
+       [ 998.47370389, 1001.76699763,  998.76555395, 1004.59804772,
+         992.25840625],
+       [ 997.095275  , 1003.34473584, 1003.93767074,  992.18050173,
+         997.71434382]]),
+    unit=Unit(&quot;adu&quot;),
+    imgtype=&#39;bias&#39;,
+    method=&#39;poisson&#39;,
+    origin=SimulateCCDExposure(
+    naxis1=5,
+    naxis2=5,
+    bitpix=16,
+    bias=&lt;Quantity [[1000., 1000., 1000., 1000., 1000.],
+           [1000., 1000., 1000., 1000., 1000.],
+           [1000., 1000., 1000., 1000., 1000.],
+           [1000., 1000., 1000., 1000., 1000.],
+           [1000., 1000., 1000., 1000., 1000.]] adu&gt;,
+    gain=&lt;Quantity [[nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan]] electron / adu&gt;,
+    readout_noise=&lt;Quantity [[5., 5., 5., 5., 5.],
+           [5., 5., 5., 5., 5.],
+           [5., 5., 5., 5., 5.],
+           [5., 5., 5., 5., 5.],
+           [5., 5., 5., 5., 5.]] adu&gt;,
+    dark=&lt;Quantity [[nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan]] adu&gt;,
+    flatfield=array([[nan, nan, nan, nan, nan],
+       [nan, nan, nan, nan, nan],
+       [nan, nan, nan, nan, nan],
+       [nan, nan, nan, nan, nan],
+       [nan, nan, nan, nan, nan]]),
+    data_model=&lt;Quantity [[nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan],
+           [nan, nan, nan, nan, nan]] adu&gt;,
+    seed=None,
+),
+    seed=None,
+)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">.data</span></code> attribute contains the NumPy array with the simulated image.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">exposure_bias</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>numpy.ndarray
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tea</span><span class="o">.</span><span class="n">imshowme</span><span class="p">(</span><span class="n">exposure_bias</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">ds9mode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/50e98548faf8ef43cec58d2809e365eeb71461680a14db7791f7b24b6a5f84e3.png" src="../../_images/50e98548faf8ef43cec58d2809e365eeb71461680a14db7791f7b24b6a5f84e3.png" />
+</div>
+</div>
+<p><strong>Documentation pending update from this point</strong></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/simulateccd"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../aux/elapsedtime/elapsedtime.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Elapsed time and system information</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../docs/cleanest/cleanest.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Interactive Cosmic Ray Removal in Single Exposures</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-usage">Simple usage</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Nicolás Cardiel
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

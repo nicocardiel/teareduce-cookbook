@@ -1,0 +1,1466 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Cosmic Ray Removal in Double Exposures &#8212; Teareduce cookbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/cr2images/cr2images';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="C distortion and wavelength calibration" href="../wavecalib/wavecalib.html" />
+    <link rel="prev" title="Interactive Cosmic Ray Removal in Single Exposures" href="../../docs/cleanest/cleanest.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Teareduce cookbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Teareduce cookbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    The package teareduce
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../aux.html">Auxiliary functions and classes</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../aux/imshow/imshow.html">The imshow wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../aux/sliceregion/sliceregion.html">Auxiliary classes for image slicing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../aux/elapsedtime/elapsedtime.html">Elapsed time and system information</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulateccd/simulateccd.html">Simulation of CCD images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../docs/cleanest/cleanest.html">Interactive Cosmic Ray Removal in Single Exposures</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Cosmic Ray Removal in Double Exposures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wavecalib/wavecalib.html">C distortion and wavelength calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../adaptivespl/adaptivespl.html">Adaptive spline fit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../bibliography.html">Bibliography</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/cr2images/cr2images.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Cosmic Ray Removal in Double Exposures</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cosmic-ray-detection-using-equivalent-exposures">Cosmic Ray Detection Using Equivalent Exposures</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-cr2images">Using <code class="docutils literal notranslate"><span class="pre">cr2images()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#selecting-regions-to-clean">Selecting Regions to Clean</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#option-1-using-list-skipped-regions">Option 1: Using <code class="docutils literal notranslate"><span class="pre">list_skipped_regions</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#option-2-using-image-region">Option 2: Using <code class="docutils literal notranslate"><span class="pre">image_region</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-images-with-extensions-ccddata-objects">Using Images with Extensions (<code class="docutils literal notranslate"><span class="pre">CCDData</span></code> Objects)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cleaning-the-data-arrays">Cleaning the Data Arrays</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transferring-cleaned-pixels-to-the-mask-extension">Transferring Cleaned Pixels to the <code class="docutils literal notranslate"><span class="pre">MASK</span></code> Extension</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transferring-the-cleaned-pixels-to-the-uncert-extension">Transferring the cleaned pixels to the <code class="docutils literal notranslate"><span class="pre">UNCERT</span></code> extension</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#saving-the-result">Saving the result</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#auxiliary-function-apply-cr2images-ccddata">Auxiliary function <code class="docutils literal notranslate"><span class="pre">apply_cr2images_ccddata()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-happens-inside-cr2images">What happens inside <code class="docutils literal notranslate"><span class="pre">cr2images()</span></code>?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cleaning-individual-exposures">Cleaning individual exposures</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="cosmic-ray-removal-in-double-exposures">
+<h1>Cosmic Ray Removal in Double Exposures<a class="headerlink" href="#cosmic-ray-removal-in-double-exposures" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">astropy.io</span> <span class="kn">import</span> <span class="n">fits</span>
+<span class="kn">from</span> <span class="nn">astropy.nddata</span> <span class="kn">import</span> <span class="n">CCDData</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">teareduce</span> <span class="k">as</span> <span class="nn">tea</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">time_ini</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">time_ini</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2025-10-27 16:50:35.472541
+</pre></div>
+</div>
+</div>
+</div>
+<p>Download the required files</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="p">[</span>
+    <span class="s1">&#39;notebooks/cr2images/ftdz_45243.fits&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;notebooks/cr2images/ftdz_45244.fits&#39;</span>
+<span class="p">]:</span>
+    <span class="n">tea</span><span class="o">.</span><span class="n">get_cookbook_file</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>File ftdz_45243.fits downloaded!
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>File ftdz_45244.fits downloaded!
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tea</span><span class="o">.</span><span class="n">avoid_astropy_warnings</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="cosmic-ray-detection-using-equivalent-exposures">
+<h2>Cosmic Ray Detection Using Equivalent Exposures<a class="headerlink" href="#cosmic-ray-detection-using-equivalent-exposures" title="Link to this heading">#</a></h2>
+<p>When two equivalent exposures are available (same exposure time, similar background and object signal, and identical pointing), cosmic rays can be detected by subtracting one image from the other. If the background signal differs between the images, the strategy described below can still be applied, considering that the average value of the difference may be non-zero.</p>
+<p>Additionally, if the two images are offset by an integer number of pixels, one image can be shifted and the cosmic ray cleaning process can be performed using only the overlapping region of the two exposures.</p>
+<p>The cosmic ray detection process proceeds as follows:</p>
+<ol class="arabic simple">
+<li><p>Assume the two arrays are stored in <code class="docutils literal notranslate"><span class="pre">data1</span></code> and <code class="docutils literal notranslate"><span class="pre">data2</span></code>.</p></li>
+<li><p>Subtract the images: <code class="docutils literal notranslate"><span class="pre">diff</span> <span class="pre">=</span> <span class="pre">data1</span> <span class="pre">-</span> <span class="pre">data2</span></code>. Cosmic rays in the first image will appear as very bright pixels (strong positive signal), while those in the second image will appear as very dark pixels (strong negative signal).</p></li>
+<li><p>Compute the median and robust standard deviation of <code class="docutils literal notranslate"><span class="pre">diff</span></code>.</p></li>
+<li><p>Identify cosmic ray-affected pixels as those whose signal exceeds the image median by a certain threshold (a multiple of the robust standard deviation). This can be done using <code class="docutils literal notranslate"><span class="pre">scipy.ndimage.label()</span></code>, which not only detects the affected pixels but also labels them with unique identifiers. Connected pixel structures receive the same label. This results in an array <code class="docutils literal notranslate"><span class="pre">labels_pos_peak</span></code> (where <em>pos</em> indicates positive values and <em>peak</em> refers to the brightest pixels).</p></li>
+<li><p>Detect neighboring pixels that may also be affected by cosmic rays using a less strict threshold. This produces an array <code class="docutils literal notranslate"><span class="pre">labels_pos_tail</span></code> (<em>tail</em> refers to the “tails” of cosmic rays, i.e., affected pixels with lower signal).</p></li>
+<li><p>Convert <code class="docutils literal notranslate"><span class="pre">labels_pos_peak</span></code> to a binary mask <code class="docutils literal notranslate"><span class="pre">mask_pos_peak</span></code> (containing only 0s and 1s), where any pixel in <code class="docutils literal notranslate"><span class="pre">labels_pos_peak</span></code> with a value greater than zero is set to 1.</p></li>
+<li><p>Multiply <code class="docutils literal notranslate"><span class="pre">mask_pos_peak</span></code> by <code class="docutils literal notranslate"><span class="pre">labels_pos_tail</span></code> to obtain an array <code class="docutils literal notranslate"><span class="pre">labels_pos_tail_in_peak</span></code>, which contains the labels from <code class="docutils literal notranslate"><span class="pre">labels_pos_tail</span></code> corresponding to objects detected in <code class="docutils literal notranslate"><span class="pre">labels_pos_peak</span></code>.</p></li>
+<li><p>Generate a binary mask <code class="docutils literal notranslate"><span class="pre">mask_pos_clean</span></code>, where pixels in <code class="docutils literal notranslate"><span class="pre">labels_pos_tail</span></code> whose labels appear in <code class="docutils literal notranslate"><span class="pre">labels_pos_tail_in_peak</span></code> are set to 1. This mask indicates which pixels need to be corrected.</p></li>
+<li><p>Replace the affected pixels in <code class="docutils literal notranslate"><span class="pre">data1</span></code> with the corresponding values from <code class="docutils literal notranslate"><span class="pre">data2</span></code> using <code class="docutils literal notranslate"><span class="pre">mask_pos_clean</span></code>. If the selected pixels in <code class="docutils literal notranslate"><span class="pre">data2</span></code> are also affected by cosmic rays, the correction will fail, but the probability of this is low.</p></li>
+<li><p>Repeat the process for the second image, swapping <code class="docutils literal notranslate"><span class="pre">data1</span></code> and <code class="docutils literal notranslate"><span class="pre">data2</span></code> (i.e., compute <code class="docutils literal notranslate"><span class="pre">diff</span> <span class="pre">=</span> <span class="pre">data2</span> <span class="pre">-</span> <span class="pre">data1</span></code>) and follow the same steps to detect and correct cosmic rays in <code class="docutils literal notranslate"><span class="pre">data2</span></code>.</p></li>
+</ol>
+<p>All of the above steps are implemented in the auxiliary function <code class="docutils literal notranslate"><span class="pre">cr2images()</span></code> defined in the <strong>teareduce</strong> package. Users only need to call this function to perform the cleaning.</p>
+</section>
+<section id="using-cr2images">
+<h2>Using <code class="docutils literal notranslate"><span class="pre">cr2images()</span></code><a class="headerlink" href="#using-cr2images" title="Link to this heading">#</a></h2>
+<p>We will test the functionality of this function using the two available exposures of the galaxy <strong>UCM1256+2701</strong>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">input_filename1</span> <span class="o">=</span> <span class="s1">&#39;ftdz_45243.fits&#39;</span>
+<span class="n">input_filename2</span> <span class="o">=</span> <span class="s1">&#39;ftdz_45244.fits&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We read the headers and data from the two exposures and verify that they correspond to the same object and have the same exposure time.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">header1</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">getheader</span><span class="p">(</span><span class="n">input_filename1</span><span class="p">)</span>
+<span class="n">data1</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">getdata</span><span class="p">(</span><span class="n">input_filename1</span><span class="p">)</span>
+
+<span class="n">header2</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">getheader</span><span class="p">(</span><span class="n">input_filename2</span><span class="p">)</span>
+<span class="n">data2</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">getdata</span><span class="p">(</span><span class="n">input_filename2</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">header1</span><span class="p">[</span><span class="s1">&#39;OBJECT&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">header2</span><span class="p">[</span><span class="s1">&#39;OBJECT&#39;</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">header1</span><span class="p">[</span><span class="s1">&#39;EXPTIME&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">header2</span><span class="p">[</span><span class="s1">&#39;EXPTIME&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>U1256+2701 PA=300
+U1256+2701 PA=300
+600.0
+600.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>We display the two images to visually compare them.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">data1</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">99.9</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">data</span><span class="p">,</span> <span class="n">header</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="n">data1</span><span class="p">,</span> <span class="n">data2</span><span class="p">],</span> <span class="p">[</span><span class="n">header1</span><span class="p">,</span> <span class="n">header2</span><span class="p">]):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="n">tea</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;OBJECT&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;FILENAME&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">,  EXPTIME=</span><span class="si">{</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;EXPTIME&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/c621aa7604a96207304535f60effa728f9e376f00acf974b7c8ef6a43cebe1a0.png" src="../../_images/c621aa7604a96207304535f60effa728f9e376f00acf974b7c8ef6a43cebe1a0.png" />
+<img alt="../../_images/5096883531467f9156adad3e989ef5cdfbd9fa5119d08690618f5b3e4c35f367.png" src="../../_images/5096883531467f9156adad3e989ef5cdfbd9fa5119d08690618f5b3e4c35f367.png" />
+</div>
+</div>
+<p>The images appear to have the same pointing. We zoom in slightly on the bright emission line and adjust the display scaling to better detect the peak of the line.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axarr</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">iplot</span><span class="p">,</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">header</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">([</span><span class="n">data1</span><span class="p">,</span> <span class="n">data2</span><span class="p">],</span> <span class="p">[</span><span class="n">header1</span><span class="p">,</span> <span class="n">header2</span><span class="p">])):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axarr</span><span class="p">[</span><span class="n">iplot</span><span class="p">]</span>
+    <span class="n">tea</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">30</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">130</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;FILENAME&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">562</span><span class="p">,</span> <span class="mi">588</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mi">125</span><span class="p">,</span> <span class="mi">150</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/1b61a79c017aec260c9f9622f094633ac894eadaed8cec9c29c431ae21f1ec71.png" src="../../_images/1b61a79c017aec260c9f9622f094633ac894eadaed8cec9c29c431ae21f1ec71.png" />
+</div>
+</div>
+<p>We can see that there is no offset along the X-axis, but there is along the vertical axis: the image on the right appears 4 pixels higher. This is something to keep in mind.</p>
+<p>We can run <code class="docutils literal notranslate"><span class="pre">cr2images()</span></code> by specifying:</p>
+<ul class="simple">
+<li><p>The arrays to be cleaned: <code class="docutils literal notranslate"><span class="pre">data1</span></code> and <code class="docutils literal notranslate"><span class="pre">data2</span></code>.</p></li>
+<li><p>The offsets <code class="docutils literal notranslate"><span class="pre">ioffx</span></code>, <code class="docutils literal notranslate"><span class="pre">ioffy</span></code>: these must be integers, representing the shift needed to align <code class="docutils literal notranslate"><span class="pre">data2</span></code> with <code class="docutils literal notranslate"><span class="pre">data1</span></code>.</p></li>
+<li><p>The thresholds for detecting cosmic ray peaks and tails: <code class="docutils literal notranslate"><span class="pre">tsigma_peak</span></code> and <code class="docutils literal notranslate"><span class="pre">tsigma_tail</span></code>. These indicate how many times the robust standard deviation above the image median is used to classify a pixel as a cosmic ray.</p></li>
+</ul>
+<p>When executed with these parameters (and no others), the function returns the two arrays cleaned of cosmic rays (referred to here as <code class="docutils literal notranslate"><span class="pre">data1c</span></code> and <code class="docutils literal notranslate"><span class="pre">data2c</span></code>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data1c</span><span class="p">,</span> <span class="n">data2c</span> <span class="o">=</span> <span class="n">tea</span><span class="o">.</span><span class="n">cr2images</span><span class="p">(</span>
+    <span class="n">data1</span><span class="o">=</span><span class="n">data1</span><span class="p">,</span>
+    <span class="n">data2</span><span class="o">=</span><span class="n">data2</span><span class="p">,</span>
+    <span class="n">ioffx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">ioffy</span><span class="o">=-</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">tsigma_peak</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">tsigma_tail</span><span class="o">=</span><span class="mi">3</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We check the result of cleaning the first image.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">data1</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">99.9</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">data</span><span class="p">,</span> <span class="n">header</span><span class="p">,</span> <span class="n">when</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="n">data1</span><span class="p">,</span> <span class="n">data1c</span><span class="p">],</span> 
+                              <span class="p">[</span><span class="n">header1</span><span class="p">,</span> <span class="n">header1</span><span class="p">],</span> 
+                              <span class="p">[</span><span class="s1">&#39;before&#39;</span><span class="p">,</span> <span class="s1">&#39;after&#39;</span><span class="p">]):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="n">tea</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;FILENAME&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">when</span><span class="si">}</span><span class="s1"> CR removal&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/799c97b2247032c8e64bd574f355d09ed37df487fc6336b94185d2c300ed4001.png" src="../../_images/799c97b2247032c8e64bd574f355d09ed37df487fc6336b94185d2c300ed4001.png" />
+<img alt="../../_images/0ba7e95e0f38690e70af81a0d9d17a00ef924ff03029b408714f36a7c5f3ba3f.png" src="../../_images/0ba7e95e0f38690e70af81a0d9d17a00ef924ff03029b408714f36a7c5f3ba3f.png" />
+</div>
+</div>
+<p>And now we show the second image before and after cleaning the cosmic rays.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">data2</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">99.9</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">data</span><span class="p">,</span> <span class="n">header</span><span class="p">,</span> <span class="n">when</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="n">data2</span><span class="p">,</span> <span class="n">data2c</span><span class="p">],</span> 
+                              <span class="p">[</span><span class="n">header2</span><span class="p">,</span> <span class="n">header2</span><span class="p">],</span> 
+                              <span class="p">[</span><span class="s1">&#39;before&#39;</span><span class="p">,</span> <span class="s1">&#39;after&#39;</span><span class="p">]):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="n">tea</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;FILENAME&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">when</span><span class="si">}</span><span class="s1"> CR removal&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/6a4399dc352ca18b5e7aa5c26b39c33e2262b6b136b3f91fbbaf80665ccb7ba6.png" src="../../_images/6a4399dc352ca18b5e7aa5c26b39c33e2262b6b136b3f91fbbaf80665ccb7ba6.png" />
+<img alt="../../_images/44ba9e1a53eb8b4b51d0ced19515bb3c3958406ef1a560511be0ca3d3fa91707.png" src="../../_images/44ba9e1a53eb8b4b51d0ced19515bb3c3958406ef1a560511be0ca3d3fa91707.png" />
+</div>
+</div>
+<p>Apparently, the images have been well cleaned. However, we might still wonder whether any signal from the object has been removed, for example in the region of the bright emission line. To find out which pixels were corrected in each case, we can run <code class="docutils literal notranslate"><span class="pre">cr2images()</span></code> specifying that we want to obtain a mask with the positions of the pixels affected by cosmic rays. To do this, we need to use the parameter <code class="docutils literal notranslate"><span class="pre">return_masks=True</span></code>, and keep in mind that the function call now returns four objects.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data1c</span><span class="p">,</span> <span class="n">data2c</span><span class="p">,</span> <span class="n">mask_data1c</span><span class="p">,</span> <span class="n">mask_data2c</span> <span class="o">=</span> <span class="n">tea</span><span class="o">.</span><span class="n">cr2images</span><span class="p">(</span>
+    <span class="n">data1</span><span class="o">=</span><span class="n">data1</span><span class="p">,</span>
+    <span class="n">data2</span><span class="o">=</span><span class="n">data2</span><span class="p">,</span>
+    <span class="n">ioffx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">ioffy</span><span class="o">=-</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">tsigma_peak</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">tsigma_tail</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">return_masks</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We draw the first image again, this time three times: before cleaning, before cleaning with red crosses marking the detected cosmic rays, and after cleaning.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">data1</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">99.9</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">data</span><span class="p">,</span> <span class="n">header</span><span class="p">,</span> <span class="n">when</span><span class="p">,</span> <span class="n">overplot_mask</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="n">data1</span><span class="p">,</span> <span class="n">data1</span><span class="p">,</span> <span class="n">data1c</span><span class="p">],</span> 
+                                             <span class="p">[</span><span class="n">header1</span><span class="p">,</span> <span class="n">header1</span><span class="p">,</span> <span class="n">header1</span><span class="p">],</span> 
+                                             <span class="p">[</span><span class="s1">&#39;before&#39;</span><span class="p">,</span> <span class="s1">&#39;before&#39;</span><span class="p">,</span> <span class="s1">&#39;after&#39;</span><span class="p">],</span>
+                                             <span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">]):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="n">tea</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">overplot_mask</span><span class="p">:</span>
+        <span class="n">xyp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">mask_data1c</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">xp</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">xyp</span><span class="p">]</span>
+        <span class="n">yp</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">xyp</span><span class="p">]</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">,</span> <span class="s1">&#39;r+&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;FILENAME&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">when</span><span class="si">}</span><span class="s1"> CR removal&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/799c97b2247032c8e64bd574f355d09ed37df487fc6336b94185d2c300ed4001.png" src="../../_images/799c97b2247032c8e64bd574f355d09ed37df487fc6336b94185d2c300ed4001.png" />
+<img alt="../../_images/2e9650687359038f93394259dd6e22e085d3cf7c5ea5f02ae5a427a305151f8c.png" src="../../_images/2e9650687359038f93394259dd6e22e085d3cf7c5ea5f02ae5a427a305151f8c.png" />
+<img alt="../../_images/0ba7e95e0f38690e70af81a0d9d17a00ef924ff03029b408714f36a7c5f3ba3f.png" src="../../_images/0ba7e95e0f38690e70af81a0d9d17a00ef924ff03029b408714f36a7c5f3ba3f.png" />
+</div>
+</div>
+<p>We repeat the same procedure with the second image.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">data1</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">99.9</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">data</span><span class="p">,</span> <span class="n">header</span><span class="p">,</span> <span class="n">when</span><span class="p">,</span> <span class="n">overplot_mask</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="n">data2</span><span class="p">,</span> <span class="n">data2</span><span class="p">,</span> <span class="n">data2c</span><span class="p">],</span> 
+                                             <span class="p">[</span><span class="n">header2</span><span class="p">,</span> <span class="n">header2</span><span class="p">,</span> <span class="n">header2</span><span class="p">],</span> 
+                                             <span class="p">[</span><span class="s1">&#39;before&#39;</span><span class="p">,</span> <span class="s1">&#39;before&#39;</span><span class="p">,</span> <span class="s1">&#39;after&#39;</span><span class="p">],</span>
+                                             <span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">]):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="n">tea</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">overplot_mask</span><span class="p">:</span>
+        <span class="n">xyp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">mask_data2c</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">xp</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">xyp</span><span class="p">]</span>
+        <span class="n">yp</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">xyp</span><span class="p">]</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">,</span> <span class="s1">&#39;r+&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;FILENAME&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">when</span><span class="si">}</span><span class="s1"> CR removal&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/5d4f45d349b39e1f76323d6e3e4c87bbcd95c061b890cd9ec66cd359e071dbe3.png" src="../../_images/5d4f45d349b39e1f76323d6e3e4c87bbcd95c061b890cd9ec66cd359e071dbe3.png" />
+<img alt="../../_images/a1c352caf99ed74a529bccb12ab1d99e4bff7a8addc19a24baa464ba2a29ceea.png" src="../../_images/a1c352caf99ed74a529bccb12ab1d99e4bff7a8addc19a24baa464ba2a29ceea.png" />
+<img alt="../../_images/c84965d985c9260a8e42598157f96239aad66cd150a7a7cbe2004826ef815554.png" src="../../_images/c84965d985c9260a8e42598157f96239aad66cd150a7a7cbe2004826ef815554.png" />
+</div>
+</div>
+<p>To find out whether a cosmic ray hit the same pixel in both exposures, it is enough to multiply the two masks and check if there is any overlap.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mask_product</span> <span class="o">=</span> <span class="n">mask_data1c</span> <span class="o">*</span> <span class="n">mask_data2c</span>
+<span class="n">mask_product</span><span class="o">.</span><span class="n">any</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.False_
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">False</span></code> indicates that there has been no overlap.</p>
+</section>
+<section id="selecting-regions-to-clean">
+<h2>Selecting Regions to Clean<a class="headerlink" href="#selecting-regions-to-clean" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">cr2images()</span></code> function allows:</p>
+<ul class="simple">
+<li><p><strong>Option 1</strong>: specify regions that should <em>not</em> be cleaned of cosmic rays (using a list of rectangular regions). This is useful when we want to prevent certain areas from being mistakenly corrected. To use this option, you must use the <code class="docutils literal notranslate"><span class="pre">list_skipped_regions</span></code> parameter, which should be a Python list containing objects of type <code class="docutils literal notranslate"><span class="pre">SliceRegion2D</span></code>.</p></li>
+<li><p><strong>Option 2</strong>: specify the region <em>to be</em> cleaned (rectangular region). This allows cosmic ray removal to be performed in specific areas of the image. To choose this approach, you must use the <code class="docutils literal notranslate"><span class="pre">image_region</span></code> parameter, which should be a single object of type <code class="docutils literal notranslate"><span class="pre">SliceRegion2D</span></code>.</p></li>
+</ul>
+<p>The two options above are mutually exclusive (you can choose one or the other, but not both at the same time). Let’s look at both possibilities in practice.</p>
+<section id="option-1-using-list-skipped-regions">
+<h3>Option 1: Using <code class="docutils literal notranslate"><span class="pre">list_skipped_regions</span></code><a class="headerlink" href="#option-1-using-list-skipped-regions" title="Link to this heading">#</a></h3>
+<p>We start by excluding a series of regions. For convenience, <code class="docutils literal notranslate"><span class="pre">cr2images()</span></code> can also display the images before and after cleaning the cosmic rays. This option is activated by using <code class="docutils literal notranslate"><span class="pre">debug_level=1</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">list_skipped_regions</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">tea</span><span class="o">.</span><span class="n">SliceRegion2D</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">s_</span><span class="p">[</span><span class="mi">568</span><span class="p">:</span><span class="mi">594</span><span class="p">,</span> <span class="mi">85</span><span class="p">:</span><span class="mi">205</span><span class="p">],</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;fits&#39;</span><span class="p">),</span>
+    <span class="n">tea</span><span class="o">.</span><span class="n">SliceRegion2D</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">s_</span><span class="p">[</span><span class="mi">829</span><span class="p">:</span><span class="mi">909</span><span class="p">,</span> <span class="mi">85</span><span class="p">:</span><span class="mi">205</span><span class="p">],</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;fits&#39;</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">data1c</span><span class="p">,</span> <span class="n">data2c</span><span class="p">,</span> <span class="n">mask_data1c</span><span class="p">,</span> <span class="n">mask_data2c</span> <span class="o">=</span> <span class="n">tea</span><span class="o">.</span><span class="n">cr2images</span><span class="p">(</span>
+    <span class="n">data1</span><span class="o">=</span><span class="n">data1</span><span class="p">,</span>
+    <span class="n">data2</span><span class="o">=</span><span class="n">data2</span><span class="p">,</span>
+    <span class="n">ioffx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">ioffy</span><span class="o">=-</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">tsigma_peak</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">tsigma_tail</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">list_skipped_regions</span><span class="o">=</span><span class="n">list_skipped_regions</span><span class="p">,</span>
+    <span class="n">return_masks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">debug_level</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing overlaping rectangle:
+ioffx: 0
+ioffx: -4
+data1:  i1,  i2,  j1,  j2: 0, 246, 0, 1024
+data2: ii1, ii2, jj1, jj2: 4, 250, 0, 1024
+shape1: (246, 1024), shape2: (246, 1024), shape(diff): (246, 1024)
+
+&gt;&gt;&gt; Statistical summary of diff = overlapping data1 - data2:
+&gt;&gt;&gt; Median....: -0.179
+&gt;&gt;&gt; Robust_std: 10.149
+&gt;&gt;&gt; Searching for positive peaks (CR in data1) with tsigma_peak=10
+&gt;&gt;&gt; Found 52 positive peaks
+&gt;&gt;&gt; Searching for positive tails (CR in data1) with tsigma_tail=3
+&gt;&gt;&gt; Found 371 positive tails
+&gt;&gt;&gt; Merging positive peaks and tails
+&gt;&gt;&gt; Replacing 276 pixels affected by cosmic rays in data1
+&gt;&gt;&gt; Finished replacing pixels affected by cosmic rays in data1
+&gt;&gt;&gt; Searching for negative peaks (CR in data2) with tsigma_peak=10
+&gt;&gt;&gt; Found 31 negative peaks
+&gt;&gt;&gt; Searching for negative tails (CR in data2) with tsigma_tail=3
+&gt;&gt;&gt; Found 405 negative tails
+&gt;&gt;&gt; Merging negative peaks and tails
+&gt;&gt;&gt; Replacing 173 pixels affected by cosmic rays in data2
+&gt;&gt;&gt; Finished replacing pixels affected by cosmic rays in data2
+Number of CR in data1: 52 peaks, 371 tails
+</pre></div>
+</div>
+<img alt="../../_images/24d160f8a4db282ab9b711da46b3a38537adfb3a843dfd5d8e4aad5e3b268451.png" src="../../_images/24d160f8a4db282ab9b711da46b3a38537adfb3a843dfd5d8e4aad5e3b268451.png" />
+<img alt="../../_images/6a6a6bca60be5619713bbd92cec7b13d4f48e0d7dfadb8d62f8ad210074ca535.png" src="../../_images/6a6a6bca60be5619713bbd92cec7b13d4f48e0d7dfadb8d62f8ad210074ca535.png" />
+<img alt="../../_images/c88198fe08c90282ffe36616c279efcffae26b995f36cc20e07663929a2d70dc.png" src="../../_images/c88198fe08c90282ffe36616c279efcffae26b995f36cc20e07663929a2d70dc.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of CR in data2: 31 peaks, 405 tails
+</pre></div>
+</div>
+<img alt="../../_images/004d1275f5d5d18b3dd111c4bc77211788a259cc7f3761ffb3bcc0145135deb1.png" src="../../_images/004d1275f5d5d18b3dd111c4bc77211788a259cc7f3761ffb3bcc0145135deb1.png" />
+<img alt="../../_images/6507302e8e643e83ebf291d29f94821d9e32e8928c517992152f65020e9b39c0.png" src="../../_images/6507302e8e643e83ebf291d29f94821d9e32e8928c517992152f65020e9b39c0.png" />
+<img alt="../../_images/56e7bd25e8d6fb790edb215639c4936b564a572bb6d0f109d313bcdb17c86a44.png" src="../../_images/56e7bd25e8d6fb790edb215639c4936b564a572bb6d0f109d313bcdb17c86a44.png" />
+</div>
+</div>
+<p>The yellow rectangles indicate regions where the removal of potential cosmic rays was not allowed.</p>
+</section>
+<section id="option-2-using-image-region">
+<h3>Option 2: Using <code class="docutils literal notranslate"><span class="pre">image_region</span></code><a class="headerlink" href="#option-2-using-image-region" title="Link to this heading">#</a></h3>
+<p>In the following execution, we will specify that we want to clean only a specific region of the image:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data1c</span><span class="p">,</span> <span class="n">data2c</span><span class="p">,</span> <span class="n">mask_data1c</span><span class="p">,</span> <span class="n">mask_data2c</span> <span class="o">=</span> <span class="n">tea</span><span class="o">.</span><span class="n">cr2images</span><span class="p">(</span>
+    <span class="n">data1</span><span class="o">=</span><span class="n">data1</span><span class="p">,</span>
+    <span class="n">data2</span><span class="o">=</span><span class="n">data2</span><span class="p">,</span>
+    <span class="n">ioffx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">ioffy</span><span class="o">=-</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">tsigma_peak</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">tsigma_tail</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">image_region</span><span class="o">=</span><span class="n">tea</span><span class="o">.</span><span class="n">SliceRegion2D</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">s_</span><span class="p">[</span><span class="mi">102</span><span class="p">:</span><span class="mi">539</span><span class="p">,</span> <span class="mi">22</span><span class="p">:</span><span class="mi">217</span><span class="p">],</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;fits&#39;</span><span class="p">),</span>
+    <span class="n">return_masks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">debug_level</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing overlaping rectangle:
+ioffx: 0
+ioffx: -4
+data1:  i1,  i2,  j1,  j2: 0, 246, 0, 1024
+data2: ii1, ii2, jj1, jj2: 4, 250, 0, 1024
+shape1: (246, 1024), shape2: (246, 1024), shape(diff): (246, 1024)
+
+&gt;&gt;&gt; Statistical summary of diff = overlapping data1 - data2:
+&gt;&gt;&gt; Median....: -0.179
+&gt;&gt;&gt; Robust_std: 10.149
+&gt;&gt;&gt; Searching for positive peaks (CR in data1) with tsigma_peak=10
+&gt;&gt;&gt; Found 52 positive peaks
+&gt;&gt;&gt; Searching for positive tails (CR in data1) with tsigma_tail=3
+&gt;&gt;&gt; Found 371 positive tails
+&gt;&gt;&gt; Merging positive peaks and tails
+&gt;&gt;&gt; Replacing 147 pixels affected by cosmic rays in data1
+&gt;&gt;&gt; Finished replacing pixels affected by cosmic rays in data1
+&gt;&gt;&gt; Searching for negative peaks (CR in data2) with tsigma_peak=10
+&gt;&gt;&gt; Found 31 negative peaks
+&gt;&gt;&gt; Searching for negative tails (CR in data2) with tsigma_tail=3
+&gt;&gt;&gt; Found 405 negative tails
+&gt;&gt;&gt; Merging negative peaks and tails
+&gt;&gt;&gt; Replacing 67 pixels affected by cosmic rays in data2
+&gt;&gt;&gt; Finished replacing pixels affected by cosmic rays in data2
+Number of CR in data1: 52 peaks, 371 tails
+</pre></div>
+</div>
+<img alt="../../_images/78d06b2434141c585a300c3b2eadea301cc30bcef2214bd58c7878a72e45a403.png" src="../../_images/78d06b2434141c585a300c3b2eadea301cc30bcef2214bd58c7878a72e45a403.png" />
+<img alt="../../_images/b3989cecdd049f02b1d9e638843dbefee4033de7e9d07752ae64b924b78c053f.png" src="../../_images/b3989cecdd049f02b1d9e638843dbefee4033de7e9d07752ae64b924b78c053f.png" />
+<img alt="../../_images/8469e9b24cca444980733bd943e17a08053eba57c4e313a07da2f455ffeb1c3a.png" src="../../_images/8469e9b24cca444980733bd943e17a08053eba57c4e313a07da2f455ffeb1c3a.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of CR in data2: 31 peaks, 405 tails
+</pre></div>
+</div>
+<img alt="../../_images/af7ae6a625ca5ef777cdf01e81d53925805e338571122f2f41e8183701629a46.png" src="../../_images/af7ae6a625ca5ef777cdf01e81d53925805e338571122f2f41e8183701629a46.png" />
+<img alt="../../_images/78a12cad53e25c13956132ce9069670f147a9c56a25616779c7ec80d65252a81.png" src="../../_images/78a12cad53e25c13956132ce9069670f147a9c56a25616779c7ec80d65252a81.png" />
+<img alt="../../_images/6d746dcae29023d424531c8334222e5c2a3524b595b7e4a7722ceb45a9cc1f82.png" src="../../_images/6d746dcae29023d424531c8334222e5c2a3524b595b7e4a7722ceb45a9cc1f82.png" />
+</div>
+</div>
+<p>In this case, the region to be cleaned is shown as a cyan-colored rectangle.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">cr2images()</span></code> function also accepts a <code class="docutils literal notranslate"><span class="pre">maxsize</span></code> parameter, which indicates the maximum number of pixels each detected cosmic ray should have (if the number of pixels exceeds this value, the potential cosmic ray is not cleaned).</p>
+</section>
+</section>
+<section id="using-images-with-extensions-ccddata-objects">
+<h2>Using Images with Extensions (<code class="docutils literal notranslate"><span class="pre">CCDData</span></code> Objects)<a class="headerlink" href="#using-images-with-extensions-ccddata-objects" title="Link to this heading">#</a></h2>
+<p>Since our FITS images have extensions, the best way to work with them is to read each one as an object of type <code class="docutils literal notranslate"><span class="pre">CCDData</span></code>, and proceed to clean the corresponding data arrays before saving the result in a new FITS file that preserves the extensions.</p>
+<p>Cosmic ray cleaning will be reflected in the <code class="docutils literal notranslate"><span class="pre">MASK</span></code> extension (marking the replaced pixels) and in the <code class="docutils literal notranslate"><span class="pre">UNCERT</span></code> extension, which contains the uncertainty array (replacing with the uncertainties from the companion image).</p>
+<p>We again start from the pair of images to be cleaned.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">input_filename1</span> <span class="o">=</span> <span class="s1">&#39;ftdz_45243.fits&#39;</span>
+<span class="n">input_filename2</span> <span class="o">=</span> <span class="s1">&#39;ftdz_45244.fits&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We generate two objects of type <code class="docutils literal notranslate"><span class="pre">CCDData</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ccdimage1</span> <span class="o">=</span> <span class="n">CCDData</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">input_filename1</span><span class="p">)</span>
+<span class="n">ccdimage2</span> <span class="o">=</span> <span class="n">CCDData</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">input_filename2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We duplicate the two objects to store the result of executing the cosmic ray cleaning.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ccdimage1_clean</span> <span class="o">=</span> <span class="n">ccdimage1</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">ccdimage2_clean</span> <span class="o">=</span> <span class="n">ccdimage2</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="cleaning-the-data-arrays">
+<h3>Cleaning the Data Arrays<a class="headerlink" href="#cleaning-the-data-arrays" title="Link to this heading">#</a></h3>
+<p>We perform cosmic ray cleaning only on the data arrays (i.e., the <code class="docutils literal notranslate"><span class="pre">.data</span></code> attributes of the <code class="docutils literal notranslate"><span class="pre">CCDData</span></code> objects), including the computation of the corresponding masks.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ioffx</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">ioffy</span> <span class="o">=</span> <span class="o">-</span><span class="mi">4</span>
+<span class="n">tsigma_peak</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">tsigma_tail</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="n">ccdimage1_clean</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">ccdimage2_clean</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">mask_data1c</span><span class="p">,</span> <span class="n">mask_data2c</span> <span class="o">=</span> <span class="n">tea</span><span class="o">.</span><span class="n">cr2images</span><span class="p">(</span>
+    <span class="n">data1</span><span class="o">=</span><span class="n">ccdimage1</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+    <span class="n">data2</span><span class="o">=</span><span class="n">ccdimage2</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+    <span class="n">ioffx</span><span class="o">=</span><span class="n">ioffx</span><span class="p">,</span>
+    <span class="n">ioffy</span><span class="o">=</span><span class="n">ioffy</span><span class="p">,</span>
+    <span class="n">tsigma_peak</span><span class="o">=</span><span class="n">tsigma_peak</span><span class="p">,</span>
+    <span class="n">tsigma_tail</span><span class="o">=</span><span class="n">tsigma_tail</span><span class="p">,</span>
+    <span class="n">return_masks</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We visually verify that the stored images are free of cosmic rays.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">ccdimage1_clean</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">99.9</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">dumdata</span><span class="p">,</span> <span class="n">title</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="n">ccdimage1_clean</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">ccdimage2_clean</span><span class="o">.</span><span class="n">data</span><span class="p">],</span>
+                          <span class="p">[</span><span class="s1">&#39;ccdimage1_clean.data&#39;</span><span class="p">,</span> <span class="s1">&#39;ccdimage2_clean.data&#39;</span><span class="p">]):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="n">tea</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">dumdata</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/00cb3b4b8cd988c987be1aeb6be2ccf5dee50a341d3aaa8e8d558ee5ebd8841a.png" src="../../_images/00cb3b4b8cd988c987be1aeb6be2ccf5dee50a341d3aaa8e8d558ee5ebd8841a.png" />
+<img alt="../../_images/9a63785f3a10db3274f7ce6385084ced8b2b1c4e2b83635ee974bc9dcc3bfec4.png" src="../../_images/9a63785f3a10db3274f7ce6385084ced8b2b1c4e2b83635ee974bc9dcc3bfec4.png" />
+</div>
+</div>
+</section>
+<section id="transferring-cleaned-pixels-to-the-mask-extension">
+<h3>Transferring Cleaned Pixels to the <code class="docutils literal notranslate"><span class="pre">MASK</span></code> Extension<a class="headerlink" href="#transferring-cleaned-pixels-to-the-mask-extension" title="Link to this heading">#</a></h3>
+<p>We include in the masks of each image (i.e., the <code class="docutils literal notranslate"><span class="pre">.mask</span></code> attributes of the <code class="docutils literal notranslate"><span class="pre">CCDData</span></code> objects) the positions of the cosmic rays. We only modify the pixels indicated in the masks returned by <code class="docutils literal notranslate"><span class="pre">cr2images()</span></code> (in case the masks of the <code class="docutils literal notranslate"><span class="pre">CCDData</span></code> objects already have <code class="docutils literal notranslate"><span class="pre">True</span></code> values before reaching this point). Since the masks computed by <code class="docutils literal notranslate"><span class="pre">cr2images()</span></code> contain values 0 and 1, we convert them to boolean using <code class="docutils literal notranslate"><span class="pre">.astype(bool)</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ccdimage1_clean</span><span class="o">.</span><span class="n">mask</span><span class="p">[</span><span class="n">mask_data1c</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">ccdimage2_clean</span><span class="o">.</span><span class="n">mask</span><span class="p">[</span><span class="n">mask_data2c</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We check that it works by graphically comparing the calculated mask <code class="docutils literal notranslate"><span class="pre">mask_data1c</span></code> with the one stored in <code class="docutils literal notranslate"><span class="pre">ccdimage1_clean.mask</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">dumdata</span><span class="p">,</span> <span class="n">title</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="n">mask_data1c</span><span class="p">,</span> <span class="n">ccdimage1_clean</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)],</span>
+                          <span class="p">[</span><span class="s1">&#39;mask_data1c&#39;</span><span class="p">,</span> <span class="s1">&#39;ccdimage1_clean.mask&#39;</span><span class="p">]):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="n">tea</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">dumdata</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/53fe21b1ff5c033c6b5e675a899e15539aa27f424f957ba53e7d3fdcbb69398c.png" src="../../_images/53fe21b1ff5c033c6b5e675a899e15539aa27f424f957ba53e7d3fdcbb69398c.png" />
+<img alt="../../_images/1e4d3c0977138f77ed01aa5899c50752e8caafdaa29e8939d920c933f0084bf7.png" src="../../_images/1e4d3c0977138f77ed01aa5899c50752e8caafdaa29e8939d920c933f0084bf7.png" />
+</div>
+</div>
+</section>
+<section id="transferring-the-cleaned-pixels-to-the-uncert-extension">
+<h3>Transferring the cleaned pixels to the <code class="docutils literal notranslate"><span class="pre">UNCERT</span></code> extension<a class="headerlink" href="#transferring-the-cleaned-pixels-to-the-uncert-extension" title="Link to this heading">#</a></h3>
+<p>For the uncertainty arrays, we insert into the first image the values from the second (before cleaning), and into the second the values from the first (before cleaning). Here we are assuming that there has been no cosmic ray coincidence, which we already know is something that did not happen in this particular pair of exposures.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ccdimage1_clean</span><span class="o">.</span><span class="n">uncertainty</span><span class="o">.</span><span class="n">array</span><span class="p">[</span><span class="n">ccdimage1_clean</span><span class="o">.</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> \
+    <span class="n">ccdimage2</span><span class="o">.</span><span class="n">uncertainty</span><span class="o">.</span><span class="n">array</span><span class="p">[</span><span class="n">ccdimage1_clean</span><span class="o">.</span><span class="n">mask</span><span class="p">]</span>
+
+<span class="n">ccdimage2_clean</span><span class="o">.</span><span class="n">uncertainty</span><span class="o">.</span><span class="n">array</span><span class="p">[</span><span class="n">ccdimage2_clean</span><span class="o">.</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> \
+    <span class="n">ccdimage1</span><span class="o">.</span><span class="n">uncertainty</span><span class="o">.</span><span class="n">array</span><span class="p">[</span><span class="n">ccdimage2_clean</span><span class="o">.</span><span class="n">mask</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can check graphically whether this has worked by comparing, for example, the uncertainty arrays of the first exposure before and after cosmic ray cleaning.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">ccdimage1</span><span class="o">.</span><span class="n">uncertainty</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">99.9</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">dumdata</span><span class="p">,</span> <span class="n">title</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="n">ccdimage1</span><span class="o">.</span><span class="n">uncertainty</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">ccdimage1_clean</span><span class="o">.</span><span class="n">uncertainty</span><span class="o">.</span><span class="n">array</span><span class="p">],</span>
+                          <span class="p">[</span><span class="s1">&#39;ccdimage1.uncertainty_array&#39;</span><span class="p">,</span> <span class="s1">&#39;ccdimage1_clean.uncertainty.array&#39;</span><span class="p">]):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="n">tea</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">dumdata</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/83d6b7f8c36e2bda278f42f06f068ff980ae5d4bf14fbe6925aa36918bcea4cf.png" src="../../_images/83d6b7f8c36e2bda278f42f06f068ff980ae5d4bf14fbe6925aa36918bcea4cf.png" />
+<img alt="../../_images/3238372d4e7896530c5114234ba376aa407266d84b6fcece2f48758de27fbf96.png" src="../../_images/3238372d4e7896530c5114234ba376aa407266d84b6fcece2f48758de27fbf96.png" />
+</div>
+</div>
+<p>The bright horizontal lines correspond to the uncertainties introduced by the Flat Field (remember that the slit had defects). What’s important here is that we have been able to replace, in the uncertainty array, the information from another uncertainty array for the pixels affected by cosmic rays.</p>
+</section>
+<section id="saving-the-result">
+<h3>Saving the result<a class="headerlink" href="#saving-the-result" title="Link to this heading">#</a></h3>
+<p>The final step is to save the result, including information in the headers to maintain traceability of the process carried out. The name of the output file is, in each case, the original name with the prefix <code class="docutils literal notranslate"><span class="pre">c</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">input_filename</span><span class="p">,</span> <span class="n">ccdimage_clean</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="n">input_filename1</span><span class="p">,</span> <span class="n">input_filename2</span><span class="p">],</span>
+                                          <span class="p">[</span><span class="n">ccdimage1_clean</span><span class="p">,</span> <span class="n">ccdimage2_clean</span><span class="p">]):</span>
+    <span class="c1"># update FILENAME keyword with output file name</span>
+    <span class="n">output_filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;c</span><span class="si">{</span><span class="n">input_filename</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="n">ccdimage_clean</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;FILENAME&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output_filename</span>
+    
+    <span class="c1"># update HISTORY in header</span>
+    <span class="n">ccdimage_clean</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;HISTORY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;-------------------&#39;</span>
+    <span class="n">ccdimage_clean</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;HISTORY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">ccdimage_clean</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;HISTORY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;using cr2images:&#39;</span>
+    <span class="n">ccdimage_clean</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;HISTORY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;- infile1: </span><span class="si">{</span><span class="n">Path</span><span class="p">(</span><span class="n">input_filename1</span><span class="p">)</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="n">ccdimage_clean</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;HISTORY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;- infile2: </span><span class="si">{</span><span class="n">Path</span><span class="p">(</span><span class="n">input_filename2</span><span class="p">)</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="n">ccdimage_clean</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;HISTORY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;- ioffx: </span><span class="si">{</span><span class="n">ioffx</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="n">ccdimage_clean</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;HISTORY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;- ioffy: </span><span class="si">{</span><span class="n">ioffy</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="n">ccdimage_clean</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;HISTORY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;- tsigma_peak: </span><span class="si">{</span><span class="n">tsigma_peak</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="n">ccdimage_clean</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;HISTORY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;- tsigma_tail: </span><span class="si">{</span><span class="n">tsigma_tail</span><span class="si">}</span><span class="s1">&#39;</span>
+        
+    <span class="c1"># save result</span>
+    <span class="n">ccdimage_clean</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">output_filename</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="s1">&#39;yes&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Output file name: </span><span class="si">{</span><span class="n">output_filename</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Output file name: cftdz_45243.fits
+Output file name: cftdz_45244.fits
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="auxiliary-function-apply-cr2images-ccddata">
+<h3>Auxiliary function <code class="docutils literal notranslate"><span class="pre">apply_cr2images_ccddata()</span></code><a class="headerlink" href="#auxiliary-function-apply-cr2images-ccddata" title="Link to this heading">#</a></h3>
+<p>To facilitate the handling of <code class="docutils literal notranslate"><span class="pre">CCDData</span></code> objects, we can use the auxiliary function <code class="docutils literal notranslate"><span class="pre">apply_cr2images_ccddata()</span></code>, designed to clean cosmic rays from pairs of images by directly specifying the names of the input and output FITS files (as well as the specific parameters of the <code class="docutils literal notranslate"><span class="pre">cr2images()</span></code> function corresponding to the cosmic ray detection strategy).</p>
+<p>For example, to clean the pair of images we just used a moment ago, it is enough to run:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tea</span><span class="o">.</span><span class="n">apply_cr2images_ccddata</span><span class="p">(</span>
+    <span class="n">infile1</span><span class="o">=</span><span class="n">input_filename1</span><span class="p">,</span>
+    <span class="n">infile2</span><span class="o">=</span><span class="n">input_filename2</span><span class="p">,</span>
+    <span class="n">outfile1</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;cc</span><span class="si">{</span><span class="n">input_filename1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">outfile2</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;cc</span><span class="si">{</span><span class="n">input_filename2</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">ioffx</span><span class="o">=</span><span class="n">ioffx</span><span class="p">,</span>
+    <span class="n">ioffy</span><span class="o">=</span><span class="n">ioffy</span><span class="p">,</span>
+    <span class="n">tsigma_peak</span><span class="o">=</span><span class="n">tsigma_peak</span><span class="p">,</span>
+    <span class="n">tsigma_tail</span><span class="o">=</span><span class="n">tsigma_tail</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Output file name: ccftdz_45243.fits
+Output file name: ccftdz_45244.fits
+</pre></div>
+</div>
+</div>
+</div>
+<p>The images <code class="docutils literal notranslate"><span class="pre">cftdz_45243.fits</span></code> and <code class="docutils literal notranslate"><span class="pre">ccftdz_45243.fits</span></code> are identical. The same applies to <code class="docutils literal notranslate"><span class="pre">cftdz_45244.fits</span></code> and <code class="docutils literal notranslate"><span class="pre">ccftdz_45244.fits</span></code>.</p>
+</section>
+</section>
+<section id="what-happens-inside-cr2images">
+<h2>What happens inside <code class="docutils literal notranslate"><span class="pre">cr2images()</span></code>?<a class="headerlink" href="#what-happens-inside-cr2images" title="Link to this heading">#</a></h2>
+<p>We can ask the <code class="docutils literal notranslate"><span class="pre">cr2images()</span></code> function to show us more information about what is happening during its execution. To do this, we use the <code class="docutils literal notranslate"><span class="pre">debug_level</span></code> parameter, which can take the values 0 (no additional information is shown), 1 (images before and after cleaning are shown), and 2 (a data histogram and the intermediate masks calculated are also shown). For example, using <code class="docutils literal notranslate"><span class="pre">debug_level=1</span></code> will display the indices of the arrays corresponding to the overlapping region between the two images and the following images:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">data1</span></code>: initial image number 1</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data1</span> <span class="pre">with</span> <span class="pre">C.R.</span></code>: initial image number 1, with the pixels to be corrected due to cosmic ray impact marked with red crosses</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data1c</span></code>: initial image number 1 after cosmic ray removal</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data2</span></code>: initial image number 2</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data2</span> <span class="pre">with</span> <span class="pre">C.R.</span></code>: initial image number 2, with the pixels to be corrected due to cosmic ray impact marked with red crosses</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data2c</span></code>: initial image number 2 after cosmic ray removal</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data1c</span><span class="p">,</span> <span class="n">data2c</span><span class="p">,</span> <span class="n">mask_data1c</span><span class="p">,</span> <span class="n">mask_data2c</span> <span class="o">=</span> <span class="n">tea</span><span class="o">.</span><span class="n">cr2images</span><span class="p">(</span>
+    <span class="n">data1</span><span class="o">=</span><span class="n">data1</span><span class="p">,</span>
+    <span class="n">data2</span><span class="o">=</span><span class="n">data2</span><span class="p">,</span>
+    <span class="n">ioffx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">ioffy</span><span class="o">=-</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">tsigma_peak</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">tsigma_tail</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">return_masks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">debug_level</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing overlaping rectangle:
+ioffx: 0
+ioffx: -4
+data1:  i1,  i2,  j1,  j2: 0, 246, 0, 1024
+data2: ii1, ii2, jj1, jj2: 4, 250, 0, 1024
+shape1: (246, 1024), shape2: (246, 1024), shape(diff): (246, 1024)
+
+&gt;&gt;&gt; Statistical summary of diff = overlapping data1 - data2:
+&gt;&gt;&gt; Median....: -0.179
+&gt;&gt;&gt; Robust_std: 10.149
+&gt;&gt;&gt; Searching for positive peaks (CR in data1) with tsigma_peak=10
+&gt;&gt;&gt; Found 52 positive peaks
+&gt;&gt;&gt; Searching for positive tails (CR in data1) with tsigma_tail=3
+&gt;&gt;&gt; Found 371 positive tails
+&gt;&gt;&gt; Merging positive peaks and tails
+&gt;&gt;&gt; Replacing 280 pixels affected by cosmic rays in data1
+&gt;&gt;&gt; Finished replacing pixels affected by cosmic rays in data1
+&gt;&gt;&gt; Searching for negative peaks (CR in data2) with tsigma_peak=10
+&gt;&gt;&gt; Found 31 negative peaks
+&gt;&gt;&gt; Searching for negative tails (CR in data2) with tsigma_tail=3
+&gt;&gt;&gt; Found 405 negative tails
+&gt;&gt;&gt; Merging negative peaks and tails
+&gt;&gt;&gt; Replacing 175 pixels affected by cosmic rays in data2
+&gt;&gt;&gt; Finished replacing pixels affected by cosmic rays in data2
+Number of CR in data1: 52 peaks, 371 tails
+</pre></div>
+</div>
+<img alt="../../_images/4f0f8ff07e91e45e285cf492221d1454b6d8e1a3371c7a474473f25342fa6758.png" src="../../_images/4f0f8ff07e91e45e285cf492221d1454b6d8e1a3371c7a474473f25342fa6758.png" />
+<img alt="../../_images/c1f3eeb9469d38b9a99d856149e8e23a4cc2e5e6714191362f57256554afc5c8.png" src="../../_images/c1f3eeb9469d38b9a99d856149e8e23a4cc2e5e6714191362f57256554afc5c8.png" />
+<img alt="../../_images/8162f2337ea9f73d5743cd79607fccb87f27e4c683636a656e266a7cc62322a0.png" src="../../_images/8162f2337ea9f73d5743cd79607fccb87f27e4c683636a656e266a7cc62322a0.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of CR in data2: 31 peaks, 405 tails
+</pre></div>
+</div>
+<img alt="../../_images/e0a35669b980f5b3a3fe1ff5a054eeb3f58a30eb57484970b7e64b4c2a094e1a.png" src="../../_images/e0a35669b980f5b3a3fe1ff5a054eeb3f58a30eb57484970b7e64b4c2a094e1a.png" />
+<img alt="../../_images/73b50eeb8841f46e023a080e716d3c7f4727ad838df0d47c4c5a5026fb2b9e41.png" src="../../_images/73b50eeb8841f46e023a080e716d3c7f4727ad838df0d47c4c5a5026fb2b9e41.png" />
+<img alt="../../_images/4dc8af9d209fd1d2e04eb8b61b5e4485e61c1ca5a54ff2fa190f3e0574a4d090.png" src="../../_images/4dc8af9d209fd1d2e04eb8b61b5e4485e61c1ca5a54ff2fa190f3e0574a4d090.png" />
+</div>
+</div>
+<p>Using <code class="docutils literal notranslate"><span class="pre">debug_level=2</span></code>, the indices of the arrays corresponding to the overlapping region between the two images will be displayed, along with a histogram and a representation of the <code class="docutils literal notranslate"><span class="pre">diff</span></code> image, as well as the following arrays:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">data1</span></code>: initial image number 1</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">labels_pos_peak</span></code>: image with labels of the peaks of the cosmic rays detected in <code class="docutils literal notranslate"><span class="pre">data1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">labels_pos_tail</span></code>: image with labels of the tails of the cosmic rays detected in <code class="docutils literal notranslate"><span class="pre">data1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">labels_pos_tail_in_peak</span></code>: labels of the cosmic rays in <code class="docutils literal notranslate"><span class="pre">labels_pos_tail</span></code> that appear in <code class="docutils literal notranslate"><span class="pre">labels_pos_peak</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data1</span> <span class="pre">with</span> <span class="pre">C.R.</span></code>: initial image number 1, with the pixels to be corrected due to cosmic ray impact marked with red crosses</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data1c</span></code>: initial image number 1 after cosmic ray removal</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data2</span></code>: initial image number 2</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">labels_neg_peak</span></code>: image with labels of the peaks of the cosmic rays detected in <code class="docutils literal notranslate"><span class="pre">data2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">labels_neg_tail</span></code>: image with labels of the tails of the cosmic rays detected in <code class="docutils literal notranslate"><span class="pre">data2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">labels_neg_tail_in_peak</span></code>: labels of the cosmic rays in <code class="docutils literal notranslate"><span class="pre">labels_neg_tail</span></code> that appear in <code class="docutils literal notranslate"><span class="pre">labels_neg_peak</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data2</span> <span class="pre">with</span> <span class="pre">C.R.</span></code>: initial image number 2, with the pixels to be corrected due to cosmic ray impact marked with red crosses</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data2c</span></code>: initial image number 2 after cosmic ray removal</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data1c</span><span class="p">,</span> <span class="n">data2c</span><span class="p">,</span> <span class="n">mask_data1c</span><span class="p">,</span> <span class="n">mask_data2c</span> <span class="o">=</span> <span class="n">tea</span><span class="o">.</span><span class="n">cr2images</span><span class="p">(</span>
+    <span class="n">data1</span><span class="o">=</span><span class="n">data1</span><span class="p">,</span>
+    <span class="n">data2</span><span class="o">=</span><span class="n">data2</span><span class="p">,</span>
+    <span class="n">ioffx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">ioffy</span><span class="o">=-</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">tsigma_peak</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">tsigma_tail</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">return_masks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">debug_level</span><span class="o">=</span><span class="mi">2</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing overlaping rectangle:
+ioffx: 0
+ioffx: -4
+data1:  i1,  i2,  j1,  j2: 0, 246, 0, 1024
+data2: ii1, ii2, jj1, jj2: 4, 250, 0, 1024
+shape1: (246, 1024), shape2: (246, 1024), shape(diff): (246, 1024)
+
+&gt;&gt;&gt; Statistical summary of diff = overlapping data1 - data2:
+&gt;&gt;&gt; Median....: -0.179
+&gt;&gt;&gt; Robust_std: 10.149
+&gt;&gt;&gt; Searching for positive peaks (CR in data1) with tsigma_peak=10
+&gt;&gt;&gt; Found 52 positive peaks
+&gt;&gt;&gt; Searching for positive tails (CR in data1) with tsigma_tail=3
+&gt;&gt;&gt; Found 371 positive tails
+&gt;&gt;&gt; Merging positive peaks and tails
+&gt;&gt;&gt; Replacing 280 pixels affected by cosmic rays in data1
+&gt;&gt;&gt; Finished replacing pixels affected by cosmic rays in data1
+&gt;&gt;&gt; Searching for negative peaks (CR in data2) with tsigma_peak=10
+&gt;&gt;&gt; Found 31 negative peaks
+&gt;&gt;&gt; Searching for negative tails (CR in data2) with tsigma_tail=3
+&gt;&gt;&gt; Found 405 negative tails
+&gt;&gt;&gt; Merging negative peaks and tails
+&gt;&gt;&gt; Replacing 175 pixels affected by cosmic rays in data2
+&gt;&gt;&gt; Finished replacing pixels affected by cosmic rays in data2
+</pre></div>
+</div>
+<img alt="../../_images/d7af3dd0835830820a0f34567df4360b4e88a2bbe87f25871925776c351dbdbc.png" src="../../_images/d7af3dd0835830820a0f34567df4360b4e88a2bbe87f25871925776c351dbdbc.png" />
+<img alt="../../_images/fa0e37465944cd4959d832c020a21e75646407416c9463677bbd4317db135329.png" src="../../_images/fa0e37465944cd4959d832c020a21e75646407416c9463677bbd4317db135329.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of CR in data1: 52 peaks, 371 tails
+</pre></div>
+</div>
+<img alt="../../_images/4f0f8ff07e91e45e285cf492221d1454b6d8e1a3371c7a474473f25342fa6758.png" src="../../_images/4f0f8ff07e91e45e285cf492221d1454b6d8e1a3371c7a474473f25342fa6758.png" />
+<img alt="../../_images/8afc80ab80ffdda9dc044b1b670a0d54a7d3d503f6ce85d86e952285a58ec008.png" src="../../_images/8afc80ab80ffdda9dc044b1b670a0d54a7d3d503f6ce85d86e952285a58ec008.png" />
+<img alt="../../_images/c990c8c8570e83c79da7608970d23f07ab55772b0744cc137c746f2be67d909b.png" src="../../_images/c990c8c8570e83c79da7608970d23f07ab55772b0744cc137c746f2be67d909b.png" />
+<img alt="../../_images/6e1b0f5a5e44b6c451780f74d6306fb7d8ea2ccdae37f696715b945ca2912445.png" src="../../_images/6e1b0f5a5e44b6c451780f74d6306fb7d8ea2ccdae37f696715b945ca2912445.png" />
+<img alt="../../_images/c1f3eeb9469d38b9a99d856149e8e23a4cc2e5e6714191362f57256554afc5c8.png" src="../../_images/c1f3eeb9469d38b9a99d856149e8e23a4cc2e5e6714191362f57256554afc5c8.png" />
+<img alt="../../_images/8162f2337ea9f73d5743cd79607fccb87f27e4c683636a656e266a7cc62322a0.png" src="../../_images/8162f2337ea9f73d5743cd79607fccb87f27e4c683636a656e266a7cc62322a0.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of CR in data2: 31 peaks, 405 tails
+</pre></div>
+</div>
+<img alt="../../_images/e0a35669b980f5b3a3fe1ff5a054eeb3f58a30eb57484970b7e64b4c2a094e1a.png" src="../../_images/e0a35669b980f5b3a3fe1ff5a054eeb3f58a30eb57484970b7e64b4c2a094e1a.png" />
+<img alt="../../_images/37d13836156b6503adcf8f33a1953394bfd928843c340f1f3f7cb9647d07e708.png" src="../../_images/37d13836156b6503adcf8f33a1953394bfd928843c340f1f3f7cb9647d07e708.png" />
+<img alt="../../_images/800515bb174744802f357c105012ba850e3b559cbfa6eb3297ca1c682037d874.png" src="../../_images/800515bb174744802f357c105012ba850e3b559cbfa6eb3297ca1c682037d874.png" />
+<img alt="../../_images/0d912dd43cf922794805bcb7df379a3b7aa7b960d4ec42223ca2e66708b93f5c.png" src="../../_images/0d912dd43cf922794805bcb7df379a3b7aa7b960d4ec42223ca2e66708b93f5c.png" />
+<img alt="../../_images/73b50eeb8841f46e023a080e716d3c7f4727ad838df0d47c4c5a5026fb2b9e41.png" src="../../_images/73b50eeb8841f46e023a080e716d3c7f4727ad838df0d47c4c5a5026fb2b9e41.png" />
+<img alt="../../_images/4dc8af9d209fd1d2e04eb8b61b5e4485e61c1ca5a54ff2fa190f3e0574a4d090.png" src="../../_images/4dc8af9d209fd1d2e04eb8b61b5e4485e61c1ca5a54ff2fa190f3e0574a4d090.png" />
+</div>
+</div>
+<p>We can repeat the previous command indicating that we want to visualize a zoom in a specific region. To do this, we must use the <code class="docutils literal notranslate"><span class="pre">zoom_region_imshow</span></code> parameter, which must be an object of type <code class="docutils literal notranslate"><span class="pre">SliceRegion2D</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data1c</span><span class="p">,</span> <span class="n">data2c</span><span class="p">,</span> <span class="n">mask_data1c</span><span class="p">,</span> <span class="n">mask_data2c</span> <span class="o">=</span> <span class="n">tea</span><span class="o">.</span><span class="n">cr2images</span><span class="p">(</span>
+    <span class="n">data1</span><span class="o">=</span><span class="n">data1</span><span class="p">,</span>
+    <span class="n">data2</span><span class="o">=</span><span class="n">data2</span><span class="p">,</span>
+    <span class="n">ioffx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">ioffy</span><span class="o">=-</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">tsigma_peak</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">tsigma_tail</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">return_masks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">debug_level</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">zoom_region_imshow</span><span class="o">=</span><span class="n">tea</span><span class="o">.</span><span class="n">SliceRegion2D</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">s_</span><span class="p">[</span><span class="mi">350</span><span class="p">:</span><span class="mi">650</span><span class="p">,</span> <span class="mi">100</span><span class="p">:</span><span class="mi">180</span><span class="p">],</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;fits&#39;</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing overlaping rectangle:
+ioffx: 0
+ioffx: -4
+data1:  i1,  i2,  j1,  j2: 0, 246, 0, 1024
+data2: ii1, ii2, jj1, jj2: 4, 250, 0, 1024
+shape1: (246, 1024), shape2: (246, 1024), shape(diff): (246, 1024)
+
+&gt;&gt;&gt; Statistical summary of diff = overlapping data1 - data2:
+&gt;&gt;&gt; Median....: -0.179
+&gt;&gt;&gt; Robust_std: 10.149
+&gt;&gt;&gt; Searching for positive peaks (CR in data1) with tsigma_peak=10
+&gt;&gt;&gt; Found 52 positive peaks
+&gt;&gt;&gt; Searching for positive tails (CR in data1) with tsigma_tail=3
+&gt;&gt;&gt; Found 371 positive tails
+&gt;&gt;&gt; Merging positive peaks and tails
+&gt;&gt;&gt; Replacing 280 pixels affected by cosmic rays in data1
+&gt;&gt;&gt; Finished replacing pixels affected by cosmic rays in data1
+&gt;&gt;&gt; Searching for negative peaks (CR in data2) with tsigma_peak=10
+&gt;&gt;&gt; Found 31 negative peaks
+&gt;&gt;&gt; Searching for negative tails (CR in data2) with tsigma_tail=3
+&gt;&gt;&gt; Found 405 negative tails
+&gt;&gt;&gt; Merging negative peaks and tails
+&gt;&gt;&gt; Replacing 175 pixels affected by cosmic rays in data2
+&gt;&gt;&gt; Finished replacing pixels affected by cosmic rays in data2
+</pre></div>
+</div>
+<img alt="../../_images/1c4fe016ba990f52e5f06377a478b8e7a4aa7fdd0aeddcfef7829de7be73597b.png" src="../../_images/1c4fe016ba990f52e5f06377a478b8e7a4aa7fdd0aeddcfef7829de7be73597b.png" />
+<img alt="../../_images/4d1a9c817863f3cdc7976b1e408fa68e2a0841cbfe4a929d0d2efe898125352e.png" src="../../_images/4d1a9c817863f3cdc7976b1e408fa68e2a0841cbfe4a929d0d2efe898125352e.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of CR in data1: 52 peaks, 371 tails
+</pre></div>
+</div>
+<img alt="../../_images/45ab3b2e41a945148f1cbff6f259408be3a40032d67e26a0d9545b822e7bc5ce.png" src="../../_images/45ab3b2e41a945148f1cbff6f259408be3a40032d67e26a0d9545b822e7bc5ce.png" />
+<img alt="../../_images/d2f56e1f86cf0e6e2b3725a45e47eb3a16b4c9e4c2002f0a73e2a43df434d103.png" src="../../_images/d2f56e1f86cf0e6e2b3725a45e47eb3a16b4c9e4c2002f0a73e2a43df434d103.png" />
+<img alt="../../_images/bbc5b16910865153a6d6d270a4803adf3508b01ae82ff65ecaceb0d48a602ae3.png" src="../../_images/bbc5b16910865153a6d6d270a4803adf3508b01ae82ff65ecaceb0d48a602ae3.png" />
+<img alt="../../_images/c619bce0586b9bfb2df58069153f0171c019c4a3dd11356f341091152e3c9c42.png" src="../../_images/c619bce0586b9bfb2df58069153f0171c019c4a3dd11356f341091152e3c9c42.png" />
+<img alt="../../_images/31c50c1eae16804d1fb40a244fd9b36ce295b5282d37861010396c5b1ed1a373.png" src="../../_images/31c50c1eae16804d1fb40a244fd9b36ce295b5282d37861010396c5b1ed1a373.png" />
+<img alt="../../_images/2e1b4fe1216b7ae658db21f7a5fb7db24338ba65be3ffbabce0d37150f0e95f7.png" src="../../_images/2e1b4fe1216b7ae658db21f7a5fb7db24338ba65be3ffbabce0d37150f0e95f7.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of CR in data2: 31 peaks, 405 tails
+</pre></div>
+</div>
+<img alt="../../_images/bb3f1f338dfeb5b740d5c59b13457c1327be7ca1fb6cd72c764dc4531c7c0635.png" src="../../_images/bb3f1f338dfeb5b740d5c59b13457c1327be7ca1fb6cd72c764dc4531c7c0635.png" />
+<img alt="../../_images/e4850d45211e4b828797c47f2053654fde8dc442d76a735a78e5db35b423d634.png" src="../../_images/e4850d45211e4b828797c47f2053654fde8dc442d76a735a78e5db35b423d634.png" />
+<img alt="../../_images/1e163f02ff9a8232d4800711f586d29c14ea1c8b64e42032499e47c419ee0ed8.png" src="../../_images/1e163f02ff9a8232d4800711f586d29c14ea1c8b64e42032499e47c419ee0ed8.png" />
+<img alt="../../_images/dab9313f0b5439206e1588099d87b39cb85674fe1db11fe0ea89a869affe2e35.png" src="../../_images/dab9313f0b5439206e1588099d87b39cb85674fe1db11fe0ea89a869affe2e35.png" />
+<img alt="../../_images/1c4fef3ee48f5627026fc6437ade3d86013e8b8cd1e8f5bb7d15753de80f461c.png" src="../../_images/1c4fef3ee48f5627026fc6437ade3d86013e8b8cd1e8f5bb7d15753de80f461c.png" />
+<img alt="../../_images/dd5f34d459dd4bfa18af3da861fb3f849a53e35dbda414802a4968c256e6165b.png" src="../../_images/dd5f34d459dd4bfa18af3da861fb3f849a53e35dbda414802a4968c256e6165b.png" />
+</div>
+</div>
+</section>
+<section id="cleaning-individual-exposures">
+<h2>Cleaning individual exposures<a class="headerlink" href="#cleaning-individual-exposures" title="Link to this heading">#</a></h2>
+<p>We can also use the <code class="docutils literal notranslate"><span class="pre">cr2images()</span></code> function to attempt cosmic ray removal even in situations where we only have a single exposure. In that case, we can ask <code class="docutils literal notranslate"><span class="pre">cr2images()</span></code> to generate a fictitious image number 2 from the only available image. This is done using a median filter (in 2 dimensions), with a <em>kernel</em> of the dimensions specified by the <code class="docutils literal notranslate"><span class="pre">median_size</span></code> tuple. Note that in this case <code class="docutils literal notranslate"><span class="pre">data2</span></code> is not used in the function call (and it also makes no sense to specify <code class="docutils literal notranslate"><span class="pre">ioffx</span></code>, <code class="docutils literal notranslate"><span class="pre">ioffy</span></code>). Internally, <code class="docutils literal notranslate"><span class="pre">cr2images()</span></code> makes a call to <code class="docutils literal notranslate"><span class="pre">scipy.ndimage.median_filter(data1,</span> <span class="pre">size=median_size)</span></code> to generate <code class="docutils literal notranslate"><span class="pre">data2</span></code>. Obviously, we can generate a <code class="docutils literal notranslate"><span class="pre">data2</span></code> array independently before calling <code class="docutils literal notranslate"><span class="pre">cr2images()</span></code> and not use <code class="docutils literal notranslate"><span class="pre">median_size</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">median_size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>  <span class="c1"># kernel size in the (Y-axis, X-axis), following the Python convention</span>
+<span class="n">tsigma_peak</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">tsigma_tail</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="n">data1c</span><span class="p">,</span> <span class="n">data2c</span><span class="p">,</span> <span class="n">mask_data1c</span><span class="p">,</span> <span class="n">mask_data2c</span> <span class="o">=</span> <span class="n">tea</span><span class="o">.</span><span class="n">cr2images</span><span class="p">(</span>
+    <span class="n">data1</span><span class="o">=</span><span class="n">data1</span><span class="p">,</span>
+    <span class="n">median_size</span><span class="o">=</span><span class="n">median_size</span><span class="p">,</span>
+    <span class="n">tsigma_peak</span><span class="o">=</span><span class="n">tsigma_peak</span><span class="p">,</span>
+    <span class="n">tsigma_tail</span><span class="o">=</span><span class="n">tsigma_tail</span><span class="p">,</span>
+    <span class="n">return_masks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">debug_level</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">zoom_region_imshow</span><span class="o">=</span><span class="n">tea</span><span class="o">.</span><span class="n">SliceRegion2D</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">s_</span><span class="p">[</span><span class="mi">350</span><span class="p">:</span><span class="mi">650</span><span class="p">,</span> <span class="mi">100</span><span class="p">:</span><span class="mi">180</span><span class="p">],</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;fits&#39;</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing overlaping rectangle:
+ioffx: 0
+ioffx: 0
+data1:  i1,  i2,  j1,  j2: 0, 250, 0, 1024
+data2: ii1, ii2, jj1, jj2: 0, 250, 0, 1024
+shape1: (250, 1024), shape2: (250, 1024), shape(diff): (250, 1024)
+
+&gt;&gt;&gt; Statistical summary of diff = overlapping data1 - data2:
+&gt;&gt;&gt; Median....: 0.000
+&gt;&gt;&gt; Robust_std: 6.942
+&gt;&gt;&gt; Searching for positive peaks (CR in data1) with tsigma_peak=10
+&gt;&gt;&gt; Found 53 positive peaks
+&gt;&gt;&gt; Searching for positive tails (CR in data1) with tsigma_tail=3
+&gt;&gt;&gt; Found 699 positive tails
+&gt;&gt;&gt; Merging positive peaks and tails
+&gt;&gt;&gt; Replacing 297 pixels affected by cosmic rays in data1
+&gt;&gt;&gt; Finished replacing pixels affected by cosmic rays in data1
+Number of CR in data1: 53 peaks, 699 tails
+</pre></div>
+</div>
+<img alt="../../_images/45ab3b2e41a945148f1cbff6f259408be3a40032d67e26a0d9545b822e7bc5ce.png" src="../../_images/45ab3b2e41a945148f1cbff6f259408be3a40032d67e26a0d9545b822e7bc5ce.png" />
+<img alt="../../_images/31c50c1eae16804d1fb40a244fd9b36ce295b5282d37861010396c5b1ed1a373.png" src="../../_images/31c50c1eae16804d1fb40a244fd9b36ce295b5282d37861010396c5b1ed1a373.png" />
+<img alt="../../_images/74acf79453ef536741e77a89e37ab5885d3b305b9459440bd7ebeca01f9fdc34.png" src="../../_images/74acf79453ef536741e77a89e37ab5885d3b305b9459440bd7ebeca01f9fdc34.png" />
+</div>
+</div>
+<p>In this case, the cleaning is not perfect: some pixels affected by cosmic rays still remain. It’s not easy for this method to do a perfect job. On one hand, increasing <code class="docutils literal notranslate"><span class="pre">median_size</span></code> can help remove cosmic rays more effectively in the fictitious image <code class="docutils literal notranslate"><span class="pre">data2</span></code>, but this comes at the cost of smoothing the information in image <code class="docutils literal notranslate"><span class="pre">data1</span></code>, and it’s possible that signal corresponding to real image data may be mistakenly detected as a cosmic ray. On the other hand, the signal of the pixels detected as cosmic rays is replaced by the smoothed fictitious image <code class="docutils literal notranslate"><span class="pre">data2</span></code>, so if the original cosmic ray is large and <code class="docutils literal notranslate"><span class="pre">median_size</span></code> is smaller, the correction will not be good.</p>
+<p>The best strategy, then, is to try different values of <code class="docutils literal notranslate"><span class="pre">median_size</span></code> through trial and error.</p>
+<p>In this case, it is also possible to use the auxiliary function <code class="docutils literal notranslate"><span class="pre">apply_cr2images_ccddata()</span></code> to directly clean a FITS image that stores the information of a <code class="docutils literal notranslate"><span class="pre">CCDData</span></code> object. Since only one image is used, the pixels affected by cosmic rays in the array stored in the <code class="docutils literal notranslate"><span class="pre">UNCERT</span></code> extension are replaced by the smoothed version of the <code class="docutils literal notranslate"><span class="pre">UNCERT</span></code> array from the initial image.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tea</span><span class="o">.</span><span class="n">apply_cr2images_ccddata</span><span class="p">(</span>
+    <span class="n">infile1</span><span class="o">=</span><span class="n">input_filename1</span><span class="p">,</span>
+    <span class="n">outfile1</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;ccc</span><span class="si">{</span><span class="n">input_filename1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">median_size</span><span class="o">=</span><span class="n">median_size</span><span class="p">,</span>
+    <span class="n">tsigma_peak</span><span class="o">=</span><span class="n">tsigma_peak</span><span class="p">,</span>
+    <span class="n">tsigma_tail</span><span class="o">=</span><span class="n">tsigma_tail</span><span class="p">,</span>
+    <span class="n">debug_level</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing overlaping rectangle:
+ioffx: 0
+ioffx: 0
+data1:  i1,  i2,  j1,  j2: 0, 250, 0, 1024
+data2: ii1, ii2, jj1, jj2: 0, 250, 0, 1024
+shape1: (250, 1024), shape2: (250, 1024), shape(diff): (250, 1024)
+
+&gt;&gt;&gt; Statistical summary of diff = overlapping data1 - data2:
+&gt;&gt;&gt; Median....: 0.000
+&gt;&gt;&gt; Robust_std: 6.942
+&gt;&gt;&gt; Searching for positive peaks (CR in data1) with tsigma_peak=10
+&gt;&gt;&gt; Found 53 positive peaks
+&gt;&gt;&gt; Searching for positive tails (CR in data1) with tsigma_tail=3
+&gt;&gt;&gt; Found 699 positive tails
+&gt;&gt;&gt; Merging positive peaks and tails
+&gt;&gt;&gt; Replacing 297 pixels affected by cosmic rays in data1
+&gt;&gt;&gt; Finished replacing pixels affected by cosmic rays in data1
+Number of CR in data1: 53 peaks, 699 tails
+</pre></div>
+</div>
+<img alt="../../_images/4f0f8ff07e91e45e285cf492221d1454b6d8e1a3371c7a474473f25342fa6758.png" src="../../_images/4f0f8ff07e91e45e285cf492221d1454b6d8e1a3371c7a474473f25342fa6758.png" />
+<img alt="../../_images/14ffdeb64cd4963910699bca89bee4bdfd6e1245dc7821dd6ea1d048a032ef78.png" src="../../_images/14ffdeb64cd4963910699bca89bee4bdfd6e1245dc7821dd6ea1d048a032ef78.png" />
+<img alt="../../_images/73940863bd6d183e6c4c3a79633fa4a569eeb7a834aa4fba216f8306ada48d94.png" src="../../_images/73940863bd6d183e6c4c3a79633fa4a569eeb7a834aa4fba216f8306ada48d94.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Output file name: cccftdz_45243.fits
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">time_end</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<span class="n">tea</span><span class="o">.</span><span class="n">elapsed_time</span><span class="p">(</span><span class="n">time_ini</span><span class="p">,</span> <span class="n">time_end</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>system...........: Linux
+release..........: 6.11.0-1018-azure
+machine..........: x86_64
+node.............: runnervmwhb2z
+Python executable: /usr/bin/python3
+teareduce version: 0.4.9
+Initial time.....: 2025-10-27 16:50:35.472541
+Final time.......: 2025-10-27 16:50:50.417951
+Elapsed time.....: 0:00:14.945410
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/cr2images"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../../docs/cleanest/cleanest.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Interactive Cosmic Ray Removal in Single Exposures</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../wavecalib/wavecalib.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">C distortion and wavelength calibration</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cosmic-ray-detection-using-equivalent-exposures">Cosmic Ray Detection Using Equivalent Exposures</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-cr2images">Using <code class="docutils literal notranslate"><span class="pre">cr2images()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#selecting-regions-to-clean">Selecting Regions to Clean</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#option-1-using-list-skipped-regions">Option 1: Using <code class="docutils literal notranslate"><span class="pre">list_skipped_regions</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#option-2-using-image-region">Option 2: Using <code class="docutils literal notranslate"><span class="pre">image_region</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-images-with-extensions-ccddata-objects">Using Images with Extensions (<code class="docutils literal notranslate"><span class="pre">CCDData</span></code> Objects)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cleaning-the-data-arrays">Cleaning the Data Arrays</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transferring-cleaned-pixels-to-the-mask-extension">Transferring Cleaned Pixels to the <code class="docutils literal notranslate"><span class="pre">MASK</span></code> Extension</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transferring-the-cleaned-pixels-to-the-uncert-extension">Transferring the cleaned pixels to the <code class="docutils literal notranslate"><span class="pre">UNCERT</span></code> extension</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#saving-the-result">Saving the result</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#auxiliary-function-apply-cr2images-ccddata">Auxiliary function <code class="docutils literal notranslate"><span class="pre">apply_cr2images_ccddata()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-happens-inside-cr2images">What happens inside <code class="docutils literal notranslate"><span class="pre">cr2images()</span></code>?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cleaning-individual-exposures">Cleaning individual exposures</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Nicolás Cardiel
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
