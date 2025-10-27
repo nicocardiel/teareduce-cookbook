@@ -15,3 +15,4 @@ chapters:
   - file: notebooks/cr2images/cr2images
   - file: notebooks/wavecalib/wavecalib
   - file: notebooks/adaptivespl/adaptivespl
+  - file: bibliography

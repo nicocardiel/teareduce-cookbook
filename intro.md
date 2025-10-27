@@ -22,9 +22,11 @@ This package is not intended to be a general-purpose image reduction code. It
 only includes specific operations required in certain steps of the traditional
 astronomical image reduction process that, at the time of its creation, were
 not available in more established packages such as
-[ccdproc](https://ccdproc.readthedocs.io/en/latest/). In addition, it also
-offers alternative ways to perform certain tasks that we have found to be more
-practical for use in Master's level classes.
+[ccdproc](https://ccdproc.readthedocs.io/en/latest/). Students can examine the
+Python code and introduce modifications in order to gain a deeper understanding
+of the operations performed during the astronomical image reduction process.
+In addition, it also offers alternative ways to perform certain tasks that we
+have found to be more practical for use in Master's level classes.
 
 ```{warning}
 This package is under continuous development.

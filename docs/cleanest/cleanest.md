@@ -3,12 +3,12 @@
 The installation of the **teareduce** package also includes an auxiliary
 program called `tea-cleanest`, which enables the interactive cleaning of cosmic
 rays. This code is inspired by the
-[cleanest](https://cleanest.readthedocs.io/en/latest/) code ([Cardiel
-2020](https://articles.adsabs.harvard.edu/pdf/2020ASPC..522..723C)) although
-the approach to detecting cosmic rays differs. In particular, `tea-cleanest`
-uses the [L.A.  Cosmic algorithm](http://www.astro.yale.edu/dokkum/lacosmic/)
-([van Dokkum 2001](https://iopscience.iop.org/article/10.1086/323894/pdf)) to
-identify pixels suspected of being affected by cosmic-ray hits.
+[cleanest](https://cleanest.readthedocs.io/en/latest/) code
+{cite}`2020ASPC..522..723C`, although the approach to detecting cosmic rays
+differs. In particular, `tea-cleanest` uses the [L.A.  Cosmic
+algorithm](http://www.astro.yale.edu/dokkum/lacosmic/)
+{cite}`2001PASP..113.1420V` to identify pixels suspected of being affected by
+cosmic-ray hits.
 
 ```{warning}
 This code is a prototype under development, and its functionality is
