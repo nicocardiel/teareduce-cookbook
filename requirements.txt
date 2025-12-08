@@ -1,6 +1,6 @@
 astropy
 ipywidgets
-jupyter-book
+"jupyter-book<2.0"
 matplotlib
 numpy
 teareduce
