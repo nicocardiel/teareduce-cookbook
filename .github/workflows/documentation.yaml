@@ -1,6 +1,10 @@
 name: documentation
 
-on: [push, pull_request, workflow_dispatch]
+# Only run this when the main branch changes
+on:
+  push:
+    branches:
+    - main
 
 permissions:
   contents: write
@@ -10,16 +14,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # Setup python
+      - name: Set up Python 3.12
       - uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
+
+      # Build the docs
       - name: Book build
         run: |
           jupyter-book build .
+
+      # Push the book's HTML to github-pages
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        uses: peaceiris/actions-gh-pages@v4
         with:
           publish_branch: gh-pages
           github_token: ${{ secrets.GITHUB_TOKEN }}
