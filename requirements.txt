@@ -1,5 +1,5 @@
 astropy
-click_extra
+click_extra[sphinx]
 ipywidgets
 jupyter-book<2.0
 matplotlib
