@@ -38,6 +38,11 @@ html:
 only_build_toc_files: true
 
 # [NCL] exclude the prompt when using the copy button
+# [NCL] use a regexp in order to define several possible prompts. Valid
+# options are:
+# (venv_tea) $
+# $
 sphinx:
   config:
-    copybutton_prompt_text: "(venv_tea) $ "
+    copybutton_prompt_text: '^\(venv_tea\) \$ |\$ '
+    copybutton_prompt_is_regexp: true
