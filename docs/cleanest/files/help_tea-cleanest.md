@@ -1,0 +1,33 @@
+```console
+(venv_tea) $ tea-cleanest --help
+```
+
+```{code-block} ansi-shell-session
+:class: my-special-block no-copybutton
+
+[38;5;208mUsage:[0m [38;5;244mtea-cleanest[0m [[36m-h[0m] [[36m--extension[0m [38;5;36mEXTENSION[0m] [[36m--auxfile[0m [38;5;36mAUXFILE[0m]
+                    [[36m--extension_auxfile[0m [38;5;36mEXTENSION_AUXFILE[0m]
+                    [[36m--fontfamily[0m [38;5;36mFONTFAMILY[0m] [[36m--fontsize[0m [38;5;36mFONTSIZE[0m]
+                    [[36m--width[0m [38;5;36mWIDTH[0m] [[36m--height[0m [38;5;36mHEIGHT[0m] [[36m--version[0m] [[36m--verbose[0m]
+                    [[36minput_fits[0m]
+
+[39mInteractive cosmic ray cleaner for FITS images.[0m
+
+[38;5;208mPositional Arguments:[0m
+  [36minput_fits[0m            [39mPath to the FITS file to be cleaned.[0m
+
+[38;5;208mOptions:[0m
+  [36m-h[0m, [36m--help[0m            [39mshow this help message and exit[0m
+  [36m--extension[0m [38;5;36mEXTENSION[0m
+                        [39mFITS extension to use (default: 0).[0m
+  [36m--auxfile[0m [38;5;36mAUXFILE[0m     [39mAuxiliary FITS file[0m
+  [36m--extension_auxfile[0m [38;5;36mEXTENSION_AUXFILE[0m
+                        [39mFITS extension for auxiliary file (default: 0).[0m
+  [36m--fontfamily[0m [38;5;36mFONTFAMILY[0m
+                        [39mFont family for the GUI (default: Helvetica).[0m
+  [36m--fontsize[0m [38;5;36mFONTSIZE[0m   [39mFont size for the GUI (default: 14).[0m
+  [36m--width[0m [38;5;36mWIDTH[0m         [39mWidth of the GUI window in pixels (default: 800).[0m
+  [36m--height[0m [38;5;36mHEIGHT[0m       [39mHeight of the GUI window in pixels (default: 700).[0m
+  [36m--version[0m             [39mshow program's version number and exit[0m
+  [36m--verbose[0m, [36m-v[0m         [39mEnable verbose output.[0m
+```

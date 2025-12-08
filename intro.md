@@ -38,9 +38,9 @@ This package is under continuous development.
 It is advisable to install this package in a Python environment. For example:
 
 ```bash
-$ python3 -m venv tea
+$ python3 -m venv venv_tea
 $ . tea/bin/activate
-(tea) $ pip install teareduce
+(venv_tea) $ pip install teareduce
 ```
 
 The repository of the code is available in

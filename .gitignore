@@ -4,11 +4,6 @@ _build/
 .gitignore~
 
 # auxiliary files or files generated during the execution of the notebooks
-docs/cleanest/images/detail_after.png
-docs/cleanest/images/detail_before.png
-docs/cleanest/images/example.key
-docs/cleanest/images/mainwindow.png
-
 notebooks/cr2images/cccftdz_45243.fits
 notebooks/cr2images/ccftdz_45243.fits
 notebooks/cr2images/ccftdz_45244.fits

@@ -31,6 +31,13 @@ repository:
 html:
   use_issues_button: false
   use_repository_button: false
+  extra_css:
+  - _static/custom.css
 
 # Disable building files that aren't in the Table of Contents
 only_build_toc_files: true
+
+# [NCL] exclude the prompt when using the copy button
+sphinx:
+  config:
+    copybutton_prompt_text: "(venv_tea) $ "

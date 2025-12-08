@@ -1,0 +1,30 @@
+/* Style the code block background and text */
+div.my-special-block {
+    background-color: #000088;
+    color: #000000;
+    border-radius: 0px;
+    padding: 0px;
+}
+
+/* Also style the <pre> inside the block */
+div.my-special-block pre {
+    background: #eeeeee;
+    color: inherit;
+}
+
+/* Override Pygments token coloring if needed */
+div.my-special-block span {
+    background: transparent !important; /* kill inline bg */
+    /*color: inherit !important; */
+}
+
+/* Hide copybutton whenever a code block sits inside an ancestor with .no-copybutton */
+.no-copybutton .copybtn {
+  display: none !important;
+}
+
+/* Color the prompt inside console blocks */
+div.highlight .gp {
+  color: #0000aa;     /* pick any color */
+  font-weight: 600;   /* optional */
+}
