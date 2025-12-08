@@ -1,4 +1,5 @@
 astropy
+click_extra
 ipywidgets
 jupyter-book<2.0
 matplotlib
