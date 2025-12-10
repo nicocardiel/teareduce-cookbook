@@ -1,25 +1,48 @@
-# Interactive Cosmic Ray Removal in Single Exposures
+# Interactive Cosmic Ray Removal in Single or Double Exposures
 
 The installation of the **teareduce** package also includes an auxiliary
 program called **tea-cleanest**, which enables the interactive cleaning of
 cosmic rays. This code is inspired by the
 [cleanest](https://cleanest.readthedocs.io/en/latest/) code
 {cite}`2020ASPC..522..723C`, although the approach to detecting cosmic rays
-differs. In particular, **tea-cleanest** uses the [L.A.  Cosmic
+differs. In particular, **tea-cleanest** uses the [L.A. Cosmic
 algorithm](http://www.astro.yale.edu/dokkum/lacosmic/)
 {cite}`2001PASP..113.1420V` to identify pixels suspected of being affected by
 cosmic-ray hits.
 
-```{warning}
+The program also allows alternatively loading a mask that indicates the
+location of the cosmic-ray pixels. In this case, the mask will be read from an
+external FITS file containing an array of integers, where any pixel with a
+value other than 0 is considered a cosmic-ray pixel.
+
+The identified cosmic rays can be interpolated either automatically or under user supervision. To replace the signal in the cosmic-ray pixels, information from the neighboring pixels is used, and any of the following methods may be applied:
+
+- a constant average value: the mean or median
+- one-dimensional interpolation: along the X-axis or the Y-axis
+- 2D interpolation using a plane (degree 1)
+- the values determined by L.A.Cosmic
+- the values computed using the method described by {cite}`2024PASP..136c4503V` 
+- the values present in an auxiliary image
+
+
+```{note}
 Although **tea-cleanest** was initially developed to clean individual
 exposures, it now also allows the use of a second (auxiliary) exposure, whose
 information can be used to replace pixels affected by cosmic rays in the first
-image. This is especially useful for pairs of exposures, as long as the number
-of cosmic rays is not so high that the same pixel is likely to be affected by a
-cosmic ray in both exposures.
+image. 
 
-If three or more equivalent exposures are available, cosmic rays can be easily
-removed using a median combination. It is also possible to use slightly more
+In the case of equivalent double exposures, it is possible to remove the cosmic
+rays from each exposure employing the information in the other exposure as an
+auxiliary image. By swapping the roles of main and auxiliary image, we can
+remove the cosmic rays from the second exposure as well. This method should
+work properly as long as the number of cosmic rays is not so high that the same
+pixel is likely to be affected by a cosmic ray in both exposures.
+
+When three or more equivalent exposures are available, **tea-cleanest** can be
+used by first cleaning a pair of those images and then using the result as the
+auxiliary image for cleaning the remaining exposures. In any case, in this
+scenario it may be preferable to use the median of the available exposures
+instead of **tea-cleanest**.  It is also possible to use slightly more
 sophisticated algorithms, such as the one implemented in
 [numina-crmasks](https://guaix-ucm.github.io/numina-tools/crmasks/crmasks.html).
 ```
@@ -243,3 +266,10 @@ but no filled magenta circles).
 
 - Window *Review Cosmic Rays*:
 
+## Using the cleanest functionality programmatically
+
+It is possible to use part of the functionality provided by **tea-cleanest**
+programmatically from Python code, which is convenient if you need to automate
+the workflow or work from a Jupyter notebook.
+
+TBD
