@@ -28,10 +28,6 @@ of the operations performed during the astronomical image reduction process.
 In addition, it also offers alternative ways to perform certain tasks that we
 have found to be more practical for use in Master's level classes.
 
-```{warning}
-This package is under continuous development.
-```
-
 ## Installation
 
 
@@ -42,6 +38,24 @@ $ python3 -m venv venv_tea
 $ . tea/bin/activate
 (venv_tea) $ pip install teareduce
 ```
+
+````{warning}
+If you are planning to use **tea-cleanest**, you need to install this
+package with extra dependencies. In this case employ:
+
+```console
+(venv_tea) $ pip install 'teareduce[cleanest]'
+```
+````
+
+````{note}
+On PyPI there is a package called **tea** that provides utilities unrelated to
+**teareduce**. However, throughout this documentation we will often use
+```python
+import teareduce as tea
+```
+as a convenient alias when working with our package.
+````
 
 The repository of the code is available in
 [GitHub](https://github.com/nicocardiel/teareduce).
