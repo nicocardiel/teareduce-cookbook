@@ -4,4 +4,4 @@ ipywidgets
 jupyter-book<2.0
 matplotlib
 numpy
-teareduce
+teareduce[cleanest]
