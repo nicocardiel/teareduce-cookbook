@@ -386,4 +386,8 @@ It is possible to use part of the functionality provided by **tea-cleanest**
 programmatically from Python code, which is convenient if you need to automate
 the workflow or work from a Jupyter notebook.
 
-TBD
+<!-- Execute
+$ jupyter nbconvert --to markdown interactive_cleanest.ipynb
+-->
+```{include} interactive_cleanest.md
+```
