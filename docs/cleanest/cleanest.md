@@ -68,6 +68,9 @@ We can quickly run **tea-cleanest** by providing the name of the FITS file to
 be cleaned (if no file name is given, the program will allow us to choose a
 file through the operating system’s file-open interface).
 
+Download first the sample file
+[examplecr1.fits](https://raw.githubusercontent.com/nicocardiel/teareduce-cookbook/main/docs/cleanest/examplecr1.fits).
+
 ```console
 (venv_tea) $ tea-cleanest examplecr1.fits
 ```
@@ -278,6 +281,13 @@ information can be used to replace the cosmic-ray pixels in the first image).
 After cleaning the first image, the procedure can be repeated by swapping the
 roles of the two exposures, so that in the end we obtain a cosmic-ray–cleaned
 version of both original exposures.
+
+Download the second sample file
+[examplecr2.fits](https://raw.githubusercontent.com/nicocardiel/teareduce-cookbook/main/docs/cleanest/examplecr2.fits)
+(you can also download now the first sample file
+[examplecr1.fits](https://raw.githubusercontent.com/nicocardiel/teareduce-cookbook/main/docs/cleanest/examplecr1.fits)
+if you did not do it previously).
+
 
 ```console
 (venv_tea) $ tea-cleanest examplecr1.fits --auxfile examplecr2.fits
