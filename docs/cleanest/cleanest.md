@@ -384,5 +384,5 @@ that appears in the main window of **tea-cleanest**.
 
 It is possible to use part of the functionality provided by **tea-cleanest**
 programmatically from Python code, which is convenient if you need to automate
-the workflow or work from a Jupyter notebook. See [next
-section](../../notebooks/cleanest/interactive_cleanest).
+the workflow or work from a Jupyter notebook. See section [Interactive use of
+cleanest functionality](../../notebooks/cleanest/interactive_cleanest).
