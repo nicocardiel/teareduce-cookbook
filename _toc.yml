@@ -13,7 +13,7 @@ chapters:
   - file: notebooks/simulateccd/simulateccd
   - file: docs/cleanest/cleanest
     sections:
-      - file: docs/cleanest/interactive_cleanest
+      - file: notebooks/cleanest/interactive_cleanest
   - file: notebooks/cr2images/cr2images
   - file: notebooks/wavecalib/wavecalib
   - file: notebooks/adaptivespl/adaptivespl

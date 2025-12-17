@@ -69,7 +69,7 @@ be cleaned (if no file name is given, the program will allow us to choose a
 file through the operating system’s file-open interface).
 
 Download first the sample file
-[examplecr1.fits](https://raw.githubusercontent.com/nicocardiel/teareduce-cookbook/main/docs/cleanest/examplecr1.fits).
+[examplecr1.fits](https://raw.githubusercontent.com/nicocardiel/teareduce-cookbook/main/notebooks/cleanest/examplecr1.fits).
 
 ```console
 (venv_tea) $ tea-cleanest examplecr1.fits
@@ -283,9 +283,9 @@ roles of the two exposures, so that in the end we obtain a cosmic-ray–cleaned
 version of both original exposures.
 
 Download the second sample file
-[examplecr2.fits](https://raw.githubusercontent.com/nicocardiel/teareduce-cookbook/main/docs/cleanest/examplecr2.fits)
+[examplecr2.fits](https://raw.githubusercontent.com/nicocardiel/teareduce-cookbook/main/notebooks/cleanest/examplecr2.fits)
 (you can also download now the first sample file
-[examplecr1.fits](https://raw.githubusercontent.com/nicocardiel/teareduce-cookbook/main/docs/cleanest/examplecr1.fits)
+[examplecr1.fits](https://raw.githubusercontent.com/nicocardiel/teareduce-cookbook/main/notebooks/cleanest/examplecr1.fits)
 if you did not do it previously).
 
 
@@ -385,4 +385,4 @@ that appears in the main window of **tea-cleanest**.
 It is possible to use part of the functionality provided by **tea-cleanest**
 programmatically from Python code, which is convenient if you need to automate
 the workflow or work from a Jupyter notebook. See [next
-section](./interactive_cleanest).
+section](../../notebooks/cleanest/interactive_cleanest).
