@@ -6,7 +6,7 @@ Cardiel to facilitate the reduction of astronomical images within the course
 Degree in Astrophysics](https://www.ucm.es/masterastrofisica) at the
 [Universidad Complutense of Madrid (UCM)](https://www.ucm.es/).
 
-Different people at UCM have also contributed to the development and testing of
+Different people at UCM have contributed to the development and testing of
 this package: Sergio Pascual, María Chillarón, Cristina Cabello, Jesús Gallego
 and Jaime Zamorano. Acknowledgment is also given to Maite Ceballos (IFCA) for
 her help in setting up this documentation website.
