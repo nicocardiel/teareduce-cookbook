@@ -8,7 +8,8 @@ logo: logo.png
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
 execute:
-  execute_notebooks: force
+  execute_notebooks: force  # cache or force
+  timeout: 600  # 10 minutes (default is 30 seconds)
   allow_errors: True         # [NCL] errors will be shown in the documentation
 
 # Define the name of the latex output file for PDF builds
