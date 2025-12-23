@@ -9,13 +9,15 @@ differs. In particular, **tea-cleanest** allows to use the following
 algorithms to identify pixels suspected of being affected by cosmic-ray hits:
 
 - [L.A.Cosmic](http://www.astro.yale.edu/dokkum/lacosmic/): see
-{cite}`2001PASP..113.1420V`
+{cite}`2001PASP..113.1420V`. Here we are using the implementation provided by
+the **ccdproc** function
+[`cosmicray_lacosmic()`](https://ccdproc.readthedocs.io/en/latest/api/ccdproc.cosmicray_lacosmic.html).
 - [PyCosmic](https://github.com/brandherd/PyCosmic.git): see
-{cite}`2012A&A...545A.137H`
+{cite}`2012A&A...545A.137H`.
 - [deepCR](https://deepcr.readthedocs.io/en/latest/): see
-{cite}`2020ApJ...889...24Z`
+{cite}`2020ApJ...889...24Z`.
 - [Cosmic-CoNN](https://cosmic-conn.readthedocs.io/en/latest/index.html): see
-{cite}`2023ApJ...942...73X`
+{cite}`2023ApJ...942...73X`.
 
 ```{warning}
 If you use **tea-cleanest**, please remember to cite this web and the
