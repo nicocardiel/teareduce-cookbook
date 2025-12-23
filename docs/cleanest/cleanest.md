@@ -70,10 +70,11 @@ If you are planning to use **tea-cleanest**, you need to install the package
 (venv_tea) $ pip install 'teareduce[cleanest]'
 ```
 
-To use the *PyCosmic* method, you must manually install its corresponding
-package; otherwise, **tea-cleanest** will run, but this method will not be
-available. Since the package is not published on PyPI, it can be installed
-directly from GitHub. To do so, use a recent fork of the repository by running:
+In addition, to use the *PyCosmic* method, you must manually install its
+corresponding package; otherwise, **tea-cleanest** will run, but this method
+will not be available. Since the package is not published on PyPI, it can be
+installed directly from GitHub. To do so, use a recent fork of the repository
+by running:
 
 ```console
 $ pip install git+https://github.com/nicocardiel/PyCosmic.git@test
