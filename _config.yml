@@ -20,6 +20,7 @@ latex:
 # Add a bibtex file so that we can create citations
 bibtex_bibfiles:
   - references.bib
+# [NCL]: see also below definition of bibtex_reference_style: author_year
 
 # Information about where the book exists on the web
 repository:
@@ -47,3 +48,4 @@ sphinx:
   config:
     copybutton_prompt_text: '^\(venv_tea\) \$ |\$ '
     copybutton_prompt_is_regexp: true
+    bibtex_reference_style: author_year
