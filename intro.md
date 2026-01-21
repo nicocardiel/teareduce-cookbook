@@ -30,13 +30,43 @@ have found to be more practical for use in Master's level classes.
 
 ## Installation
 
+The **teareduce** package is available on
+[PyPI](https://pypi.org/project/teareduce/) and can be installed using `pip`.
 
-It is advisable to install this package in a Python environment. For example:
+The repository of the code is available in
+[GitHub](https://github.com/nicocardiel/teareduce).
 
+### Creating a Python virtual environment
+
+It is strongly recommended to install **teareduce** in a clean Python
+environment to avoid dependency conflicts. You can create and activate a new
+virtual environment using one of the following methods:
+
+**Using venv (Python standard library):**
 ```console
-$ python3 -m venv venv_tea
-$ . tea/bin/activate
+$ python -m venv venv_tea
+$ source venv_tea/bin/activate  # On Linux/macOS
+# or
+$ venv_tea\Scripts\activate  # On Windows
+```
+
+**Using conda:**
+```console
+$ conda create -n venv_tea python=3
+$ conda activate venv_tea 
+```
+
+### Installing teareduce
+
+Once your environment is activated, install `teareduce` with:
+```console
 (venv_tea) $ pip install teareduce
+```
+
+To verify the installation:
+```console
+(venv_tea) $ python3 -c "import teareduce; print(teareduce.__version__)"
+0.6.8
 ```
 
 ````{warning}
@@ -67,9 +97,6 @@ import teareduce as tea
 ```
 as a convenient alias when working with our package.
 ````
-
-The repository of the code is available in
-[GitHub](https://github.com/nicocardiel/teareduce).
 
 ## Table of contents
 
