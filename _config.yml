@@ -33,11 +33,13 @@ repository:
 html:
   use_issues_button: false
   use_repository_button: false
+  use_external_link_icon: true  # to show visual indicator for external links
   extra_css:
   - _static/custom.css
 
 # Disable building files that aren't in the Table of Contents
 only_build_toc_files: true
+
 
 # [NCL] exclude the prompt when using the copy button
 # [NCL] use a regexp in order to define several possible prompts. Valid
@@ -45,6 +47,8 @@ only_build_toc_files: true
 # (venv_tea) $
 # $
 sphinx:
+  extra_extensions:
+    - sphinx_new_tab_link
   config:
     copybutton_prompt_text: '^\(venv_tea\) \$ |\$ '
     copybutton_prompt_is_regexp: true
