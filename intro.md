@@ -16,6 +16,10 @@ UCM who, in recent years, have used this code in their practical work
 associated with the reduction of astronomical observations obtained with
 different instruments and telescopes.
 
+```{note}
+If you make use of this package please cite {cite}`2026arXiv260120914C`.
+```
+
 ## Purpose
 
 This package is not intended to be a general-purpose image reduction code. It
