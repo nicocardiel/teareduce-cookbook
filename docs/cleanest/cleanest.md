@@ -1,66 +1,87 @@
-# Interactive Cosmic Ray Removal in Single or Double Exposures
+# Interactive Cosmic Ray Removal in Single and Multiple Equivalent Exposures
 
-The installation of the **teareduce** package also includes an auxiliary
-program called **tea-cleanest**, which enables the interactive cleaning of
-cosmic rays. This code is inspired by the
+The **teareduce** package installation includes an auxiliary program called
+**tea-cleanest**, which enables interactive cosmic ray cleaning. This tool
+works with both single exposures and multiple equivalent exposures (i.e.,
+exposures with the same exposure time obtained under similar atmospheric
+conditions). The code is inspired by the
 [cleanest](https://cleanest.readthedocs.io/en/latest/) code
-{cite}`2020ASPC..522..723C`, although the approach to detecting cosmic rays
-differs. In particular, **tea-cleanest** allows to use the following
-algorithms to identify pixels suspected of being affected by cosmic-ray hits:
+{cite}`2020ASPC..522..723C`, although it uses a different approach for cosmic
+ray detection. Specifically, **tea-cleanest** supports the following algorithms
+for identifying pixels suspected of being affected by cosmic-ray hits:
 
 - [L.A.Cosmic](http://www.astro.yale.edu/dokkum/lacosmic/): see
-{cite}`2001PASP..113.1420V`. Here we are using the implementation provided by
-the **ccdproc** function
-[`cosmicray_lacosmic()`](https://ccdproc.readthedocs.io/en/latest/api/ccdproc.cosmicray_lacosmic.html).
+  {cite}`2001PASP..113.1420V`. This implementation uses the **ccdproc**
+  function
+  [`cosmicray_lacosmic()`](https://ccdproc.readthedocs.io/en/latest/api/ccdproc.cosmicray_lacosmic.html).
+
 - [PyCosmic](https://github.com/brandherd/PyCosmic.git): see
-{cite}`2012A&A...545A.137H`.
+  {cite}`2012A&A...545A.137H`.
+
 - [deepCR](https://deepcr.readthedocs.io/en/latest/): see
-{cite}`2020ApJ...889...24Z`.
+  {cite}`2020ApJ...889...24Z`.
+
 - [Cosmic-CoNN](https://cosmic-conn.readthedocs.io/en/latest/index.html): see
-{cite}`2023ApJ...942...73X`.
+  {cite}`2023ApJ...942...73X`.
+
 
 ```{warning}
-If you use **tea-cleanest**, please remember to cite this web and the
-references corresponding to the algorithms employed.
+If you use **tea-cleanest**, please remember to cite
+{cite}`2026arXiv260120914C`, this web page, and the references
+corresponding to the detection algorithms employed (listed above).
 ```
 
-The program also allows alternatively loading a mask that indicates the
-location of the cosmic-ray pixels. In this case, the mask will be read from an
-external FITS file containing an array of integers, where any pixel with a
-value other than 0 is considered a cosmic-ray pixel.
+The program also allows loading a pre-existing mask that indicates the location
+of cosmic-ray pixels. In this case, the mask is read from an external FITS file
+containing an array of integers, where any pixel with a value other than 0 is
+considered a cosmic-ray pixel.
 
 The identified cosmic rays can be interpolated either automatically or under
-user supervision. To replace the signal in the cosmic-ray pixels, information
-from the neighboring pixels is used, and any of the following methods may be
-applied:
+user supervision. To replace the signal in the cosmic-ray pixels, the program
+uses information from neighboring pixels and supports the following
+interpolation methods:
 
 - one-dimensional interpolation: along the X-axis or the Y-axis
+ 
 - a constant average value: the mean or median
-- 2D interpolation using a plane (degree 1)
-- the values determined by *L.A.Cosmic*, *PyCosmic* or *deepCR*
-- the values computed using the *maskfill* method described by {cite}`2024PASP..136c4503V` 
-- the values present in an auxiliary image
 
+- 2D interpolation using a plane (degree 1)
+
+- the values determined by *L.A.Cosmic*, *PyCosmic*, or *deepCR*
+
+- the values computed using the *maskfill* method described by
+  {cite}`2024PASP..136c4503V`
+
+Alternatively, cosmic-ray pixels can be replaced using information stored in
+**auxiliary images**. The user can choose between the data from a single
+auxiliary image or a suitable combination (mean, median, or minimum) of
+multiple auxiliary images.
 
 ```{note}
 Although **tea-cleanest** was initially developed to clean individual
-exposures, it now also allows the use of a second (auxiliary) exposure, whose
-information can be used to replace pixels affected by cosmic rays in the first
-image. 
+exposures, it now also supports the use of multiple auxiliary exposures, whose
+information can be used to replace cosmic-ray-affected pixels in the primary
+image.
 
-In the case of equivalent double exposures, it is possible to remove the cosmic
-rays from each exposure employing the information in the other exposure as an
-auxiliary image. By swapping the roles of main and auxiliary image, we can
-remove the cosmic rays from the second exposure as well. This method should
-work properly as long as the number of cosmic rays is not so high that the same
-pixel is likely to be affected by a cosmic ray in both exposures.
+**Double equivalent exposures:** For two equivalent exposures, cosmic rays can
+be removed from each exposure using the other exposure as an auxiliary image.
+By swapping the roles of primary and auxiliary image, cosmic rays can be
+removed from both exposures. This method works well as long as the cosmic ray
+density is low enough that the same pixel is unlikely to be affected in both
+exposures.
 
-When three or more equivalent exposures are available, **tea-cleanest** can be
-used by first cleaning a pair of those images and then using the result as the
-auxiliary image for cleaning the remaining exposures. In any case, in this
-scenario it may be preferable to use the median of the available exposures
-instead of **tea-cleanest**.  It is also possible to use slightly more
-sophisticated algorithms, such as the one implemented in
+**Three or more equivalent exposures:** Each individual exposure can be cleaned
+using a mean (or median) combination of the remaining exposures as auxiliary
+images. This approach is effective provided that cosmic ray hits are sparse
+enough that pixels affected in the primary exposure are unlikely to also be
+affected in the auxiliary images. Once all individual exposures have been
+cleaned, they can be combined using a mean combination to preserve maximum
+information. Residual cosmic-ray pixels (e.g., pixels affected by cosmic-ray
+hits in multiple exposures) can be detected in the final combination by
+re-running any of the available detection algorithms.
+
+When three or more equivalent exposures are available, slightly more
+sophisticated algorithms can also be used, such as the one implemented in
 [numina-crmasks](https://guaix-ucm.github.io/numina-tools/crmasks/crmasks.html).
 ```
 
@@ -93,234 +114,236 @@ running
 
 ## Simple execution (single image)
 
-We can quickly run **tea-cleanest** by providing the name of the FITS file to
-be cleaned (if no file name is given, the program will allow us to choose a
-file through the operating system’s file-open interface).
+**tea-cleanest** can be quickly executed by providing the name of the FITS file
+to be cleaned. If no filename is given, the program opens the operating
+system's file selection dialog.
 
-Download first the sample file
-[examplecr1.fits](https://raw.githubusercontent.com/nicocardiel/teareduce-cookbook/main/notebooks/cleanest/examplecr1.fits).
+First, download the sample file [examplecr1.fits](https://raw.githubusercontent.com/nicocardiel/teareduce-cookbook/main/notebooks/cleanest/examplecr1.fits).
 
+To start the program, simply execute **tea-cleanest** followed by the filename of the image to be cleaned:
 ```console
 (venv_tea) $ tea-cleanest examplecr1.fits
 ```
 
-```{Note}
-Note: when a character appears in brackets in the text of any button in the
-**tea-cleanest** graphical interface, that key on the keyboard becomes a
-shortcut for pressing the corresponding button. This is especially useful in
-the `Review Cosmic Rays` window (see below), where the user can quickly clean
-the different cosmic rays without having to move the mouse to click the various
-buttons.
+You can specify the extension number using `[<extnum>]` or `[<extname>]`. For
+example, to read the primary extension, use `[0]` or `[primary]` (case
+insensitive):
+```console
+(venv_tea) $ tea-cleanest "examplecr1.fits[0]"
 ```
 
-The upper part of the graphical interface displays four rows of buttons, which
-we can use to control the program’s execution.
+Note that the filename and extension specification must be enclosed in quotes
+to avoid shell interpretation of the bracket symbols.
 
+If you start **tea-cleanest** without specifying a filename, the program will
+open a file dialog to select the input file and an initial auxiliary frame if
+required.
+
+The upper part of the graphical interface displays four rows of buttons that
+control the program's execution.
 ```{image} images/single_1.png
 ```
 
-The most convenient way to work with **tea-cleanest** is to first perform a
-search for pixels suspected of having been affected by cosmic rays. This task
-can be carried out by running any of the available detection algorithms:
-*L.A.Cosmic*, *PyCosmic*, *deepCR* or *Cosmic-CoNN*. To do so, simply press the
-corresponding `Run <method>` button in the upper upper button row.
+```{note}
+When a character appears in brackets in the text of any button in the
+**tea-cleanest** graphical interface, that key serves as a keyboard shortcut
+for the corresponding button. This is especially useful in the `Review Cosmic
+Rays` window (see below), where users can quickly clean cosmic rays without
+moving the mouse to click buttons.
+```
+
+The most convenient way to work with **tea-cleanest** is to first search for
+pixels suspected of being affected by cosmic rays. This can be done by running
+any of the available detection algorithms: *L.A.Cosmic*, *PyCosmic*, *deepCR*,
+or *Cosmic-CoNN*. To do so, simply press the corresponding `Run <method>`
+button in the upper button row.
 
 ### `Run L.A.Cosmic`
 
-After pressing the `Run L.A.Cosmic` button, a new window is then displayed,
-allowing us to define the parameters to be used.
-
+After pressing the `Run L.A.Cosmic` button, a new window opens, allowing you to
+define the parameters to be used.
 ```{image} images/single_2_lacosmic.png
 ```
 
-That window is divided into three parameter blocks:
+The window is divided into three parameter blocks:
 
-- **L.A.Cosmic Parameters**: this section displays the parameters used by the
-  `cosmicray_lacosmic()` function. Note that each parameters appear in two
-  columns: run1 and run2. The idea here is to run this function twice. In run1,
-  a set of parameters is used to identify pixels that most clearly stand out as
-  likely to have been affected by cosmic rays. In run2, some parameters can be
-  modified to try to find pixels whose signal has been less strongly affected
-  by cosmic rays. Although this second pass may generate a large number of
-  false positives, the **tea-cleanest** code only adds to the cosmic-ray-pixel
-  mask the run2 pixels that lie in the neighborhood of the run1 cosmic-ray
-  pixels. Users are advised to consult the documentation of the
-  [`cosmicray_lacosmic()` function](https://ccdproc.readthedocs.io/en/latest/api/ccdproc.cosmicray_lacosmic.html) provided by the **ccdproc** package.
-  
+- **L.A.Cosmic Parameters**: This section displays the parameters used by the
+  `cosmicray_lacosmic()` function. Note that each parameter appears in two
+  columns: run1 and run2. The algorithm runs twice: in run1, a set of
+  parameters identifies pixels that most clearly appear to be affected by
+  cosmic rays. In run2, some parameters can be modified to detect pixels with
+  weaker cosmic-ray signals. Although this second pass may generate many false
+  positives, **tea-cleanest** only adds run2 pixels to the cosmic-ray mask if
+  they lie in the neighborhood of run1 cosmic-ray pixels. Users should consult
+  the [`cosmicray_lacosmic()` function
+  documentation](https://ccdproc.readthedocs.io/en/latest/api/ccdproc.cosmicray_lacosmic.html)
+  provided by the **ccdproc** package.
 
-- **Additional Parameters**: here we can define a dilation factor that
-  surrounds each cosmic-ray pixel with a ring of neighboring pixels, which can
-  help define a more generous region when constructing the mask of
-  cosmic-ray–affected pixels. The second parameter, *border padding*, allows
-  the cleaned image to be extended beyond its physical edge, making it easier
-  to detect cosmic-ray pixels that are located right at the borders of the
-  images. If this padding is zero, the `cosmicray_lacosmic()` function is
-  unable to detect cosmic-ray pixels at the edges of the image.
+- **Additional Parameters**: Here you can define a dilation factor that
+  surrounds each cosmic-ray pixel with a ring of neighboring pixels, which
+  helps define a more generous region when constructing the cosmic-ray mask.
+  The second parameter, *border padding*, extends the cleaned image beyond its
+  physical edge, making it easier to detect cosmic-ray pixels located at the
+  image borders. If this padding is zero, the `cosmicray_lacosmic()` function
+  cannot detect cosmic-ray pixels at the edges.
 
-- **Region to be examined**: here you can define an arbitrary rectangular
-  region in which to search for cosmic-ray pixels. By default, the values
-  correspond to examining the entire image.
+- **Region to be examined**: Here you can define an arbitrary rectangular
+  region in which to search for cosmic-ray pixels. By default, the entire image
+  is examined.
 
-After clicking the `OK` button, **tea-cleanest** runs L.A.Cosmic twice and
-displays the cosmic-ray pixels in the main window, overlaying them with a red
-marker.
-
+After clicking the `OK` button, **tea-cleanest** runs L.A.Cosmic twice and displays the detected cosmic-ray pixels in the main window, overlaid with red markers.
 ```{image} images/single_3_lacosmic.png
 ```
-
 ```{note}
-The detected pixels are grouped into cosmic rays, each consisting of
-one or several connected pixels.
+The detected pixels are grouped into cosmic rays, each consisting of one or more connected pixels.
 ```
 
-At this point, the user can choose to automatically clean all detected cosmic
-rays by selecting the `Replace detected CRs` button, or perform an individual
-analysis of each cosmic ray. For the latter option, you can sequentially go
-through all detected cosmic rays by clicking the `Review detected CRs` button,
-or you can click on the image, and **tea-cleanest** will show the location of
-the cosmic ray closest to the cursor position (if there is no cosmic ray near
-the cursor, the program will show what is happening around the brightest
-point).
+At this point, you can choose to automatically clean all detected cosmic rays by selecting the `Replace detected CRs` button, or perform an individual analysis of each cosmic ray. For individual analysis, you can sequentially review all detected cosmic rays by clicking the `Review detected CRs` button, or you can click on the image to examine the cosmic ray closest to the cursor position. If no cosmic ray is near the cursor, the program will display the region around the brightest point in the image.
 
-#### Automatic cleaning of the detected CRs
+#### Automatic Cleaning of the Detected CRs
 
-If we choose to click the `Replace detected CRs` button, the program will
-display a new window *Cleaning Parameters* that allows us to define the type of
-interpolation to use for replacing the signal of the cosmic-ray pixels.
-
+If you choose to click the `Replace detected CRs` button, the program will display a new *Cleaning Parameters* window that allows you to define the interpolation method for replacing the signal in cosmic-ray pixels.
 ```{image} images/single_4a_lacosmic.png
 ```
 
-The new window is divided into four sections:
+The window is divided into four sections:
 
-- **Select Cleaning Method**: here we can choose to interpolate along the
+- **Select Cleaning Method**: Here you can choose to interpolate along the
   X-axis (`x_interp.`), the Y-axis (`y_interp.`), fit a plane
   (`surface_interp.`), or replace the affected pixels using the `mean`,
   `median`, the values computed by L.A.Cosmic (`lacosmic`), or the result
   computed by the `maskfill` method described by {cite}`2024PASP..136c4503V`.
+  Is it also possible to replace the cosmic-ray pixels using the data in any of
+  the auxiliary images (or combination of them), when these data have been
+  loaded (see below).
 
-- **Fitting Parameters**: in this section, we can define the number of
-  points to use in the neighborhood of the cosmic ray (to the right, left, or
-  around it, depending on the chosen method) and the degree of the polynomial
-  to use (for interpolations along X or Y).
+- **Fitting Parameters**: In this section, you can define the number of points
+  to use in the neighborhood of the cosmic ray (to the right, left, or around
+  it, depending on the chosen method) and the degree of the polynomial to use
+  (for interpolations along X or Y).
 
-- **Maskfill Parameters**: here are the four parameters relevant to employing
-  the maskfill algorithm. It is recommended to consult the information on the
-  [maskfill website](https://github.com/dokkum/maskfill/tree/main), as well as
-  the documentation of the
-  [`maskfill()` function](https://github.com/dokkum/maskfill/blob/main/maskfill/maskfill.py).
+- **Maskfill Parameters**: Here are the four parameters relevant to the
+  maskfill algorithm. It is recommended to consult the [maskfill
+  website](https://github.com/dokkum/maskfill/tree/main) and the [`maskfill()`
+  function
+  documentation](https://github.com/dokkum/maskfill/blob/main/maskfill/maskfill.py).
 
+- **Region to be Examined**: The rectangular region in which the interpolation
+  of cosmic-ray pixels will be applied.
 
-- **Region to be Examined**: the rectangular region in which the interpolation
-  of the cosmic-ray pixels will be applied.
-
-After choosing, for example, `[s]urface interp.`, the program shows the
-progress of the cosmic-ray interpolation through a window that displays the
-relevant execution times.
-
+After choosing, for example, `[s]urface interp.`, the program displays the
+progress of the cosmic-ray interpolation through a window showing the relevant
+execution times.
 ```{image} images/single_5a_lacosmic.png
 ```
 
 At the end of the interpolation process, a window appears showing a summary of
 the results.
-
 ```{image} images/single_6a_lacosmic.png
 ```
 
-After closing the previous window, the cosmic-ray–cleaned image is displayed.
-
+After closing this window, the cosmic-ray-cleaned image is displayed.
 ```{image} images/single_7a_lacosmic.png
 ```
 
 ```{note}
-After performing the cosmic-ray cleaning, the user should not forget to save
-the result by clicking the `Save cleaned FITS` button in the main window.
+After performing the cosmic-ray cleaning, remember to save the result by
+clicking the `Save cleaned FITS` button in the main window.
 
-**Important**: the image saved in this way will contain the same extensions as
-the original image, with the cleaned image stored in the same extension that
-was specified when reading the original image. In addition, **tea-cleanest**
-adds an extra FITS extension called `CRMASKS`, which contains a mask of the
-interpolated pixels: the only possible values in this mask are 0 (unmodified
-pixels) and 1 (pixels interpolated during the cosmic-ray correction).
+**Important**: The saved image will contain the same extensions as the original
+image, with the cleaned image stored in the same extension specified when
+reading the original file. In addition, **tea-cleanest** adds an extra FITS
+extension called `CRMASK`, which contains a mask of the interpolated pixels.
+This mask contains only two values: 0 (unmodified pixels) and 1 (pixels
+interpolated during cosmic-ray correction).
 
-Alternatively, by clicking the `Save CR mask` button, it is also possible to
-save a FITS file containing only the binary mask that indicates the pixels
-detected as cosmic rays (the FITS file contains only the primary extension with
-that array).
+Alternatively, by clicking the `Save CR mask` button, you can save a FITS file
+containing only the binary mask indicating the pixels detected as cosmic rays
+(the FITS file contains only the primary extension with that array).
 ```
 
 #### Manual cleaning of the detected CRs
 
-If instead of the previous method the user chooses the `Review detected CRs`
-button in the main window, the program displays a new window *Review Cosmic
-Rays* where we can sequentially go through the detected cosmic rays and, based
-on the preselected affected pixels in each case, make the appropriate
-modifications before applying the desired interpolation method.
-
+If you choose the `Review detected CRs` button in the main window instead of
+automatic cleaning, the program displays a new *Review Cosmic Rays* window
+where you can sequentially review the detected cosmic rays and, based on the
+preselected affected pixels in each case, make appropriate modifications before
+applying the desired interpolation method.
 ```{image} images/single_4b_lacosmic.png
 ```
 
-In this window, the selected cosmic ray is displayed, with each suspected pixel
-marked with a red X. The user can then mark or unmark suspected pixels using
-the mouse. Interpolation can be performed using any of the following methods:
+In this window, the selected cosmic ray is displayed with each suspected pixel
+marked with a red X. You can then mark or unmark suspected pixels using the
+mouse. Interpolation can be performed using any of the following methods:
 
 - `[x] interp.`: one-dimensional interpolation along the X-axis
+
 - `[y] interp.`: one-dimensional interpolation along the Y-axis
+
 - `[s]urface interp.`: 2D interpolation using a plane (degree 1)
-- `me[d]ian`: replacement with a constant: the median of the pixels surrounding
-  the cosmic ray
-- `[m]ean`: same using the mean value
-- `[L].A.Cosmic`, `PyCosmic` or `deepCR`: the values determined by
-  *L.A.Cosmic*, *PyCosmic* or *deepCR* (only the option corresponding to the
-  method used for detecting the cosmic rays will be available.)
+
+- `me[d]ian`: replacement with a constant value: the median of the pixels
+  surrounding the cosmic ray
+
+- `[m]ean`: replacement with the mean value
+
+- `[L].A.Cosmic`, `PyCosmic`, or `deepCR`: the values determined by
+  *L.A.Cosmic*, *PyCosmic*, or *deepCR* (only the option corresponding to the
+  detection method used will be available)
+
 - `mas[k]fill`: the values computed using the *maskfill* method described by
-  {cite}`2024PASP..136c4503V` 
-- `[a]ux. data`: the values present in an auxiliary image (available only if an
-  auxiliary image has been loaded)
+  {cite}`2024PASP..136c4503V`
+
+- `[a]ux. data`: the values present in any of the auxiliary images or a
+  combination of them (available only if auxiliary images have been loaded)
 
 
-Before moving on to the next cosmic ray,
-the user can undo the performed interpolation using the `[r]estore CR
-data` button. Once we move to a new cosmic ray, it is no longer possible to go
-back to previous ones.
+Before moving on to the next cosmic ray, you can undo the performed
+interpolation using the `[r]estore CR data` button. Once you move to a new
+cosmic ray, it is no longer possible to return to previous ones.
 
-The top-left button allows modifying the number of neighboring points used in
-the interpolation, as well as the polynomial degree (for `[x] interp.` and `[y]
-interp.` cases).  Analogously, the button `Maskfill params.` allows to modify
-the four parameters employed by the maskfill algorithm.
+The top-left button allows you to modify the number of neighboring points used
+in the interpolation, as well as the polynomial degree (for `[x] interp.` and
+`[y] interp.` cases). Similarly, the `Maskfill params.` button allows you to
+modify the four parameters employed by the maskfill algorithm.
 
-If in the example shown we choose to replace the affected pixels with a plane
+If in the example shown you choose to replace the affected pixels with a plane
 fit (by clicking the `[s]urface interp.` button), the result is as shown below.
-
 ```{image} images/single_5b_lacosmic.png
 ```
 
-In this last image, the pixels used for the plane fit are shown with
-superimposed filled magenta circles, while the interpolated pixels are indicated
-with filled orange circles.
+In this image, the pixels used for the plane fit are shown with superimposed
+filled magenta circles, while the interpolated pixels are indicated with filled
+orange circles.
+
+If you need to apply different interpolation strategies to clean a particular
+cosmic ray feature, you can apply them sequentially by clicking the `[f]ix CR`
+button after each interpolation. Note that in this case the interpolated data
+is permanently fixed and the `[r]estore CR` button will only undo new
+interpolations back to the last fixed result.
 
 Clicking the `[c]ontinue` button allows you to proceed to the next detected
-cosmic ray. The user can exit the cleaning sequence at any time by clicking the
+cosmic ray. You can exit the cleaning sequence at any time by clicking the
 `[e]xit review` button.
 
 ```{warning}
-Although the user can directly start selecting pixels to interpolate by first
-activating the cursor (clicking the `[c]ursor OFF` button, which should change
-to `[c]ursor ON`) and then clicking on a suspected pixel in the main window
-with the mouse, doing this without first running L.A.Cosmic has the drawback
-that **tea-cleanest** will only show a single pixel as a preselection for
-interpolation in the `Review Cosmic Rays` window. For this reason, it is more
-convenient to run L.A.Cosmic beforehand to generate a mask of suspected pixels,
-so that **tea-cleanest** preselects all neighboring pixels likely affected by
-the same cosmic ray.
+Although you can directly start selecting pixels to interpolate in the main
+window by first activating the cursor (clicking the `[c]ursor OFF` button,
+which should change to `[c]ursor ON`) and then clicking on a suspected pixel in
+the main window with the mouse, doing this without first running L.A.Cosmic has
+the drawback that **tea-cleanest** will only show a single pixel as a
+preselection for interpolation in the `Review Cosmic Rays` window. For this
+reason, it is more convenient to run L.A.Cosmic beforehand to generate a mask
+of suspected pixels, so that **tea-cleanest** preselects all neighboring pixels
+likely affected by the same cosmic ray.
 
-Alternatively, the user can use the `Load CR mask` button in the main window to
-load a cosmic-ray mask from a FITS image (0: pixels not affected by cosmic
-rays; 1: pixels affected by cosmic rays; the image extension must have BITPIX
-equal to 8 or 16).  A dilation factor can be applied to this mask. Once it is
-loaded, the affected pixels are regrouped into cosmic rays, and their removal
-can proceed using either of the two methods described above: `Replace detected
-CRs` or `Review detected CRs`.
+Alternatively, you can use the `Load CR mask` button in the main window to load
+a cosmic-ray mask from a FITS image (0: pixels not affected by cosmic rays; 1:
+pixels affected by cosmic rays; the image extension must have BITPIX equal to 8
+or 16). A dilation factor can be applied to this mask. Once loaded, the
+affected pixels are regrouped into cosmic rays, and their removal can proceed
+using either of the two methods described above: `Replace detected CRs` or
+`Review detected CRs`.
 ```
 
 ### `Run PyCosmic`
@@ -328,20 +351,20 @@ CRs` or `Review detected CRs`.
 Similar to the previous case, after clicking the `Run PyCosmic` button in the
 main window, a new window opens showing the parameters to be configured for
 running this algorithm.
-
 ```{image} images/single_2_pycosmic.png
 ```
-Once the cosmic-ray pixels have been detected, the procedure to follow for
-their interpolation is the same as that described for the L.A.Cosmic algorithm.
+
+Once the cosmic-ray pixels have been detected, the procedure for their
+interpolation is the same as that described for the L.A.Cosmic algorithm.
 
 ### `Run deepCR`
 
 After clicking `Run deepCR`, the program will display two dialog windows asking
-for the probability threshold to consider a pixel as a cosmic ray (default
-0.5) and an optional dilation factor (default zero).
+for the probability threshold to consider a pixel as a cosmic ray (default 0.5)
+and an optional dilation factor (default zero).
 
-Once the cosmic-ray pixels have been detected, the procedure to follow for
-their interpolation is the same as that described for the L.A.Cosmic algorithm.
+Once the cosmic-ray pixels have been detected, the procedure for their
+interpolation is the same as that described for the L.A.Cosmic algorithm.
 
 ### `Run Cosmic-CoNN`
 
@@ -349,68 +372,107 @@ After clicking `Run Cosmic-CoNN`, the program will display two dialog windows
 asking for the probability threshold to consider a pixel as a cosmic ray
 (default 0.5) and an optional dilation factor (default zero).
 
-Once the cosmic-ray pixels have been detected, the procedure to follow for
-their interpolation is the same as that described for the L.A.Cosmic algorithm.
+Once the cosmic-ray pixels have been detected, the procedure for their
+interpolation is the same as that described for the L.A.Cosmic algorithm.
 
-## Advanced execution (two images)
+## Advanced Execution (Multiple Equivalent Exposures)
 
-In the case of having two equivalent exposures, we can use one as the main
-image to be cleaned of cosmic rays and the second as an auxiliary image (whose
-information can be used to replace the cosmic-ray pixels in the first image).
+In the case of having two or more equivalent exposures, you can use one as the
+main image to be cleaned of cosmic rays and the rest as auxiliary images (whose
+information can be used to replace the cosmic-ray pixels in the main image).
 After cleaning the first image, the procedure can be repeated by swapping the
-roles of the two exposures, so that in the end we obtain a cosmic-ray–cleaned
-version of both original exposures.
+roles of the available exposures, so that in the end you obtain a
+cosmic-ray-cleaned version of each original exposure, which can then be
+combined as needed.
 
-Download the second sample file
+Download the two additional sample files
 [examplecr2.fits](https://raw.githubusercontent.com/nicocardiel/teareduce-cookbook/main/notebooks/cleanest/examplecr2.fits)
-(you can also download now the first sample file
-[examplecr1.fits](https://raw.githubusercontent.com/nicocardiel/teareduce-cookbook/main/notebooks/cleanest/examplecr1.fits)
-if you did not do it previously).
-
+and
+[examplecr3.fits](https://raw.githubusercontent.com/nicocardiel/teareduce-cookbook/main/notebooks/cleanest/examplecr3.fits).
+If you have not already done so, also download the first sample file
+[examplecr1.fits](https://raw.githubusercontent.com/nicocardiel/teareduce-cookbook/main/notebooks/cleanest/examplecr1.fits).
 
 ```console
-(venv_tea) $ tea-cleanest examplecr1.fits --auxfile examplecr2.fits
+(venv_tea) $ tea-cleanest examplecr1.fits --auxfile "examplecr?.fits[0]"
 ```
 
-The auxiliary image can be loaded directly when starting **tea-cleanest** (as
-shown in the previous command line), or it can be read from any FITS file
+The wildcard `?` in the filename pattern matches `examplecr1.fits`,
+`examplecr2.fits`, and `examplecr3.fits`, loading all of them as auxiliary
+images. The extension can be provided between brackets (the default is the
+primary extension; in this example it is not necessary).
+
+You can also provide a comma-separated list of FITS files (each specifying a
+particular extension). When several files are defined as auxiliary images, the
+entire list should be enclosed in quotes to prevent misinterpretation by the
+command line shell.
+
+The auxiliary images can be loaded directly when starting **tea-cleanest** (as
+shown in the previous command line), or they can be read from any FITS file
 during program execution by using the `Load auxdata` button in the main window.
+
+```{note}
+In this example we are using 3 exposures as auxiliary images, including the
+image we intend to clean. This can be useful, for example, when using the
+median combination of the 3 exposures to remove cosmic-ray pixels.  For
+slightly more sophisticated work, particularly when dealing with long-exposure
+images with many cosmic-ray hits, have a look at
+[numina-crmasks](https://guaix-ucm.github.io/numina-tools/crmasks/crmasks.html).
+```
 
 Running L.A.Cosmic is done in the same way as previously explained. However,
 when using the `Replace detected CRs` button, an additional option now appears
-among the available interpolation methods: `auxdata` (the selection of this
-method is not possible when running the code in single-image mode). Choosing
-this new interpolation method causes **tea-cleanest** to replace all selected
-cosmic-ray pixels using the signal from the corresponding pixels in the
-auxiliary image.
+among the available interpolation methods: `Auxiliary data` (this method is
+only available when auxiliary images are loaded). Choosing this interpolation
+method causes **tea-cleanest** to activate a combobox from which you can
+replace the detected cosmic-ray pixels using information from one of the
+following options:
+
+- a particular auxiliary image
+- the mean of all the auxiliary images
+- the median of all the auxiliary images
+- the minimum of all the auxiliary images
+
+(The last three options are only available when the number of auxiliary images
+is larger than 1.)
 
 ```{image} images/double_4a_lacosmic.png
 ```
 
-On the other hand, if the user chooses the `Review detected CRs` option, the
-`[a]ux. data` button will be active in the *Review Cosmic Rays* window, giving
-access to interpolation by replacing the pixels with the signal from the
-auxiliary image. Additionally, this window simultaneously displays the image to
-be corrected (left panel) and the auxiliary image (right panel).
+On the other hand, if you choose the `Review detected CRs` option, the
+`[a]uxiliary data` button will be active in the *Review Cosmic Rays* window,
+providing access to interpolation by replacing the pixels with the signal from
+the selected auxiliary image (or combination of auxiliary images).
+Additionally, this window simultaneously displays the image to be corrected
+(left panel) and the chosen auxiliary data (right panel).
 
 ```{image} images/double_4b_lacosmic.png
 ```
 
-The result of using `[a]ux. data` as the interpolation method in the previous
-example is shown in the following figure.
+To facilitate the quick display of the different auxiliary images (and their
+combinations), note that the combobox displaying the different options shows
+that each potential auxiliary data source has an associated integer number in
+brackets:
+
+```{image} images/double_4bb_lacosmic.png
+:width: 60%
+```
+
+You can quickly blink between auxiliary images by pressing the corresponding
+number on the keyboard (valid for the first 9 items in the list). Once you have
+selected the desired auxiliary data, press the `[a]uxiliary data` button to
+perform the replacement of the marked pixels. The result of this action is
+displayed in the following figure.
 
 ```{image} images/double_5b_lacosmic.png
 ```
 
 Note that in this case, information from neighboring pixels is not used for the
-pixels previously selected for interpolation (filled orange circles are shown,
+previously selected pixels for interpolation (filled orange circles are shown,
 but no filled magenta circles).
 
+## Description of the Main Window Button Actions
 
-## Description of the main window button actions
-
-This section briefly describes the functionality associated with each button
-that appears in the main window of **tea-cleanest**.
+This section briefly describes the functionality associated with each button that appears in the main window of **tea-cleanest**.
 
 **First row of buttons**
 
@@ -418,40 +480,44 @@ that appears in the main window of **tea-cleanest**.
   rays using [L.A.Cosmic](http://www.astro.yale.edu/dokkum/lacosmic/): see
   {cite}`2001PASP..113.1420V`
 
-- `Run PyCosmic`: runs the generation of a mask of pixels affeced by cosmic
-  using [PyCosmic](https://github.com/brandherd/PyCosmic.git): see
-  {cite}`2012A&A...545A.137H` rays using 
+- `Run PyCosmic`: runs the generation of a mask of pixels affected by cosmic
+  rays using [PyCosmic](https://github.com/brandherd/PyCosmic.git): see
+  {cite}`2012A&A...545A.137H`
 
-- `Run deepCR`: runs the generation of a mask of pixels affeced by cosmic using
-  [deepCR](https://deepcr.readthedocs.io/en/latest/): see
+- `Run deepCR`: runs the generation of a mask of pixels affected by cosmic rays
+  using [deepCR](https://deepcr.readthedocs.io/en/latest/): see
   {cite}`2020ApJ...889...24Z`
 
-- `Run Cosmic-CoNN`: runs the generation of a mask of pixels affeced by cosmic
-  using [Cosmic-CoNN](https://cosmic-conn.readthedocs.io/en/latest/index.html):
-  see {cite}`2023ApJ...942...73X`
+- `Run Cosmic-CoNN`: runs the generation of a mask of pixels affected by cosmic
+  rays using
+  [Cosmic-CoNN](https://cosmic-conn.readthedocs.io/en/latest/index.html): see
+  {cite}`2023ApJ...942...73X`
 
 - `Stop program`: stops program execution.
 
 **Second row of buttons**
 
-- `Load auxdata`: loads an auxiliary image whose information can be used
-  to replace pixels affected by cosmic rays in the main image.
+- `Load auxdata`: loads an auxiliary image whose information can be used to
+  replace pixels affected by cosmic rays in the main image. If auxiliary data
+  have already been loaded, you can overwrite any of them or simply add a new
+  one.
 
-- `Load CR mask`: loads a mask of pixels affected by cosmic rays
-  from a FITS file. You can specify the extension where the mask is located.
+- `Load CR mask`: loads a mask of pixels affected by cosmic rays from a FITS
+  file. You can specify the extension where the mask is located.
 
-- `Replace detected CRs`: enables automatic removal of all pixels affected
-  by cosmic rays using any of the available interpolation methods.
+- `Replace detected CRs`: enables automatic removal of all pixels affected by
+  cosmic rays using any of the available interpolation methods.
 
-- `Review detected CRs`: provides access to the individual visualization of each
-  detected cosmic ray. This option allows interactive interpolation of the
+- `Review detected CRs`: provides access to the individual visualization of
+  each detected cosmic ray. This option allows interactive interpolation of the
   different cosmic rays.
 
-**Thrid row of buttons**
+
+**Third row of buttons**
 
 - `[c]ursor: OFF`: toggles the use of the cursor to select pixels for
-   interactive interpolation after clicking anywhere on the image shown in the
-   main window.
+  interactive interpolation after clicking anywhere on the image shown in the
+  main window.
 
 - `[t]oggle data` (button active only when an auxiliary image has been loaded):
   quickly switches the image displayed in the main window, alternating between
@@ -482,7 +548,7 @@ that appears in the main window of **tea-cleanest**.
 
 - `Help`: shows help information for all buttons.
 
-## Using the cleanest functionality programmatically
+## Using the Functionality Programmatically
 
 It is possible to use part of the functionality provided by **tea-cleanest**
 programmatically from Python code, which is convenient if you need to automate
