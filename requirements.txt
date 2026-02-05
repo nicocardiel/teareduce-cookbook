@@ -5,4 +5,5 @@ jupyter-book<2.0
 matplotlib
 numpy
 teareduce[cleanest]
+PyCosmic @ git+https://github.com/nicocardiel/PyCosmic.git@test
 sphinx_new_tab_link
