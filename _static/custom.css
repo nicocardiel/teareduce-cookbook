@@ -22,6 +22,10 @@ div.my-special-block span {
 .no-copybutton .copybtn {
   display: none !important;
 }
+/* Hide copy button from output cells */
+.cell_output .copybtn {
+    display: none !important;
+}
 
 /* Color the prompt inside console blocks */
 div.highlight .gp {
