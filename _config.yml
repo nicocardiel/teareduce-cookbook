@@ -8,7 +8,22 @@ logo: logo.png
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
 execute:
-  execute_notebooks: force  # cache or force
+  # cache: uses cached outputs if available. Jupyter Book checks if the
+  #        notebook has already been executed (has outputs stored). If
+  #        output exist AND the conde hasn't change -> skip execution (use
+  #        cahed outputs). If outputs are missing OR the code changed ->
+  #        execute the notebook. Creates a _build/.jupyter_cache/ directory
+  #        to track what's been executed
+  # off: never executes, uses existing outputs. Always uses whatever outputs
+  #      are currently stored in the .ipynb files. Doesn't check if the code
+  #      changed. Doesn't create or use any cache. Faster builds, but you're
+  #      responsible for keeping outputs current.
+  # force: always re-executes
+  # IMPORTANT: On GitHub, cache behaves almost identically to force because
+  #            no _build/.jupyter_cache/directory exists. All notebooks appear
+  #            "new" to Jupyter Book, and all notebooks get executed from
+  #            scratch.
+  execute_notebooks: off  # cache | force | off
   timeout: 600  # 10 minutes (default is 30 seconds)
   allow_errors: True         # [NCL] errors will be shown in the documentation
 

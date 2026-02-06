@@ -32,14 +32,6 @@ of the operations performed during the astronomical image reduction process.
 In addition, it also offers alternative ways to perform certain tasks that we
 have found to be more practical for use in Master's level classes.
 
-## Installation
-
-The **teareduce** package is available on
-[PyPI](https://pypi.org/project/teareduce/) and can be installed using `pip`.
-
-The repository of the code is available in
-[GitHub](https://github.com/nicocardiel/teareduce).
-
 ### Creating a Python virtual environment
 
 It is strongly recommended to install **teareduce** in a clean Python
@@ -61,6 +53,12 @@ $ conda activate venv_tea
 ```
 
 ### Installing teareduce
+
+The **teareduce** package is available on
+[PyPI](https://pypi.org/project/teareduce/) and can be installed using `pip`.
+
+The repository of the code is available in
+[GitHub](https://github.com/nicocardiel/teareduce).
 
 Once your environment is activated, install `teareduce` with:
 ```console
