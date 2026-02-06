@@ -1,0 +1,10 @@
+# usage:
+# $ pip install -r requirements-dev.txt
+
+# Full dependencies for local development
+-r requirements.txt
+astropy
+matplotlib
+numpy
+teareduce[cleanest]
+PyCosmic @ git+https://github.com/nicocardiel/PyCosmic.git@test

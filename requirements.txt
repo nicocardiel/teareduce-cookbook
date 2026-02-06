@@ -1,9 +1,5 @@
-astropy
-click_extra[sphinx]
+# Needed for Jupyter Book builds
 ipywidgets
-jupyter-book<2.0
-matplotlib
-numpy
-teareduce[cleanest]
-PyCosmic @ git+https://github.com/nicocardiel/PyCosmic.git@test
 sphinx_new_tab_link
+click_extra[sphinx]
+jupyter-book<2.0
