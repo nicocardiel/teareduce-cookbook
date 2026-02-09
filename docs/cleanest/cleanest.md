@@ -169,12 +169,14 @@ The window is divided into three parameter blocks:
 
 - **L.A.Cosmic Parameters**: This section displays the parameters used by the
   `cosmicray_lacosmic()` function. Note that each parameter appears in two
-  columns: run1 and run2. The algorithm runs twice: in run1, a set of
+  columns: Run 1 and Run 2. The algorithm runs twice: in Run 1, a set of
   parameters identifies pixels that most clearly appear to be affected by
-  cosmic rays. In run2, some parameters can be modified to detect pixels with
+  cosmic rays. In Run 2, some parameters can be modified to detect pixels with
   weaker cosmic-ray signals. Although this second pass may generate many false
-  positives, **tea-cleanest** only adds run2 pixels to the cosmic-ray mask if
-  they lie in the neighborhood of run1 cosmic-ray pixels. Users should consult
+  positives, **tea-cleanest** only adds Run 2 pixels to the cosmic-ray mask if
+  they lie in the neighborhood of Run 1 cosmic-ray pixels.
+
+  Users should consult
   the [`cosmicray_lacosmic()` function
   documentation](https://ccdproc.readthedocs.io/en/latest/api/ccdproc.cosmicray_lacosmic.html)
   provided by the **ccdproc** package.
@@ -198,11 +200,20 @@ After clicking the `OK` button, **tea-cleanest** runs L.A.Cosmic twice and displ
 The detected pixels are grouped into cosmic rays, each consisting of one or more connected pixels.
 ```
 
-At this point, you can choose to automatically clean all detected cosmic rays by selecting the `Replace detected CRs` button, or perform an individual analysis of each cosmic ray. For individual analysis, you can sequentially review all detected cosmic rays by clicking the `Review detected CRs` button, or you can click on the image to examine the cosmic ray closest to the cursor position. If no cosmic ray is near the cursor, the program will display the region around the brightest point in the image.
+At this point, you can choose to automatically clean all detected cosmic rays
+by selecting the `Replace detected CRs` button, or perform an individual
+analysis of each cosmic ray. For individual analysis, you can sequentially
+review all detected cosmic rays by clicking the `Review detected CRs` button,
+or you can click on the image to examine the cosmic ray closest to the cursor
+position. If no cosmic ray is near the cursor, the program will display the
+region around the brightest point in the image.
 
 #### Automatic Cleaning of the Detected CRs
 
-If you choose to click the `Replace detected CRs` button, the program will display a new *Cleaning Parameters* window that allows you to define the interpolation method for replacing the signal in cosmic-ray pixels.
+If you choose to click the `Replace detected CRs` button, the program will
+display a new *Cleaning Parameters* window that allows you to define the
+interpolation method for replacing the signal in cosmic-ray pixels.
+
 ```{image} images/single_4a_lacosmic.png
 ```
 
@@ -359,18 +370,18 @@ interpolation is the same as that described for the L.A.Cosmic algorithm.
 
 ### `Run deepCR`
 
-After clicking `Run deepCR`, the program will display two dialog windows asking
-for the probability threshold to consider a pixel as a cosmic ray (default 0.5)
-and an optional dilation factor (default zero).
+After clicking `Run deepCR`, the program will display some dialog windows
+asking for the probability threshold to consider a pixel as a cosmic ray (for
+Run 1 and Run 2) and an optional dilation factor (default zero).
 
 Once the cosmic-ray pixels have been detected, the procedure for their
 interpolation is the same as that described for the L.A.Cosmic algorithm.
 
 ### `Run Cosmic-CoNN`
 
-After clicking `Run Cosmic-CoNN`, the program will display two dialog windows
-asking for the probability threshold to consider a pixel as a cosmic ray
-(default 0.5) and an optional dilation factor (default zero).
+After clicking `Run Cosmic-CoNN`, the program will display some dialog windows
+asking for the probability threshold to consider a pixel as a cosmic ray (for
+Run 1 and Run 2) and an optional dilation factor (default zero).
 
 Once the cosmic-ray pixels have been detected, the procedure for their
 interpolation is the same as that described for the L.A.Cosmic algorithm.
