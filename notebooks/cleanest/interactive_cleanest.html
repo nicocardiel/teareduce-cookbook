@@ -1,0 +1,1780 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Interactive use of cleanest functionality &#8212; Teareduce cookbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=4c37a550" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=47231a2d"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=1ae7504c"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/cleanest/interactive_cleanest';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Automatic Cosmic Ray Removal in Double Exposures" href="../cr2images/cr2images.html" />
+    <link rel="prev" title="Interactive Cosmic Ray Removal in Single and Multiple Equivalent Exposures" href="../../docs/cleanest/cleanest.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Teareduce cookbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Teareduce cookbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    The package teareduce
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../aux.html">Auxiliary functions and classes</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../aux/imshow/imshow.html">The imshow wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../aux/sliceregion/sliceregion.html">Auxiliary classes for image slicing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../aux/elapsedtime/elapsedtime.html">Elapsed time and system information</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulateccd/simulateccd.html">Simulation of CCD images</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../../docs/cleanest/cleanest.html">Interactive Cosmic Ray Removal in Single and Multiple Equivalent Exposures</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Interactive use of cleanest functionality</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../cr2images/cr2images.html">Automatic Cosmic Ray Removal in Double Exposures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wavecalib/wavecalib.html">C distortion and wavelength calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../adaptivespl/adaptivespl.html">Adaptive spline fit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../bibliography.html">Bibliography</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/cleanest/interactive_cleanest.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Interactive use of cleanest functionality</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-specific-packages">Import specific packages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-data">Example data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#detect-crs-in-a-single-image-using-l-a-cosmic">Detect CRs in a single image using L.A.Cosmic</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-l-a-cosmic-only-once">Running L.A.Cosmic only once</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clean-the-detected-crs">Clean the detected CRs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-l-a-cosmic-twice">Running L.A.Cosmic twice</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-with-reference-image">Comparison with reference image</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-other-cr-detection-algorithms-for-single-images">Using other CR detection algorithms for single images</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pycosmic">PyCosmic</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#deepcr">deepCR</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cosmic-conn">Cosmic-CoNN</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#detect-crs-in-multiple-equivalent-exposures">Detect CRs in multiple equivalent exposures</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-case-two-equivalent-exposures">Simple case: two equivalent exposures</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#general-case">General case</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-l-a-cosmic">Using L.A.Cosmic</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-pycosmic">Using PyCosmic</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-deepcr">Using deepCR</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-cosmic-conn">Using Cosmic-CoNN</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="interactive-use-of-cleanest-functionality">
+<h1>Interactive use of cleanest functionality<a class="headerlink" href="#interactive-use-of-cleanest-functionality" title="Link to this heading">#</a></h1>
+<p>This notebook describes how to handle the cleaning of cosmic-ray pixels when working with <strong>single</strong> or <strong>multiple equivalent exposures</strong>.</p>
+<div style="
+    padding: 10px;
+    border-left: 5px solid #f39c12;
+    background-color: #fcf3cf;
+">
+<strong>Warning:</strong> 
+We are not trying here to demonstrate the usefulness of a particular detection algorithm nor the benefits of using a particular interpolation method to replace cosmic-ray pixels. We are simply showing the basic Python code required to use programmatically some of the functionality available in <strong>tea-cleanest</strong>.
+</div>
+<br><div style="
+    padding: 10px;
+    border-left: 5px solid #4a90e2;
+    background-color: #e7f2fa;
+">
+<strong>Note:</strong> 
+If you use this code, please cite <a href="https://arxiv.org/abs/2601.20914" target="_blank">Cardiel et al. 2026</a> and the references of the corresponding detection algorithms employed:<br>
+<ul>
+    <li>L.A.Cosmic: see <strong>References</strong> at the bottom of <a href="https://ccdproc.readthedocs.io/en/latest/api/ccdproc.cosmicray_lacosmic.html" target="_blank">this link</a></li>
+    <li>PyCosmic: cite <a href=https://www.aanda.org/articles/aa/full_html/2012/09/aa20102-12/aa20102-12.html" target="_blank">Husemann et al. 2012</a></li>
+    <li>deepCR: cite <a href="https://iopscience.iop.org/article/10.3847/1538-4357/ab3fa6" target="_blank">Zhang et al. 2020</a></li>
+    <li>Cosmic-CoNN: cite <a href="https://iopscience.iop.org/article/10.3847/1538-4357/ac9d91" target="_blank">Xu et al. 2023</a></li>
+</ul>
+</div>
+<br><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">astropy.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">fits</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">ndimage</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">teareduce</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tea</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">teareduce</span><span class="w"> </span><span class="kn">import</span> <span class="n">cleanest</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">time_ini</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="import-specific-packages">
+<h2>Import specific packages<a class="headerlink" href="#import-specific-packages" title="Link to this heading">#</a></h2>
+<p>The following code checks whether some specific packages devoted to detecting and cleaning cosmic rays have already been installed. This is not necessary if you have previously successfully installed and run <strong>tea-cleanest</strong>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">importlib</span>
+
+<span class="c1"># Map: pip package name -&gt; Python import name</span>
+<span class="n">required</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;ccdproc&quot;</span><span class="p">:</span> <span class="s2">&quot;ccdproc&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;maskfill&quot;</span><span class="p">:</span> <span class="s2">&quot;maskfill&quot;</span><span class="p">,</span>     <span class="c1"># change if the import name differs</span>
+    <span class="s2">&quot;deepCR&quot;</span><span class="p">:</span> <span class="s2">&quot;deepCR&quot;</span><span class="p">,</span>         <span class="c1"># case sensitive; adjust if module is &#39;deepcr&#39;</span>
+    <span class="s2">&quot;cosmic-conn&quot;</span><span class="p">:</span> <span class="s2">&quot;cosmic_conn&quot;</span>  <span class="c1"># hyphen in pip, underscore in import (example)</span>
+<span class="p">}</span>
+
+<span class="n">missing</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">pip_name</span><span class="p">,</span> <span class="n">import_name</span> <span class="ow">in</span> <span class="n">required</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Checking availability of package: </span><span class="si">{</span><span class="n">import_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">import_name</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
+        <span class="n">missing</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">pip_name</span><span class="p">,</span> <span class="n">import_name</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
+    <span class="n">msg_lines</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;This notebook requires the following packages:&quot;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">pip_name</span><span class="p">,</span> <span class="n">import_name</span> <span class="ow">in</span> <span class="n">missing</span><span class="p">:</span>
+        <span class="n">msg_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot; - import name: &#39;</span><span class="si">{</span><span class="n">import_name</span><span class="si">}</span><span class="s2">&#39; (install with: pip install </span><span class="si">{</span><span class="n">pip_name</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">ModuleNotFoundError</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">msg_lines</span><span class="p">))</span>
+
+<span class="c1"># Import all packages into the global namespace</span>
+<span class="k">for</span> <span class="n">import_name</span> <span class="ow">in</span> <span class="n">required</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Importing: </span><span class="si">{</span><span class="n">import_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">globals</span><span class="p">()[</span><span class="n">import_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">import_name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Checking availability of package: ccdproc
+Checking availability of package: maskfill
+Checking availability of package: deepCR
+Checking availability of package: cosmic_conn
+Importing: ccdproc
+Importing: maskfill
+Importing: deepCR
+Importing: cosmic_conn
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">PyCosmic</span>
+<span class="k">except</span> <span class="ne">ModuleNotFoundError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">ModuleNotFoundError</span><span class="p">(</span>
+        <span class="s2">&quot;The &#39;teareduce.cleanest&#39; module requires the &#39;PyCosmic&#39; package.</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;Please install this module using:</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;`pip install git+https://github.com/nicocardiel/PyCosmic.git@test`&quot;</span>        
+    <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Importing: PyCosmic&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Importing: PyCosmic
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-data">
+<h2>Example data<a class="headerlink" href="#example-data" title="Link to this heading">#</a></h2>
+<p>Download the example data files used in this notebook.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="p">[</span>
+    <span class="s1">&#39;notebooks/cleanest/examplecr1.fits&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;notebooks/cleanest/examplecr2.fits&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;notebooks/cleanest/examplecr3.fits&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;notebooks/cleanest/examplecr1_cleaned_with_surface.fits&#39;</span><span class="p">,</span>
+<span class="p">]:</span>
+    <span class="n">tea</span><span class="o">.</span><span class="n">get_cookbook_file</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>File examplecr1.fits already exists locally. Skipping download.
+File examplecr2.fits already exists locally. Skipping download.
+File examplecr3.fits already exists locally. Skipping download.
+File examplecr1_cleaned_with_surface.fits already exists locally. Skipping download.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="detect-crs-in-a-single-image-using-l-a-cosmic">
+<h2>Detect CRs in a single image using L.A.Cosmic<a class="headerlink" href="#detect-crs-in-a-single-image-using-l-a-cosmic" title="Link to this heading">#</a></h2>
+<p>The following lines of code show how to run the cleaning of the first example image used in <a class="reference external" href="https://nicocardiel.github.io/teareduce-cookbook/docs/cleanest/cleanest.html#simple-execution-single-image" rel="noreferrer" target="_blank">Simple execution (single image)</a>. The results will be compared with a previously computed cleaned image, which serves as a test of the code.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read the input file</span>
+<span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;examplecr1.fits&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdul</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">hdul</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="running-l-a-cosmic-only-once">
+<h3>Running L.A.Cosmic only once<a class="headerlink" href="#running-l-a-cosmic-only-once" title="Link to this heading">#</a></h3>
+<p>As explained in the documentation of <strong>tea-cleanest</strong>, the L.A.Cosmic algorithm can be run twice (<code class="docutils literal notranslate"><span class="pre">run</span> <span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">run</span> <span class="pre">2</span></code>) on the same image using different values for some parameters. Before dealing with this case, let’s illustrate how to run L.A.Cosmic simply once, using the same parameters used in <code class="docutils literal notranslate"><span class="pre">run</span> <span class="pre">1</span></code>.</p>
+<p>Here we are using the <code class="docutils literal notranslate"><span class="pre">cleanest.lacosmicpad()</span></code> function, which is a wrapper around the <code class="docutils literal notranslate"><span class="pre">cosmicray_lacosmic()</span></code> function from the <strong>ccdproc</strong> package. This function pads the input image array before applying L.A.Cosmic (this helps the algorithm locate CR pixels close to the image borders). If <code class="docutils literal notranslate"><span class="pre">inbkg</span></code> or <code class="docutils literal notranslate"><span class="pre">invar</span></code> arrays are provided, they are also padded accordingly. After processing, the padding is removed to return an array of the original size.</p>
+<p>Users should consult the <a class="reference external" href="https://ccdproc.readthedocs.io/en/latest/api/ccdproc.cosmicray_lacosmic.html" rel="noreferrer" target="_blank">cosmicray_lacosmic()</a> function documentation provided by the ccdproc package.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pad_width</span> <span class="o">=</span> <span class="mi">10</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cleandata_lacosmic</span><span class="p">,</span> <span class="n">mask_crfound</span> <span class="o">=</span> <span class="n">cleanest</span><span class="o">.</span><span class="n">lacosmicpad</span><span class="p">(</span>
+    <span class="n">pad_width</span><span class="o">=</span><span class="n">pad_width</span><span class="p">,</span>
+    <span class="n">ccd</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+    <span class="n">gain</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">readnoise</span><span class="o">=</span><span class="mf">6.5</span><span class="p">,</span>
+    <span class="n">sigclip</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span>
+    <span class="n">sigfrac</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+    <span class="n">objlim</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span>
+    <span class="n">niter</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">fsmode</span><span class="o">=</span><span class="s1">&#39;median&#39;</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Running L.A.Cosmic implementation from ccdproc version <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2.4</span>.<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span>
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold">(</span>please wait<span style="color: #808000; text-decoration-color: #808000">...</span><span style="font-weight: bold">)</span>
+</pre>
+</div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting 4 L.A.Cosmic iterations
+Iteration 1:
+6419 cosmic pixels this iteration
+Iteration 2:
+353 cosmic pixels this iteration
+Iteration 3:
+29 cosmic pixels this iteration
+Iteration 4:
+17 cosmic pixels this iteration
+</pre></div>
+</div>
+<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Done!
+</pre>
+</div></div>
+</div>
+<p>Check image shapes</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">cleandata_lacosmic</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">mask_crfound</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>((1596, 2016), (1596, 2016), (1596, 2016))
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="clean-the-detected-crs">
+<h3>Clean the detected CRs<a class="headerlink" href="#clean-the-detected-crs" title="Link to this heading">#</a></h3>
+<p>Using the cosmic-ray pixel mask, we can proceed to interpolate the cosmic rays using the desired method.</p>
+<p>The cosmic-ray pixels are initially dilated by the specified number of pixels (0 means no dilation). The resulting flagged pixels are grouped into cosmic-ray features. Each cosmic-ray feature is then interpolated using the specified interpolation method.</p>
+<p>Note that the interpolation methods <code class="docutils literal notranslate"><span class="pre">lacosmic</span></code> and <code class="docutils literal notranslate"><span class="pre">auxfile</span></code>, available in the interactive use of <strong>tea-cleanest</strong> are not implemented in this function because both cases are simply an inmediate replacement of the cosmic ray pixels in the data array by the corresponding pixels in another array using the mask array. Therefore, these two methods do not require any interpolation algorithm.</p>
+<p>In the following example we are replacing the detected pixels using the surface interpolation (<code class="docutils literal notranslate"><span class="pre">interp_method='s'</span></code>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_cleaned</span><span class="p">,</span> <span class="n">masked</span> <span class="o">=</span> <span class="n">cleanest</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">mask_crfound</span><span class="p">,</span> <span class="n">interp_method</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">npoints</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">degree</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Number of cosmic ray pixels to be cleaned: <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">6590</span>
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Number of cosmic rays <span style="font-weight: bold">(</span>grouped pixels<span style="font-weight: bold">)</span><span style="color: #808000; text-decoration-color: #808000">...</span>:  <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">749</span>
+</pre>
+</div><script type="application/vnd.jupyter.widget-view+json">{"model_id": "f418d1e2ac194f79972f8af264834bc2", "version_major": 2, "version_minor": 0}</script><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Number of cosmic rays cleaned<span style="color: #808000; text-decoration-color: #808000">............</span>:  <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">749</span>
+</pre>
+</div></div>
+</div>
+<p>For a more detailed explanation of the available possibilities, have a look at the documentation of this function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">?</span>cleanest.interpolate
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Red">Signature:</span>
+cleanest<span class=" -Color -Color-Blue">.</span>interpolate<span class=" -Color -Color-Blue">(</span>
+    data<span class=" -Color -Color-Blue">,</span>
+    mask_crfound<span class=" -Color -Color-Blue">,</span>
+    dilation<span class=" -Color -Color-Blue">=</span><span class=" -Color -Color-Cyan">0</span><span class=" -Color -Color-Blue">,</span>
+    interp_method<span class=" -Color -Color-Blue">=</span><span class=" -Color -Color-Green">None</span><span class=" -Color -Color-Blue">,</span>
+    npoints<span class=" -Color -Color-Blue">=</span><span class=" -Color -Color-Green">None</span><span class=" -Color -Color-Blue">,</span>
+    degree<span class=" -Color -Color-Blue">=</span><span class=" -Color -Color-Green">None</span><span class=" -Color -Color-Blue">,</span>
+    debug<span class=" -Color -Color-Blue">=</span><span class=" -Color -Color-Green">False</span><span class=" -Color -Color-Blue">,</span>
+<span class=" -Color -Color-Blue">)</span>
+<span class=" -Color -Color-Red">Docstring:</span>
+Interpolate pixels identified in a mask.
+
+The original data and mask are not modified. A copy of both
+arrays are created and returned with the interpolated pixels.
+
+Cosmic-ray pixels are initially dilated by the specified number
+of pixels. The resulting flagged pixels are grouped into cosmic-ray
+features. Each cosmic-ray feature is then interpolated using the
+specified interpolation method.
+
+Note that the interpolation methods `lacosmic` and `auxfile`,
+available in the interactive use of **tea-cleanest** are not
+implemented in this function because both cases are simply
+an inmediate replacement of the cosmic ray pixels in the data
+array by the corresponding pixels in another array using the
+mask array. Therefore, these two methods do not require any
+interpolation algorithm.
+
+Parameters
+----------
+data : 2D numpy.ndarray
+    The image data array to be processed.
+mask_crfound : 2D numpy.ndarray of bool
+    A boolean mask array indicating which pixels are flagged
+    and need to be interpolated (True = pixel to be fixed).
+dilation : int, optional
+    The number of pixels to dilate the masked pixels before
+    interpolation.
+interp_method : str, optional
+    The interpolation method to use. Options are:
+    &#39;x&#39; : Polynomial interpolation in the X direction using neighbor pixels
+    &#39;y&#39; : Polynomial interpolation in the Y direction using neighbor pixels
+    &#39;s&#39; : Surface fit (degree 1) interpolation using neighbor pixels
+    &#39;d&#39; : Median of neighbor pixels interpolation using neighbor pixels
+    &#39;m&#39; : Mean of neighbor pixels interpolation using neighbor pixels
+    &#39;k&#39; : Maskfill method, as described in van Dokkum &amp; Pasha (2024)
+npoints : int, optional
+    The number of points to use for interpolation. This
+    parameter is relevant for &#39;x&#39;, &#39;y&#39;, &#39;s&#39;, &#39;d&#39;, and &#39;m&#39; methods.
+degree : int, optional
+    The degree of the polynomial to fit. This parameter is
+    relevant for &#39;x&#39; and &#39;y&#39; methods.
+debug : bool, optional
+    If True, print debug information and enable tqdm progress bar.
+
+Returns
+-------
+cleaned_data : 2D numpy.ndarray
+    The image data array with cosmic rays cleaned.
+mask_fixed : 2D numpy.ndarray of bool
+    The updated boolean mask array indicating which pixels
+    have been fixed.
+
+Notes
+-----
+This function has been created to clean cosmic rays without
+the need of a GUI interaction. It can be used in scripts
+or batch processing of images.
+<span class=" -Color -Color-Red">File:</span>      ~/s/teareduce/z_devel/teareduce/src/teareduce/cleanest/interpolate.py
+<span class=" -Color -Color-Red">Type:</span>      function
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="running-l-a-cosmic-twice">
+<h3>Running L.A.Cosmic twice<a class="headerlink" href="#running-l-a-cosmic-twice" title="Link to this heading">#</a></h3>
+<p>Although the prior execution of L.A.Cosmic has allowed the removal of many cosmic rays in the initial image, visual inspection reveals that the tails of some cosmic rays (i.e., pixels with weaker but still affected signals) have not been interpolated. The way <strong>tea-cleanest</strong> addresses this situation is by running L.A.Cosmic a second time, using a lower threshold to detect cosmic rays. To prevent the appearance of many false positives, the code groups suspected pixels into cosmic-ray features. The newly detected cosmic-ray features from the second run are only retained if they are in contact with cosmic-ray features already identified in the first execution of L.A.Cosmic.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cleandata_lacosmic2</span><span class="p">,</span> <span class="n">mask_crfound2</span> <span class="o">=</span> <span class="n">cleanest</span><span class="o">.</span><span class="n">lacosmicpad</span><span class="p">(</span>
+    <span class="n">pad_width</span><span class="o">=</span><span class="n">pad_width</span><span class="p">,</span>
+    <span class="n">ccd</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+    <span class="n">gain</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">readnoise</span><span class="o">=</span><span class="mf">6.5</span><span class="p">,</span>
+    <span class="n">sigclip</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span>      <span class="c1"># modified</span>
+    <span class="n">sigfrac</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+    <span class="n">objlim</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span>
+    <span class="n">niter</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">fsmode</span><span class="o">=</span><span class="s1">&#39;median&#39;</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Running L.A.Cosmic implementation from ccdproc version <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2.4</span>.<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span>
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold">(</span>please wait<span style="color: #808000; text-decoration-color: #808000">...</span><span style="font-weight: bold">)</span>
+</pre>
+</div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting 4 L.A.Cosmic iterations
+Iteration 1:
+9375 cosmic pixels this iteration
+Iteration 2:
+810 cosmic pixels this iteration
+Iteration 3:
+107 cosmic pixels this iteration
+Iteration 4:
+38 cosmic pixels this iteration
+</pre></div>
+</div>
+<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Done!
+</pre>
+</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mask_crfound</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mask_crfound2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(np.int64(6590), np.int64(9954))
+</pre></div>
+</div>
+</div>
+</div>
+<p>The merging of both masks, following the strategy previously mentioned, is carried out by the auxiliary function <code class="docutils literal notranslate"><span class="pre">merge_peak_tail_masks()</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mask_crfound</span> <span class="o">=</span> <span class="n">cleanest</span><span class="o">.</span><span class="n">merge_peak_tail_masks</span><span class="p">(</span>
+    <span class="n">mask_peaks</span><span class="o">=</span><span class="n">mask_crfound</span><span class="p">,</span> 
+    <span class="n">mask_tails</span><span class="o">=</span><span class="n">mask_crfound2</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of cosmic ray pixels (peaks)...............: 6590
+Number of cosmic ray pixels (tails)...............: 9954
+Number of cosmic ray pixels (merged peaks &amp; tails): 7648
+</pre></div>
+</div>
+</div>
+</div>
+<p>We then proceed to interpolate the cosmic-ray pixels using the new mask.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_cleaned</span><span class="p">,</span> <span class="n">masked</span> <span class="o">=</span> <span class="n">cleanest</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> 
+    <span class="n">mask_crfound</span><span class="o">=</span><span class="n">mask_crfound</span><span class="p">,</span> 
+    <span class="n">interp_method</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> 
+    <span class="n">npoints</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> 
+    <span class="n">degree</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
+    <span class="n">debug</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Number of cosmic ray pixels to be cleaned: <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">7648</span>
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Number of cosmic rays <span style="font-weight: bold">(</span>grouped pixels<span style="font-weight: bold">)</span><span style="color: #808000; text-decoration-color: #808000">...</span>:  <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">748</span>
+</pre>
+</div><script type="application/vnd.jupyter.widget-view+json">{"model_id": "a9d29a4c2ca64f81b534cdb06dcded92", "version_major": 2, "version_minor": 0}</script><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Number of cosmic rays cleaned<span style="color: #808000; text-decoration-color: #808000">............</span>:  <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">748</span>
+</pre>
+</div></div>
+</div>
+</section>
+<section id="comparison-with-reference-image">
+<h3>Comparison with reference image<a class="headerlink" href="#comparison-with-reference-image" title="Link to this heading">#</a></h3>
+<p>One of the downloaded images at the beginning of the execution of this notebook is the file <code class="docutils literal notranslate"><span class="pre">examplecr1_cleaned_with_surface.fits</span></code>, which was generated interactively using <strong>tea-cleanest</strong>. We can compare this file with the result from the last section.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">reference_filename</span> <span class="o">=</span> <span class="s2">&quot;examplecr1_cleaned_with_surface.fits&quot;</span>
+<span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">reference_filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdul</span><span class="p">:</span>
+    <span class="n">reference_data</span> <span class="o">=</span> <span class="n">hdul</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">reference_mask</span> <span class="o">=</span> <span class="n">hdul</span><span class="p">[</span><span class="s2">&quot;CRMASK&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Check data array</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">data_cleaned</span><span class="p">,</span> <span class="n">reference_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+<p>Check CR mask array</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">masked</span><span class="p">,</span> <span class="n">reference_mask</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="using-other-cr-detection-algorithms-for-single-images">
+<h3>Using other CR detection algorithms for single images<a class="headerlink" href="#using-other-cr-detection-algorithms-for-single-images" title="Link to this heading">#</a></h3>
+<p>You can choose any suitable detection algorithm before making use of the <code class="docutils literal notranslate"><span class="pre">cleanest.interpolation()</span></code> function. Let’s see how to do it using other algorithms incorporated in <strong>tea-cleanest</strong>.</p>
+<section id="pycosmic">
+<h4>PyCosmic<a class="headerlink" href="#pycosmic" title="Link to this heading">#</a></h4>
+<p>In this case one can proceed by calling directly the <code class="docutils literal notranslate"><span class="pre">det_cosmics()</span></code> function available in the <a class="reference external" href="https://github.com/brandherd/PyCosmic/tree/master" rel="noreferrer" target="_blank">PyCosmic package</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">?</span>PyCosmic.det_cosmics
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Red">Signature:</span>
+PyCosmic<span class=" -Color -Color-Blue">.</span>det_cosmics<span class=" -Color -Color-Blue">(</span>
+    data<span class=" -Color -Color-Blue">,</span>
+    sigma_det<span class=" -Color -Color-Blue">=</span><span class=" -Color -Color-Cyan">5</span><span class=" -Color -Color-Blue">,</span>
+    rlim<span class=" -Color -Color-Blue">=</span><span class=" -Color -Color-Cyan">1.2</span><span class=" -Color -Color-Blue">,</span>
+    iterations<span class=" -Color -Color-Blue">=</span><span class=" -Color -Color-Cyan">5</span><span class=" -Color -Color-Blue">,</span>
+    fwhm_gauss<span class=" -Color -Color-Blue">=[</span><span class=" -Color -Color-Cyan">2.0</span><span class=" -Color -Color-Blue">,</span> <span class=" -Color -Color-Cyan">2.0</span><span class=" -Color -Color-Blue">],</span>
+    replace_box<span class=" -Color -Color-Blue">=[</span><span class=" -Color -Color-Cyan">5</span><span class=" -Color -Color-Blue">,</span> <span class=" -Color -Color-Cyan">5</span><span class=" -Color -Color-Blue">],</span>
+    replace_error<span class=" -Color -Color-Blue">=</span><span class=" -Color -Color-Cyan">1000000.0</span><span class=" -Color -Color-Blue">,</span>
+    increase_radius<span class=" -Color -Color-Blue">=</span><span class=" -Color -Color-Cyan">0</span><span class=" -Color -Color-Blue">,</span>
+    gain<span class=" -Color -Color-Blue">=</span><span class=" -Color -Color-Cyan">1.0</span><span class=" -Color -Color-Blue">,</span>
+    rdnoise<span class=" -Color -Color-Blue">=</span><span class=" -Color -Color-Cyan">1.0</span><span class=" -Color -Color-Blue">,</span>
+    bias<span class=" -Color -Color-Blue">=</span><span class=" -Color -Color-Cyan">0.0</span><span class=" -Color -Color-Blue">,</span>
+    verbose<span class=" -Color -Color-Blue">=</span><span class=" -Color -Color-Green">False</span><span class=" -Color -Color-Blue">,</span>
+<span class=" -Color -Color-Blue">)</span>
+<span class=" -Color -Color-Red">Docstring:</span>
+Detects and removes cosmics from astronomical images based on Laplacian edge
+detection scheme combined with a PSF convolution approach.
+
+IMPORTANT:
+The image and the readout noise are assumed to be in units of electrons.
+The image also needs to be BIAS subtracted! The gain can be entered to convert the image from ADUs to
+electros, when this is down already set gain=1.0 as the default. If ncessary a homegnous bias level can
+be subtracted if necessary but default is 0.0.
+
+ Parameters
+ --------------
+ data: ndarray
+         Two-dimensional array representing the input image in which cosmic rays are detected.
+ sigma_det: float, default: 5.0
+         Detection limit of edge pixel above the noise in (sigma units) to be detected as comiscs
+ rlim: float, default: 1.2
+         Detection threshold between Laplacian edged and Gaussian smoothed image
+ iterations: integer, default: 5
+         Number of iterations. Should be &gt;1 to fully detect extended cosmics
+ fwhm_gauss: list of floats, default: [2.0, 2.0]
+         FWHM of the Gaussian smoothing kernel in x and y direction on the CCD
+ replace_box: list integers, default: [5,5]
+         median box size in x and y to estimate replacement values from valid pixels
+ replace_error: float, default: 1e6
+         Error value for bad pixels in the comupted error image
+ increase_radius: integer, default: 0
+         Increase the boundary of each detected cosmic ray pixel by the given number of pixels.
+ gain: float, default=1.0
+         Value of the gain in units of electrons/ADUs
+ rdnoise: float, default=1.0
+         Value of the readout noise in electrons
+ bias: float, default=0.0
+         Optional subtraction of a bias level.
+ verbose: boolean, default: False
+         Flag for providing information during the processing on the command line
+
+ Ouput
+ -------------
+ out: Image class instance
+     Result of the detection process is an Image which contains .data, .error, .mask as attributes for the
+     cleaned image, the internally computed error image and a mask image with flags for cosmic ray pixels.
+
+ Reference
+ --------------
+ Husemann et al. 2012, A&amp;A, Volume 545, A137 (https://ui.adsabs.harvard.edu/abs/2012A%26A...545A.137)
+<span class=" -Color -Color-Red">File:</span>      ~/venv_tea/lib/python3.12/site-packages/PyCosmic/det_cosmics.py
+<span class=" -Color -Color-Red">Type:</span>      function
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">out</span> <span class="o">=</span> <span class="n">PyCosmic</span><span class="o">.</span><span class="n">det_cosmics</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+    <span class="n">sigma_det</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span>
+    <span class="n">rlim</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span>
+    <span class="n">iterations</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">fwhm_gauss</span><span class="o">=</span><span class="p">[</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">],</span>
+    <span class="n">replace_box</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+    <span class="n">replace_error</span><span class="o">=</span><span class="mf">1e6</span><span class="p">,</span>
+    <span class="n">increase_radius</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">gain</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">rdnoise</span><span class="o">=</span><span class="mf">6.5</span><span class="p">,</span>
+    <span class="n">bias</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A value of 6.500000 is used for the electron read-out noise.
+Start the detection process using.
+Start iteration 1
+Total number of detected cosmics: 2966 out of 3217536 pixels
+Start iteration 2
+Total number of detected cosmics: 5617 out of 3217536 pixels
+Start iteration 3
+Total number of detected cosmics: 6333 out of 3217536 pixels
+Start iteration 4
+Total number of detected cosmics: 6414 out of 3217536 pixels
+Start iteration 5
+Total number of detected cosmics: 6418 out of 3217536 pixels
+</pre></div>
+</div>
+</div>
+</div>
+<p>Although the previous function already returns a cleaned version of the image in <code class="docutils literal notranslate"><span class="pre">out.data</span></code>, the use of <code class="docutils literal notranslate"><span class="pre">cleanest.interpolation()</span></code> allows you to use simply the mask stored in <code class="docutils literal notranslate"><span class="pre">out.mask</span></code> and select any of the available interpolation algorithms in the latter function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mask_crfound</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_cleaned</span><span class="p">,</span> <span class="n">masked</span> <span class="o">=</span> <span class="n">cleanest</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> 
+    <span class="n">mask_crfound</span><span class="o">=</span><span class="n">mask_crfound</span><span class="p">,</span>
+    <span class="n">interp_method</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> 
+    <span class="n">npoints</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> 
+    <span class="n">degree</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
+    <span class="n">debug</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Number of cosmic ray pixels to be cleaned: <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">6418</span>
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Number of cosmic rays <span style="font-weight: bold">(</span>grouped pixels<span style="font-weight: bold">)</span><span style="color: #808000; text-decoration-color: #808000">...</span>:  <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">806</span>
+</pre>
+</div><script type="application/vnd.jupyter.widget-view+json">{"model_id": "35be766aece24fd78f77ada71853b02e", "version_major": 2, "version_minor": 0}</script><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Number of cosmic rays cleaned<span style="color: #808000; text-decoration-color: #808000">............</span>:  <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">806</span>
+</pre>
+</div></div>
+</div>
+</section>
+<section id="deepcr">
+<h4>deepCR<a class="headerlink" href="#deepcr" title="Link to this heading">#</a></h4>
+<p>Here we make use of two functions from the <a class="reference external" href="https://deepcr.readthedocs.io/en/latest/" rel="noreferrer" target="_blank">deepCR package</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">?</span>deepCR.deepCR
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Red">Init signature:</span> deepCR<span class=" -Color -Color-Blue">.</span>deepCR<span class=" -Color -Color-Blue">(</span>mask<span class=" -Color -Color-Blue">=&#39;ACS-WFC&#39;,</span> inpaint<span class=" -Color -Color-Blue">=</span><span class=" -Color -Color-Green">None</span><span class=" -Color -Color-Blue">,</span> device<span class=" -Color -Color-Blue">=&#39;CPU&#39;,</span> hidden<span class=" -Color -Color-Blue">=</span><span class=" -Color -Color-Cyan">32</span><span class=" -Color -Color-Blue">)</span>
+<span class=" -Color -Color-Red">Docstring:</span>      &lt;no docstring&gt;
+<span class=" -Color -Color-Red">Init docstring:</span>
+    Instantiation of deepCR with specified model configurations
+
+Parameters
+----------
+mask : str
+    Either name of existing deepCR-mask model, or file path of your own model (incl. &#39;.pth&#39;)
+inpaint : (optional) str
+    Name of existing inpainting model to use. If left as None then by default use a simple 5x5 median mask
+    sampling for inpainting
+device : str
+    One of &#39;CPU&#39; or &#39;GPU&#39;
+hidden : int
+    Number of hidden channel for first deepCR-mask layer. Specify only if using custom deepCR-mask model.
+Returns
+-------
+None
+    
+<span class=" -Color -Color-Red">File:</span>           ~/venv_tea/lib/python3.12/site-packages/deepCR/model.py
+<span class=" -Color -Color-Red">Type:</span>           type
+<span class=" -Color -Color-Red">Subclasses:</span>     
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize the deepCR model</span>
+<span class="n">mdl</span> <span class="o">=</span> <span class="n">deepCR</span><span class="o">.</span><span class="n">deepCR</span><span class="p">(</span><span class="n">mask</span><span class="o">=</span><span class="s2">&quot;ACS-WFC&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">?</span>mdl.clean
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Red">Signature:</span>
+mdl<span class=" -Color -Color-Blue">.</span>clean<span class=" -Color -Color-Blue">(</span>
+    img0<span class=" -Color -Color-Blue">,</span>
+    threshold<span class=" -Color -Color-Blue">=</span><span class=" -Color -Color-Cyan">0.5</span><span class=" -Color -Color-Blue">,</span>
+    inpaint<span class=" -Color -Color-Blue">=</span><span class=" -Color -Color-Green">False</span><span class=" -Color -Color-Blue">,</span>
+    binary<span class=" -Color -Color-Blue">=</span><span class=" -Color -Color-Green">True</span><span class=" -Color -Color-Blue">,</span>
+    segment<span class=" -Color -Color-Blue">=</span><span class=" -Color -Color-Green">True</span><span class=" -Color -Color-Blue">,</span>
+    patch<span class=" -Color -Color-Blue">=</span><span class=" -Color -Color-Cyan">1024</span><span class=" -Color -Color-Blue">,</span>
+    n_jobs<span class=" -Color -Color-Blue">=</span><span class=" -Color -Color-Cyan">1</span><span class=" -Color -Color-Blue">,</span>
+<span class=" -Color -Color-Blue">)</span>
+<span class=" -Color -Color-Red">Docstring:</span>
+    Identify cosmic rays in an input image, and (optionally) inpaint with the predicted cosmic ray mask
+:param img0: (np.ndarray) 2D input image conforming to model requirements. For HST ACS/WFC, must be from
+_flc.fits and in units of electrons in native resolution.
+:param threshold: (float; [0, 1]) applied to probabilistic mask to generate binary mask
+:param inpaint: (bool) return clean, inpainted image only if True
+:param binary: return binary CR mask if True. probabilistic mask if False
+:param segment: (bool) if True, segment input image into chunks of patch * patch before performing CR rejection.
+  Used for memory control.
+:param patch: (int) Use 256 unless otherwise required. if segment==True, segment image into chunks of
+  patch * patch.
+:param n_jobs: (int) number of jobs to run in parallel, passed to `joblib.` default: 1.
+:return: CR mask and (optionally) clean inpainted image
+<span class=" -Color -Color-Red">File:</span>      ~/venv_tea/lib/python3.12/site-packages/deepCR/model.py
+<span class=" -Color -Color-Red">Type:</span>      method
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mask_crfound</span><span class="p">,</span> <span class="n">cleandata_deepcr</span> <span class="o">=</span> <span class="n">mdl</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span>
+    <span class="n">img0</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+    <span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">inpaint</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Although the previous function already returns a cleaned version of the image in <code class="docutils literal notranslate"><span class="pre">cleandata_deepcr</span></code>, the use of <code class="docutils literal notranslate"><span class="pre">cleanest.interpolation()</span></code> allows you to use simply the mask stored in <code class="docutils literal notranslate"><span class="pre">mask_crfound</span></code> and select any of the available interpolation algorithms in the latter function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_cleaned</span><span class="p">,</span> <span class="n">masked</span> <span class="o">=</span> <span class="n">cleanest</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> 
+    <span class="n">mask_crfound</span><span class="o">=</span><span class="n">mask_crfound</span><span class="p">,</span>
+    <span class="n">interp_method</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> 
+    <span class="n">npoints</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> 
+    <span class="n">degree</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
+    <span class="n">debug</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Number of cosmic ray pixels to be cleaned: <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">7906.0</span>
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Number of cosmic rays <span style="font-weight: bold">(</span>grouped pixels<span style="font-weight: bold">)</span><span style="color: #808000; text-decoration-color: #808000">...</span>:    <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">731</span>
+</pre>
+</div><script type="application/vnd.jupyter.widget-view+json">{"model_id": "cbc595d88ed34dc484f6fc0c66c6e449", "version_major": 2, "version_minor": 0}</script><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Number of cosmic rays cleaned<span style="color: #808000; text-decoration-color: #808000">............</span>:    <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">731</span>
+</pre>
+</div></div>
+</div>
+</section>
+<section id="cosmic-conn">
+<h4>Cosmic-CoNN<a class="headerlink" href="#cosmic-conn" title="Link to this heading">#</a></h4>
+<p>Here we use the functionality available in the <a class="reference external" href="https://cosmic-conn.readthedocs.io/en/latest/index.html" rel="noreferrer" target="_blank">cosmic_conn package</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize the generic ground-imaging model</span>
+<span class="n">cr_model</span> <span class="o">=</span> <span class="n">cosmic_conn</span><span class="o">.</span><span class="n">init_model</span><span class="p">(</span><span class="s2">&quot;ground_imaging&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/cardiel/venv_tea/lib/python3.12/site-packages/torch/__init__.py:1275: UserWarning: torch.set_default_tensor_type() is deprecated as of PyTorch 2.1, please use torch.set_default_dtype() and torch.set_default_device() as alternatives. (Triggered internally at /Users/runner/work/pytorch/pytorch/pytorch/torch/csrc/tensor/python_tensor.cpp:436.)
+  _C._set_default_tensor_type(t)
+</pre></div>
+</div>
+</div>
+</div>
+<p>If we get a warning message here is because the installed cosmic_conn package is using an old PyTorch function (torch.set_default_tensor_type()) that has been deprecated in PyTorch 2.1+. The PyTorch developers want people to use the newer functions torch.set_default_dtype() and torch.set_default_device() instead.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The model outputs a CR probability map</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Running Cosmic-CoNN version: </span><span class="si">{</span><span class="n">cosmic_conn</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2">  (please wait...)&quot;</span><span class="p">)</span>
+<span class="n">cr_prob</span> <span class="o">=</span> <span class="n">cr_model</span><span class="o">.</span><span class="n">detect_cr</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running Cosmic-CoNN version: 0.5.0  (please wait...)
+Done!
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set probability threshold</span>
+<span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.5</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mask_crfound</span> <span class="o">=</span> <span class="n">cr_prob</span> <span class="o">&gt;</span> <span class="n">threshold</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this case we only have a detection mask and not a cleaned version of the data. To obtain a cleaned version, we need to use <code class="docutils literal notranslate"><span class="pre">cleanest.interpolate()</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_cleaned</span><span class="p">,</span> <span class="n">masked</span> <span class="o">=</span> <span class="n">cleanest</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> 
+    <span class="n">mask_crfound</span><span class="o">=</span><span class="n">mask_crfound</span><span class="p">,</span>
+    <span class="n">interp_method</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> 
+    <span class="n">npoints</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> 
+    <span class="n">degree</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
+    <span class="n">debug</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Number of cosmic ray pixels to be cleaned: <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">6858</span>
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Number of cosmic rays <span style="font-weight: bold">(</span>grouped pixels<span style="font-weight: bold">)</span><span style="color: #808000; text-decoration-color: #808000">...</span>:  <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">830</span>
+</pre>
+</div><script type="application/vnd.jupyter.widget-view+json">{"model_id": "0ee3d1fd3e644b6b9b1d0c6ed066c509", "version_major": 2, "version_minor": 0}</script><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Number of cosmic rays cleaned<span style="color: #808000; text-decoration-color: #808000">............</span>:  <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">830</span>
+</pre>
+</div></div>
+</div>
+</section>
+</section>
+</section>
+<section id="detect-crs-in-multiple-equivalent-exposures">
+<h2>Detect CRs in multiple equivalent exposures<a class="headerlink" href="#detect-crs-in-multiple-equivalent-exposures" title="Link to this heading">#</a></h2>
+<p>When several equivalent exposures are available, one can try to clean each of them making use of the information from the remaining images. The simplest situation is considering only two exposures.</p>
+<p>When more than two images are available, more possibilities can be considered. For such cases, the auxiliary function <code class="docutils literal notranslate"><span class="pre">cleanest.combine_arrays()</span></code> can be useful (see below).</p>
+<section id="simple-case-two-equivalent-exposures">
+<h3>Simple case: two equivalent exposures<a class="headerlink" href="#simple-case-two-equivalent-exposures" title="Link to this heading">#</a></h3>
+<p>When considering only two exposures, one can detect CRs in one image and replace the suspected pixels using information from the second image. The roles of both images can be interchanged to clean the second image using information from the first exposure. The basic assumption behind this strategy is that the same pixels have not been hit by cosmic rays in both exposures, which may not be the case for long exposure times.</p>
+<p>Let’s illustrate this approach cleaning the image in <code class="docutils literal notranslate"><span class="pre">examplecr1.fits</span></code> using the data in <code class="docutils literal notranslate"><span class="pre">examplecr2.fits</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;examplecr1.fits&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdul</span><span class="p">:</span>
+    <span class="n">data1</span> <span class="o">=</span> <span class="n">hdul</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+
+<span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;examplecr2.fits&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdul</span><span class="p">:</span>
+    <span class="n">data2</span> <span class="o">=</span> <span class="n">hdul</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We are using the L.A.Cosmic procedure, which is relatively fast.</p>
+<p>The underscore <code class="docutils literal notranslate"><span class="pre">_</span></code> in the next cell is used to discard the first return value (the cleaned array) from <code class="docutils literal notranslate"><span class="pre">lacosmicpad()</span></code>, following the Python convention for intentionally unused variables. Only the cosmic ray mask is needed for subsequent processing.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">list_sigclip</span> <span class="o">=</span> <span class="p">[</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">]</span>   <span class="c1"># run L.A.Cosmic twice</span>
+<span class="n">list_mask_crfound</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">sigclip</span> <span class="ow">in</span> <span class="n">list_sigclip</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using L.A.Cosmic with </span><span class="si">{</span><span class="n">sigclip</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">mask_crfound</span> <span class="o">=</span> <span class="n">cleanest</span><span class="o">.</span><span class="n">lacosmicpad</span><span class="p">(</span>
+        <span class="n">pad_width</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">ccd</span><span class="o">=</span><span class="n">data1</span><span class="p">,</span>
+        <span class="n">gain</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">readnoise</span><span class="o">=</span><span class="mf">6.5</span><span class="p">,</span>
+        <span class="n">sigclip</span><span class="o">=</span><span class="n">sigclip</span><span class="p">,</span>
+        <span class="n">sigfrac</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+        <span class="n">objlim</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span>
+        <span class="n">niter</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+        <span class="n">fsmode</span><span class="o">=</span><span class="s1">&#39;median&#39;</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">list_mask_crfound</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mask_crfound</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Using L.A.Cosmic with sigclip=5.0
+Using L.A.Cosmic with sigclip=3.0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mask_crfound</span> <span class="o">=</span> <span class="n">cleanest</span><span class="o">.</span><span class="n">merge_peak_tail_masks</span><span class="p">(</span>
+    <span class="n">mask_peaks</span><span class="o">=</span><span class="n">list_mask_crfound</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">mask_tails</span><span class="o">=</span><span class="n">list_mask_crfound</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of cosmic ray pixels (peaks)...............: 6590
+Number of cosmic ray pixels (tails)...............: 9954
+Number of cosmic ray pixels (merged peaks &amp; tails): 7648
+</pre></div>
+</div>
+</div>
+</div>
+<p>Replace masked pixels in <code class="docutils literal notranslate"><span class="pre">data1</span></code> using the information from <code class="docutils literal notranslate"><span class="pre">data2</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data1_cleaned</span> <span class="o">=</span> <span class="n">data1</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">data1_cleaned</span><span class="p">[</span><span class="n">mask_crfound</span><span class="p">]</span> <span class="o">=</span> <span class="n">data2</span><span class="p">[</span><span class="n">mask_crfound</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>As previously mentioned, once the first image has been cleaned, one can swap the roles of the two images to clean the second one making use of the first exposure.</p>
+<p>To minimize the need to code all the previous steps, you can consider using the function <code class="docutils literal notranslate"><span class="pre">cleanest.combine_arrays()</span></code> described next.</p>
+</section>
+<section id="general-case">
+<h3>General case<a class="headerlink" href="#general-case" title="Link to this heading">#</a></h3>
+<p>When the number of individual equivalent exposures is larger than 2, several possibilities can be considered to generate a combined cleaned version of all of them. To help in this task, the <code class="docutils literal notranslate"><span class="pre">cleanest</span></code> module offers a handy function <code class="docutils literal notranslate"><span class="pre">combine_arrays()</span></code>. Note that this function can also be used even in the case of having only 2 equivalent exposures.</p>
+<div style="
+    padding: 10px;
+    border-left: 5px solid #4a90e2;
+    background-color: #e7f2fa;
+">
+<strong>Note:</strong> 
+This function can also be used even in the case of having only 2 equivalent exposures.
+</div>
+<br><p>The function <code class="docutils literal notranslate"><span class="pre">combine_arrays()</span></code> takes a list of 2D arrays, applies the specified cleaning method to each individual array using the chosen strategy, and then combines the cleaned arrays employing one of the available combination methods.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">?</span>cleanest.combine_arrays
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Red">Signature:</span>
+cleanest<span class=" -Color -Color-Blue">.</span>combine_arrays<span class=" -Color -Color-Blue">(</span>
+    list_arrays<span class=" -Color -Color-Blue">,</span>
+    detection_algorithm<span class=" -Color -Color-Blue">,</span>
+    cleaning_strategy<span class=" -Color -Color-Blue">,</span>
+    combination_method<span class=" -Color -Color-Blue">,</span>
+    show_progress<span class=" -Color -Color-Blue">=</span><span class=" -Color -Color-Green">False</span><span class=" -Color -Color-Blue">,</span>
+    return_array_mask_lists<span class=" -Color -Color-Blue">=</span><span class=" -Color -Color-Green">False</span><span class=" -Color -Color-Blue">,</span>
+    <span class=" -Color -Color-Blue">**</span>kwargs<span class=" -Color -Color-Blue">,</span>
+<span class=" -Color -Color-Blue">)</span>
+<span class=" -Color -Color-Red">Docstring:</span>
+Combine arrays with different interpolation methods.
+
+The function takes a list of 2D arrays, applies the specified
+cleaning method to each individual array using the
+chosen strategy, and then combines the cleaned arrays employing
+one of the available combination methods.
+
+Parameters
+----------
+list_arrays : list of 2D numpy.ndarray
+    A list of 2D arrays to be combined.
+detection_algorithm : str
+    The algorithm used to detect cosmic rays. Supported algorithms are:
+    - &quot;lacosmic&quot;: Use the L.A.Cosmic algorithm for CR detection.
+    - &quot;pycosmic&quot;: Use the PyCosmic algorithm for CR detection.
+    - &quot;deepcr&quot;: Use the DeepCR algorithm for CR detection.
+    - &quot;conn&quot;: Use the Cosmic-CoNN algorithm for CR detection.
+cleaning_strategy : str
+    The strategy used for cleaning the arrays. Supported strategies are:
+    - &quot;crmethod&quot;: replace the cosmic ray pixels in each array with the values
+      obtained by applying the specified detection algorithm to that array
+      alone. Note that this strategy does not use the information from the
+      other arrays in `list_arrays` to clean the cosmic ray pixels,
+      but only to combine the results after cleaning.
+    - &quot;median_all&quot;: replace the cosmic ray pixels with the median of all
+      the arrays in `list_arrays`.
+    - &quot;median_others&quot;: replace the cosmic ray pixels with the median of all the
+        arrays in `list_arrays` except the one being cleaned.
+    - &quot;mean_others&quot;: replace the cosmic ray pixels with the mean of all the
+        arrays in `list_arrays` except the one being cleaned.
+    - &quot;none&quot;: do not attempt to clean the arrays, just generate
+        the masks of the detected cosmic rays and combine them using the
+        masked version of the specified combination method.
+combination_method : str
+    The method used to combine the arrays. Supported methods are:
+    - &quot;median&quot;: median of the individually cleaned or masked arrays.
+    - &quot;mean&quot;: mean of the individually cleaned or masked arrays.
+show_progress : bool, optional
+    If True, print show_progress information during the combination process.
+return_array_mask_lists : bool, optional
+    If True, return a list of the individually cleaned arrays and another
+    list with the corresponding masks.
+**kwargs : dict
+    Additional keyword arguments passed to the CR detection algorithm.
+
+Returns
+-------
+combined_array : 2D numpy.ndarray
+    The resulting array after combining the input arrays using
+    the specified methods.
+out_list_arrays: list of 2D numpy.ndarray, optional
+    If return_list_arrays_masks is True, a list of the individually
+    cleaned arrays.
+out_list_masks: list of 2D numpy.ndarray of bool, optional
+    If return_list_arrays_masks is True, a list of the corresponding
+    masks of detected CRs for each array.
+<span class=" -Color -Color-Red">File:</span>      ~/s/teareduce/z_devel/teareduce/src/teareduce/cleanest/combine_arrays.py
+<span class=" -Color -Color-Red">Type:</span>      function
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that the function first looks for cosmic rays in each individual exposure, generating a cleaned version and the corresponding mask for each of them. For that purpose, any of the 4 detection algorithms implemented in <strong>tea-cleanest</strong> can be used: <code class="docutils literal notranslate"><span class="pre">lacosmic</span></code>, <code class="docutils literal notranslate"><span class="pre">pycosmic</span></code>, <code class="docutils literal notranslate"><span class="pre">deepcr</span></code>, and <code class="docutils literal notranslate"><span class="pre">conn</span></code>. The corresponding algorithm is specified in the parameter <code class="docutils literal notranslate"><span class="pre">detection_algorithm</span></code>.</p>
+<p>The user should define the <code class="docutils literal notranslate"><span class="pre">cleaning_strategy</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">crmethod</span></code>: replace the cosmic-ray pixels in each array with the values obtained by applying the specified detection algorithm to that array alone. Note that this strategy does not use the information from the other arrays in <code class="docutils literal notranslate"><span class="pre">list_arrays</span></code> to clean the cosmic-ray pixels, but only to combine the results after cleaning. Note that this option is not available when <code class="docutils literal notranslate"><span class="pre">detection_algorithm=conn</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">median_all</span></code>: replace the cosmic-ray pixels with the median of all the arrays in <code class="docutils literal notranslate"><span class="pre">list_arrays</span></code> in the corresponding pixels.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">median_others</span></code>: replace the cosmic-ray pixels with the median of all the arrays in <code class="docutils literal notranslate"><span class="pre">list_arrays</span></code> except the one being cleaned.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mean_others</span></code>: replace the cosmic-ray pixels with the mean of all the arrays in <code class="docutils literal notranslate"><span class="pre">list_arrays</span></code> except the one being cleaned.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">none</span></code>: do not attempt to clean the arrays, just generate the masks of the detected cosmic rays and combine them using the masked version of the specified combination method.</p></li>
+</ul>
+<p>A combination method for the cleaned individual images should also be specified in <code class="docutils literal notranslate"><span class="pre">combination_method</span></code>. The two possible values are <code class="docutils literal notranslate"><span class="pre">mean</span></code> and <code class="docutils literal notranslate"><span class="pre">median</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">show_progress</span></code> boolean parameter indicates whether the function should provide a short description of the processing being carried out.</p>
+<p>By setting the boolean optional parameter <code class="docutils literal notranslate"><span class="pre">return_array_mask_lists</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>, the function returns two additional lists: one containing the individually cleaned arrays and another one providing the corresponding pixel masks.</p>
+<p>Finally, the user should include in this function all the parameters required by the chosen CR detection algorithm, <strong>excluding the parameter indicating the array to be cleaned</strong>, which will be defined properly by the <code class="docutils literal notranslate"><span class="pre">combine_arrays()</span></code> function as required when looping through the <code class="docutils literal notranslate"><span class="pre">list_arrays</span></code>. In particular, the parameter that <em>must not be included</em> is:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ccd</span></code>: for <code class="docutils literal notranslate"><span class="pre">detection_algorithm=lacosmic</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: for <code class="docutils literal notranslate"><span class="pre">detection_algorithm=pycosmic</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">img0</span></code>: for <code class="docutils literal notranslate"><span class="pre">detection_algorithm=deepcr</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">image</span></code>: for <code class="docutils literal notranslate"><span class="pre">detection_algorithm=conn</span></code></p></li>
+</ul>
+<div style="
+    padding: 10px;
+    border-left: 5px solid #4a90e2;
+    background-color: #e7f2fa;
+">
+<strong>Note:</strong>
+The function combine_arrays() can also execute the selected CR detection algorithm twice. This is the case if any of the input parameters for the corresponding method is a list of two values instead of a single one. This approach is used to detect the brightest CR pixels and the fainter CR tails with different thresholds. The resulting masks are properly merged in the final CR mask.
+</div>
+<br><section id="using-l-a-cosmic">
+<h4>Using L.A.Cosmic<a class="headerlink" href="#using-l-a-cosmic" title="Link to this heading">#</a></h4>
+<p>Let’s have a look at <code class="docutils literal notranslate"><span class="pre">combine_arrays()</span></code> in action, using L.A.Cosmic first.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;examplecr1.fits&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdul</span><span class="p">:</span>
+    <span class="n">data1</span> <span class="o">=</span> <span class="n">hdul</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+
+<span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;examplecr2.fits&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdul</span><span class="p">:</span>
+    <span class="n">data2</span> <span class="o">=</span> <span class="n">hdul</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+
+<span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;examplecr3.fits&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdul</span><span class="p">:</span>
+    <span class="n">data3</span> <span class="o">=</span> <span class="n">hdul</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that by setting <code class="docutils literal notranslate"><span class="pre">sigclip=[5.0,</span> <span class="pre">3.0]</span></code>, the detection algorithm will be run twice.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">combined_array</span> <span class="o">=</span> <span class="n">cleanest</span><span class="o">.</span><span class="n">combine_arrays</span><span class="p">(</span>
+    <span class="n">list_arrays</span><span class="o">=</span><span class="p">[</span><span class="n">data1</span><span class="p">,</span> <span class="n">data2</span><span class="p">,</span> <span class="n">data3</span><span class="p">],</span>
+    <span class="n">detection_algorithm</span><span class="o">=</span><span class="s2">&quot;lacosmic&quot;</span><span class="p">,</span>  <span class="c1"># lacosmic | pycosmic | deepcr | conn</span>
+    <span class="n">cleaning_strategy</span><span class="o">=</span><span class="s2">&quot;crmethod&quot;</span><span class="p">,</span>    <span class="c1"># crmethod | median_all | median_other | mean_other | none</span>
+    <span class="n">combination_method</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span>       <span class="c1"># median | mean</span>
+    <span class="n">show_progress</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="c1"># parameters for the CR detection algorithm</span>
+    <span class="n">pad_width</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">gain</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">readnoise</span><span class="o">=</span><span class="mf">6.5</span><span class="p">,</span>
+    <span class="n">sigclip</span><span class="o">=</span><span class="p">[</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">],</span>
+    <span class="n">sigfrac</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+    <span class="n">objlim</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span>
+    <span class="n">niter</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">fsmode</span><span class="o">=</span><span class="s1">&#39;median&#39;</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Processing array 1/3...
+Running L.A.Cosmic algorithm (run 1/2)...
+Running L.A.Cosmic algorithm (run 2/2)...
+Merging masks of detected cosmic rays from both runs...
+Number of cosmic ray pixels (peaks)...............: 6590
+Number of cosmic ray pixels (tails)...............: 9954
+Number of cosmic ray pixels (merged peaks &amp; tails): 7648
+
+Processing array 2/3...
+Running L.A.Cosmic algorithm (run 1/2)...
+Running L.A.Cosmic algorithm (run 2/2)...
+Merging masks of detected cosmic rays from both runs...
+Number of cosmic ray pixels (peaks)...............:  7661
+Number of cosmic ray pixels (tails)...............: 11106
+Number of cosmic ray pixels (merged peaks &amp; tails):  8833
+
+Processing array 3/3...
+Running L.A.Cosmic algorithm (run 1/2)...
+Running L.A.Cosmic algorithm (run 2/2)...
+Merging masks of detected cosmic rays from both runs...
+Number of cosmic ray pixels (peaks)...............:  6859
+Number of cosmic ray pixels (tails)...............: 10127
+Number of cosmic ray pixels (merged peaks &amp; tails):  7925
+Combining arrays using method &#39;mean&#39;...
+
+Combination complete!
+</pre></div>
+</div>
+</div>
+</div>
+<p>The procedure for the other methods is similar.</p>
+</section>
+<section id="using-pycosmic">
+<h4>Using PyCosmic<a class="headerlink" href="#using-pycosmic" title="Link to this heading">#</a></h4>
+<p>Note that by setting <code class="docutils literal notranslate"><span class="pre">sigma_det=[5.0,</span> <span class="pre">3.0]</span></code>, the detection algorithm will be run twice.</p>
+<p>In this sense, it is important to note that the <code class="docutils literal notranslate"><span class="pre">fwhm_gauss</span></code> and <code class="docutils literal notranslate"><span class="pre">replace_box</span></code> parameters are already defined as a list of two values, so if you need to use different values in the two possible executions of the algorithm, these parameters must be set as a list of two-element lists.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">combined_array</span> <span class="o">=</span> <span class="n">cleanest</span><span class="o">.</span><span class="n">combine_arrays</span><span class="p">(</span>
+    <span class="n">list_arrays</span><span class="o">=</span><span class="p">[</span><span class="n">data1</span><span class="p">,</span> <span class="n">data2</span><span class="p">,</span> <span class="n">data3</span><span class="p">],</span>
+    <span class="n">detection_algorithm</span><span class="o">=</span><span class="s2">&quot;pycosmic&quot;</span><span class="p">,</span>  <span class="c1"># lacosmic | pycosmic | deepcr | conn</span>
+    <span class="n">cleaning_strategy</span><span class="o">=</span><span class="s2">&quot;crmethod&quot;</span><span class="p">,</span>    <span class="c1"># crmethod | median_all | median_other | mean_other | none</span>
+    <span class="n">combination_method</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span>       <span class="c1"># median | mean</span>
+    <span class="n">show_progress</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="c1"># parameters for the CR detection algorithm</span>
+    <span class="n">sigma_det</span><span class="o">=</span><span class="p">[</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">],</span>
+    <span class="n">rlim</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span>
+    <span class="n">iterations</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">fwhm_gauss</span><span class="o">=</span><span class="p">[</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">],</span>
+    <span class="n">replace_box</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+    <span class="n">replace_error</span><span class="o">=</span><span class="mf">1e6</span><span class="p">,</span>
+    <span class="n">increase_radius</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">gain</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">rdnoise</span><span class="o">=</span><span class="mf">6.5</span><span class="p">,</span>
+    <span class="n">bias</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Processing array 1/3...
+Running PyCosmic algorithm (run 1/2)...
+Running PyCosmic algorithm (run 2/2)...
+Merging masks of detected cosmic rays from both runs...
+Number of cosmic ray pixels (peaks)...............: 6418
+Number of cosmic ray pixels (tails)...............: 8958
+Number of cosmic ray pixels (merged peaks &amp; tails): 7242
+
+Processing array 2/3...
+Running PyCosmic algorithm (run 1/2)...
+Running PyCosmic algorithm (run 2/2)...
+Merging masks of detected cosmic rays from both runs...
+Number of cosmic ray pixels (peaks)...............:  7464
+Number of cosmic ray pixels (tails)...............: 10031
+Number of cosmic ray pixels (merged peaks &amp; tails):  8394
+
+Processing array 3/3...
+Running PyCosmic algorithm (run 1/2)...
+Running PyCosmic algorithm (run 2/2)...
+Merging masks of detected cosmic rays from both runs...
+Number of cosmic ray pixels (peaks)...............: 6668
+Number of cosmic ray pixels (tails)...............: 9185
+Number of cosmic ray pixels (merged peaks &amp; tails): 7516
+Combining arrays using method &#39;mean&#39;...
+
+Combination complete!
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="using-deepcr">
+<h4>Using deepCR<a class="headerlink" href="#using-deepcr" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">combined_array</span> <span class="o">=</span> <span class="n">cleanest</span><span class="o">.</span><span class="n">combine_arrays</span><span class="p">(</span>
+    <span class="n">list_arrays</span><span class="o">=</span><span class="p">[</span><span class="n">data1</span><span class="p">,</span> <span class="n">data2</span><span class="p">,</span> <span class="n">data3</span><span class="p">],</span>
+    <span class="n">detection_algorithm</span><span class="o">=</span><span class="s2">&quot;deepcr&quot;</span><span class="p">,</span>    <span class="c1"># lacosmic | pycosmic | deepcr | conn</span>
+    <span class="n">cleaning_strategy</span><span class="o">=</span><span class="s2">&quot;crmethod&quot;</span><span class="p">,</span>    <span class="c1"># crmethod | median_all | median_other | mean_other | none</span>
+    <span class="n">combination_method</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span>       <span class="c1"># median | mean</span>
+    <span class="n">show_progress</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="c1"># parameters for the CR detection algorithm</span>
+    <span class="n">threshold</span><span class="o">=</span><span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span>
+    <span class="n">inpaint</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Processing array 1/3...
+Running DeepCR algorithm (run 1/2)...
+Running DeepCR algorithm (run 2/2)...
+Merging masks of detected cosmic rays from both runs...
+Number of cosmic ray pixels (peaks)...............: 7457
+Number of cosmic ray pixels (tails)...............: 8355
+Number of cosmic ray pixels (merged peaks &amp; tails): 8347
+
+Processing array 2/3...
+Running DeepCR algorithm (run 1/2)...
+Running DeepCR algorithm (run 2/2)...
+Merging masks of detected cosmic rays from both runs...
+Number of cosmic ray pixels (peaks)...............: 8663
+Number of cosmic ray pixels (tails)...............: 9686
+Number of cosmic ray pixels (merged peaks &amp; tails): 9679
+
+Processing array 3/3...
+Running DeepCR algorithm (run 1/2)...
+Running DeepCR algorithm (run 2/2)...
+Merging masks of detected cosmic rays from both runs...
+Number of cosmic ray pixels (peaks)...............: 7658
+Number of cosmic ray pixels (tails)...............: 8606
+Number of cosmic ray pixels (merged peaks &amp; tails): 8595
+Combining arrays using method &#39;mean&#39;...
+
+Combination complete!
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="using-cosmic-conn">
+<h4>Using Cosmic-CoNN<a class="headerlink" href="#using-cosmic-conn" title="Link to this heading">#</a></h4>
+<p>In this case, the <code class="docutils literal notranslate"><span class="pre">cleaning_strategy</span></code> cannot be <code class="docutils literal notranslate"><span class="pre">crmethod</span></code> since Cosmic-CoNN does not provide a cleaned array, but only a mask of detected CRs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">combined_array</span> <span class="o">=</span> <span class="n">cleanest</span><span class="o">.</span><span class="n">combine_arrays</span><span class="p">(</span>
+    <span class="n">list_arrays</span><span class="o">=</span><span class="p">[</span><span class="n">data1</span><span class="p">,</span> <span class="n">data2</span><span class="p">,</span> <span class="n">data3</span><span class="p">],</span>
+    <span class="n">detection_algorithm</span><span class="o">=</span><span class="s2">&quot;conn&quot;</span><span class="p">,</span>      <span class="c1"># lacosmic | pycosmic | deepcr | conn</span>
+    <span class="n">cleaning_strategy</span><span class="o">=</span><span class="s2">&quot;median_others&quot;</span><span class="p">,</span>  <span class="c1"># crmethod | median_all | median_other | mean_other | none</span>
+    <span class="n">combination_method</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span>       <span class="c1"># median | mean</span>
+    <span class="n">show_progress</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="c1"># parameters for the CR detection algorithm</span>
+    <span class="n">threshold</span><span class="o">=</span><span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Processing array 1/3...
+Running Cosmic-CoNN algorithm (run 1/2)...
+Running Cosmic-CoNN algorithm (run 2/2)...
+Merging masks of detected cosmic rays from both runs...
+Number of cosmic ray pixels (peaks)...............: 6231
+Number of cosmic ray pixels (tails)...............: 7674
+Number of cosmic ray pixels (merged peaks &amp; tails): 7152
+
+Processing array 2/3...
+Running Cosmic-CoNN algorithm (run 1/2)...
+Running Cosmic-CoNN algorithm (run 2/2)...
+Merging masks of detected cosmic rays from both runs...
+Number of cosmic ray pixels (peaks)...............: 7363
+Number of cosmic ray pixels (tails)...............: 8670
+Number of cosmic ray pixels (merged peaks &amp; tails): 8328
+
+Processing array 3/3...
+Running Cosmic-CoNN algorithm (run 1/2)...
+Running Cosmic-CoNN algorithm (run 2/2)...
+Merging masks of detected cosmic rays from both runs...
+Number of cosmic ray pixels (peaks)...............: 6667
+Number of cosmic ray pixels (tails)...............: 8191
+Number of cosmic ray pixels (merged peaks &amp; tails): 7628
+Combining arrays using method &#39;mean&#39;...
+
+Combination complete!
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tea</span><span class="o">.</span><span class="n">elapsed_time_since</span><span class="p">(</span><span class="n">time_ini</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>system...........: Darwin
+release..........: 25.2.0
+machine..........: arm64
+node.............: Nicolass-MacBook-Pro.local
+Python executable: /Users/cardiel/venv_tea/bin/python3.12
+teareduce version: 0.7.1
+Initial time.....: 2026-02-09 16:01:50.600552
+Final time.......: 2026-02-09 16:07:39.169698
+Elapsed time.....: 0:05:48.569146
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/cleanest"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../../docs/cleanest/cleanest.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Interactive Cosmic Ray Removal in Single and Multiple Equivalent Exposures</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../cr2images/cr2images.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Automatic Cosmic Ray Removal in Double Exposures</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-specific-packages">Import specific packages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-data">Example data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#detect-crs-in-a-single-image-using-l-a-cosmic">Detect CRs in a single image using L.A.Cosmic</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-l-a-cosmic-only-once">Running L.A.Cosmic only once</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clean-the-detected-crs">Clean the detected CRs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-l-a-cosmic-twice">Running L.A.Cosmic twice</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-with-reference-image">Comparison with reference image</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-other-cr-detection-algorithms-for-single-images">Using other CR detection algorithms for single images</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pycosmic">PyCosmic</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#deepcr">deepCR</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cosmic-conn">Cosmic-CoNN</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#detect-crs-in-multiple-equivalent-exposures">Detect CRs in multiple equivalent exposures</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-case-two-equivalent-exposures">Simple case: two equivalent exposures</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#general-case">General case</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-l-a-cosmic">Using L.A.Cosmic</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-pycosmic">Using PyCosmic</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-deepcr">Using deepCR</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-cosmic-conn">Using Cosmic-CoNN</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Nicolás Cardiel
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

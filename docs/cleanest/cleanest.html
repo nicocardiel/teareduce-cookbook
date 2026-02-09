@@ -1,0 +1,996 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Interactive Cosmic Ray Removal in Single and Multiple Equivalent Exposures &#8212; Teareduce cookbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=4c37a550" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=47231a2d"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=1ae7504c"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/cleanest/cleanest';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Interactive use of cleanest functionality" href="../../notebooks/cleanest/interactive_cleanest.html" />
+    <link rel="prev" title="Simulation of CCD images" href="../../notebooks/simulateccd/simulateccd.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Teareduce cookbook - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Teareduce cookbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    The package teareduce
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../notebooks/aux.html">Auxiliary functions and classes</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/aux/imshow/imshow.html">The imshow wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/aux/sliceregion/sliceregion.html">Auxiliary classes for image slicing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/aux/elapsedtime/elapsedtime.html">Elapsed time and system information</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/simulateccd/simulateccd.html">Simulation of CCD images</a></li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Interactive Cosmic Ray Removal in Single and Multiple Equivalent Exposures</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/cleanest/interactive_cleanest.html">Interactive use of cleanest functionality</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/cr2images/cr2images.html">Automatic Cosmic Ray Removal in Double Exposures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/wavecalib/wavecalib.html">C distortion and wavelength calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/adaptivespl/adaptivespl.html">Adaptive spline fit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../bibliography.html">Bibliography</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/docs/cleanest/cleanest.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Interactive Cosmic Ray Removal in Single and Multiple Equivalent Exposures</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-execution-single-image">Simple execution (single image)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-l-a-cosmic"><code class="docutils literal notranslate"><span class="pre">Run</span> <span class="pre">L.A.Cosmic</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#automatic-cleaning-of-the-detected-crs">Automatic Cleaning of the Detected CRs</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-cleaning-of-the-detected-crs">Manual cleaning of the detected CRs</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-pycosmic"><code class="docutils literal notranslate"><span class="pre">Run</span> <span class="pre">PyCosmic</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-deepcr"><code class="docutils literal notranslate"><span class="pre">Run</span> <span class="pre">deepCR</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-cosmic-conn"><code class="docutils literal notranslate"><span class="pre">Run</span> <span class="pre">Cosmic-CoNN</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-execution-multiple-equivalent-exposures">Advanced Execution (Multiple Equivalent Exposures)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description-of-the-main-window-button-actions">Description of the Main Window Button Actions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-functionality-programmatically">Using the Functionality Programmatically</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="interactive-cosmic-ray-removal-in-single-and-multiple-equivalent-exposures">
+<h1>Interactive Cosmic Ray Removal in Single and Multiple Equivalent Exposures<a class="headerlink" href="#interactive-cosmic-ray-removal-in-single-and-multiple-equivalent-exposures" title="Link to this heading">#</a></h1>
+<p>The <strong>teareduce</strong> package installation includes an auxiliary program called
+<strong>tea-cleanest</strong>, which enables interactive cosmic ray cleaning. This tool
+works with both single exposures and multiple equivalent exposures (i.e.,
+exposures with the same exposure time obtained under similar atmospheric
+conditions). The code is inspired by the
+<a class="reference external" href="https://cleanest.readthedocs.io/en/latest/" rel="noreferrer" target="_blank">cleanest</a> code
+<span id="id1">[<a class="reference internal" href="../../bibliography.html#id4" title="N. Cardiel. cleanest: Useful Legacy Code for Cosmic Ray Removal. In Pascal Ballester, Jorge Ibsen, Mauricio Solar, and Keith Shortridge, editors, Astronomical Data Analysis Software and Systems XXVII, volume 522 of Astronomical Society of the Pacific Conference Series, 723. April 2020. URL: https://aspbooks.org/custom/publications/paper/522-0723.html.">Cardiel, 2020</a>]</span>, although it uses a different approach for cosmic
+ray detection. Specifically, <strong>tea-cleanest</strong> supports the following algorithms
+for identifying pixels suspected of being affected by cosmic-ray hits:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="http://www.astro.yale.edu/dokkum/lacosmic/" rel="noreferrer" target="_blank">L.A.Cosmic</a>: see
+<span id="id2">[<a class="reference internal" href="../../bibliography.html#id2" title="Pieter G. van Dokkum. Cosmic-Ray Rejection by Laplacian Edge Detection. Publications of the Astronomical Society of the Pacific, 113(789):1420-1427, November 2001. arXiv:astro-ph/0108003, doi:10.1086/323894.">van Dokkum, 2001</a>]</span>. This implementation uses the <strong>ccdproc</strong>
+function
+<a class="reference external" href="https://ccdproc.readthedocs.io/en/latest/api/ccdproc.cosmicray_lacosmic.html" rel="noreferrer" target="_blank"><code class="docutils literal notranslate"><span class="pre">cosmicray_lacosmic()</span></code></a>.</p></li>
+<li><p><a class="reference external" href="https://github.com/brandherd/PyCosmic.git" rel="noreferrer" target="_blank">PyCosmic</a>: see
+<span id="id3">[<a class="reference internal" href="../../bibliography.html#id3" title="B. Husemann, S. Kamann, C. Sandin, S. F. Sánchez, R. García-Benito, and D. Mast. PyCosmic: a robust method to detect cosmics in CALIFA and other fiber-fed integral-field spectroscopy datasets. \aap , 545:A137, September 2012. arXiv:1208.1696, doi:10.1051/0004-6361/201220102.">Husemann <em>et al.</em>, 2012</a>]</span>.</p></li>
+<li><p><a class="reference external" href="https://deepcr.readthedocs.io/en/latest/" rel="noreferrer" target="_blank">deepCR</a>: see
+<span id="id4">[<a class="reference internal" href="../../bibliography.html#id5" title="Keming Zhang and Joshua S. Bloom. deepCR: Cosmic Ray Rejection with Deep Learning. \apj , 889(1):24, January 2020. arXiv:1907.09500, doi:10.3847/1538-4357/ab3fa6.">Zhang and Bloom, 2020</a>]</span>.</p></li>
+<li><p><a class="reference external" href="https://cosmic-conn.readthedocs.io/en/latest/index.html" rel="noreferrer" target="_blank">Cosmic-CoNN</a>: see
+<span id="id5">[<a class="reference internal" href="../../bibliography.html#id6" title="Chengyuan Xu, Curtis McCully, Boning Dong, D. Andrew Howell, and Pradeep Sen. Cosmic-CoNN: A Cosmic-Ray Detection Deep-learning Framework, Data Set, and Toolkit. \apj , 942(2):73, January 2023. arXiv:2106.14922, doi:10.3847/1538-4357/ac9d91.">Xu <em>et al.</em>, 2023</a>]</span>.</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you use <strong>tea-cleanest</strong>, please remember to cite
+<span id="id6">[<a class="reference internal" href="../../bibliography.html#id8" title="Nicolás Cardiel, Sergio Pascual, María Chillarón-Víctor, Cristina Cabello, Jesús Gallego, Jaime Zamorano, and María Teresa Ceballos. Teareduce: a Python package with utilities for teaching reduction techniques in Astronomy. arXiv e-prints, pages arXiv:2601.20914, January 2026. arXiv:2601.20914, doi:10.48550/arXiv.2601.20914.">Cardiel <em>et al.</em>, 2026</a>]</span>, this web page, and the references
+corresponding to the detection algorithms employed (listed above).</p>
+</div>
+<p>The program also allows loading a pre-existing mask that indicates the location
+of cosmic-ray pixels. In this case, the mask is read from an external FITS file
+containing an array of integers, where any pixel with a value other than 0 is
+considered a cosmic-ray pixel.</p>
+<p>The identified cosmic rays can be interpolated either automatically or under
+user supervision. To replace the signal in the cosmic-ray pixels, the program
+uses information from neighboring pixels and supports the following
+interpolation methods:</p>
+<ul class="simple">
+<li><p>one-dimensional interpolation: along the X-axis or the Y-axis</p></li>
+<li><p>a constant average value: the mean or median</p></li>
+<li><p>2D interpolation using a plane (degree 1)</p></li>
+<li><p>the values determined by <em>L.A.Cosmic</em>, <em>PyCosmic</em>, or <em>deepCR</em></p></li>
+<li><p>the values computed using the <em>maskfill</em> method described by
+<span id="id7">[<a class="reference internal" href="../../bibliography.html#id7" title="Pieter van Dokkum and Imad Pasha. A Robust and Simple Method for Filling in Masked Data in Astronomical Images. Publications of the Astronomical Society of the Pacific, 136(3):034503, March 2024. arXiv:2312.03064, doi:10.1088/1538-3873/ad2866.">van Dokkum and Pasha, 2024</a>]</span></p></li>
+</ul>
+<p>Alternatively, cosmic-ray pixels can be replaced using information stored in
+<strong>auxiliary images</strong>. The user can choose between the data from a single
+auxiliary image or a suitable combination (mean, median, or minimum) of
+multiple auxiliary images.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although <strong>tea-cleanest</strong> was initially developed to clean individual
+exposures, it now also supports the use of multiple auxiliary exposures, whose
+information can be used to replace cosmic-ray-affected pixels in the primary
+image.</p>
+<p><strong>Double equivalent exposures:</strong> For two equivalent exposures, cosmic rays can
+be removed from each exposure using the other exposure as an auxiliary image.
+By swapping the roles of primary and auxiliary image, cosmic rays can be
+removed from both exposures. This method works well as long as the cosmic ray
+density is low enough that the same pixel is unlikely to be affected in both
+exposures.</p>
+<p><strong>Three or more equivalent exposures:</strong> Each individual exposure can be cleaned
+using a mean (or median) combination of the remaining exposures as auxiliary
+images. This approach is effective provided that cosmic ray hits are sparse
+enough that pixels affected in the primary exposure are unlikely to also be
+affected in the auxiliary images. Once all individual exposures have been
+cleaned, they can be combined using a mean combination to preserve maximum
+information. Residual cosmic-ray pixels (e.g., pixels affected by cosmic-ray
+hits in multiple exposures) can be detected in the final combination by
+re-running any of the available detection algorithms.</p>
+<p>When three or more equivalent exposures are available, slightly more
+sophisticated algorithms can also be used, such as the one implemented in
+<a class="reference external" href="https://guaix-ucm.github.io/numina-tools/crmasks/crmasks.html" rel="noreferrer" target="_blank">numina-crmasks</a>.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you are planning to use <strong>tea-cleanest</strong>, you need to install the package
+<strong>teareduce</strong> with extra dependencies. In this case employ:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(venv_tea)</span> <span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">&#39;teareduce[cleanest]&#39;</span>
+</pre></div>
+</div>
+<p>In addition, to use the <em>PyCosmic</em> method, you must manually install its
+corresponding package; otherwise, <strong>tea-cleanest</strong> will run, but this method
+will not be available. Since the package is not published on PyPI, it can be
+installed directly from GitHub. To do so, use a recent fork of the repository
+by running:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>git+https://github.com/nicocardiel/PyCosmic.git@test
+</pre></div>
+</div>
+</div>
+<p>It is possible to check whether <strong>tea-cleanest</strong> is correctly installed by
+running</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(venv_tea)</span> <span class="gp">$ </span>tea-cleanest<span class="w"> </span>--help
+</pre></div>
+</div>
+<div class="my-special-block no-copybutton highlight-ansi-shell-session notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-C208">Usage:</span> <span class=" -Color -Color-C244">tea-cleanest</span> [<span class=" -Color -Color-Cyan">-h</span>] [<span class=" -Color -Color-Cyan">--auxfile</span> <span class=" -Color -Color-C36">AUXFILE</span>] [<span class=" -Color -Color-Cyan">--fontfamily</span> <span class=" -Color -Color-C36">FONTFAMILY</span>]
+                    [<span class=" -Color -Color-Cyan">--fontsize</span> <span class=" -Color -Color-C36">FONTSIZE</span>] [<span class=" -Color -Color-Cyan">--width</span> <span class=" -Color -Color-C36">WIDTH</span>] [<span class=" -Color -Color-Cyan">--height</span> <span class=" -Color -Color-C36">HEIGHT</span>]
+                    [<span class=" -Color -Color-Cyan">--version</span>] [<span class=" -Color -Color-Cyan">--verbose</span>]
+                    [<span class=" -Color -Color-Cyan">input_fits</span>]
+
+Interactive cosmic ray cleaner for FITS images.
+
+<span class=" -Color -Color-C208">Positional Arguments:</span>
+  <span class=" -Color -Color-Cyan">input_fits</span>            Path to the FITS file to be cleaned.
+
+<span class=" -Color -Color-C208">Options:</span>
+  <span class=" -Color -Color-Cyan">-h</span>, <span class=" -Color -Color-Cyan">--help</span>            show this help message and exit
+  <span class=" -Color -Color-Cyan">--auxfile</span> <span class=" -Color -Color-C36">AUXFILE</span>     Auxiliary FITS files (comma-separated if several).
+  <span class=" -Color -Color-Cyan">--fontfamily</span> <span class=" -Color -Color-C36">FONTFAMILY</span>
+                        Font family for the GUI (default: Helvetica).
+  <span class=" -Color -Color-Cyan">--fontsize</span> <span class=" -Color -Color-C36">FONTSIZE</span>   Font size for the GUI (default: 14).
+  <span class=" -Color -Color-Cyan">--width</span> <span class=" -Color -Color-C36">WIDTH</span>         Width of the GUI window in pixels (default: 800).
+  <span class=" -Color -Color-Cyan">--height</span> <span class=" -Color -Color-C36">HEIGHT</span>       Height of the GUI window in pixels (default: 800).
+  <span class=" -Color -Color-Cyan">--version</span>             show program&#39;s version number and exit
+  <span class=" -Color -Color-Cyan">--verbose</span>, <span class=" -Color -Color-Cyan">-v</span>         Enable verbose output.
+</pre></div>
+</div>
+<section id="simple-execution-single-image">
+<h2>Simple execution (single image)<a class="headerlink" href="#simple-execution-single-image" title="Link to this heading">#</a></h2>
+<p><strong>tea-cleanest</strong> can be quickly executed by providing the name of the FITS file
+to be cleaned. If no filename is given, the program opens the operating
+system’s file selection dialog.</p>
+<p>First, download the sample file <a class="reference external" href="https://raw.githubusercontent.com/nicocardiel/teareduce-cookbook/main/notebooks/cleanest/examplecr1.fits" rel="noreferrer" target="_blank">examplecr1.fits</a>.</p>
+<p>To start the program, simply execute <strong>tea-cleanest</strong> followed by the filename of the image to be cleaned:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(venv_tea)</span> <span class="gp">$ </span>tea-cleanest<span class="w"> </span>examplecr1.fits
+</pre></div>
+</div>
+<p>You can specify the extension number using <code class="docutils literal notranslate"><span class="pre">[&lt;extnum&gt;]</span></code> or <code class="docutils literal notranslate"><span class="pre">[&lt;extname&gt;]</span></code>. For
+example, to read the primary extension, use <code class="docutils literal notranslate"><span class="pre">[0]</span></code> or <code class="docutils literal notranslate"><span class="pre">[primary]</span></code> (case
+insensitive):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(venv_tea)</span> <span class="gp">$ </span>tea-cleanest<span class="w"> </span><span class="s2">&quot;examplecr1.fits[0]&quot;</span>
+</pre></div>
+</div>
+<p>Note that the filename and extension specification must be enclosed in quotes
+to avoid shell interpretation of the bracket symbols.</p>
+<p>If you start <strong>tea-cleanest</strong> without specifying a filename, the program will
+open a file dialog to select the input file and an initial auxiliary frame if
+required.</p>
+<p>The upper part of the graphical interface displays four rows of buttons that
+control the program’s execution.</p>
+<img alt="../../_images/single_1.png" src="../../_images/single_1.png" />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When a character appears in brackets in the text of any button in the
+<strong>tea-cleanest</strong> graphical interface, that key serves as a keyboard shortcut
+for the corresponding button. This is especially useful in the <code class="docutils literal notranslate"><span class="pre">Review</span> <span class="pre">Cosmic</span> <span class="pre">Rays</span></code> window (see below), where users can quickly clean cosmic rays without
+moving the mouse to click buttons.</p>
+</div>
+<p>The most convenient way to work with <strong>tea-cleanest</strong> is to first search for
+pixels suspected of being affected by cosmic rays. This can be done by running
+any of the available detection algorithms: <em>L.A.Cosmic</em>, <em>PyCosmic</em>, <em>deepCR</em>,
+or <em>Cosmic-CoNN</em>. To do so, simply press the corresponding <code class="docutils literal notranslate"><span class="pre">Run</span> <span class="pre">&lt;method&gt;</span></code>
+button in the upper button row.</p>
+<section id="run-l-a-cosmic">
+<h3><code class="docutils literal notranslate"><span class="pre">Run</span> <span class="pre">L.A.Cosmic</span></code><a class="headerlink" href="#run-l-a-cosmic" title="Link to this heading">#</a></h3>
+<p>After pressing the <code class="docutils literal notranslate"><span class="pre">Run</span> <span class="pre">L.A.Cosmic</span></code> button, a new window opens, allowing you to
+define the parameters to be used.</p>
+<img alt="../../_images/single_2_lacosmic.png" src="../../_images/single_2_lacosmic.png" />
+<p>The window is divided into three parameter blocks:</p>
+<ul>
+<li><p><strong>L.A.Cosmic Parameters</strong>: This section displays the parameters used by the
+<code class="docutils literal notranslate"><span class="pre">cosmicray_lacosmic()</span></code> function. Note that each parameter appears in two
+columns: Run 1 and Run 2. The algorithm runs twice: in Run 1, a set of
+parameters identifies pixels that most clearly appear to be affected by
+cosmic rays. In Run 2, some parameters can be modified to detect pixels with
+weaker cosmic-ray signals. Although this second pass may generate many false
+positives, <strong>tea-cleanest</strong> only adds Run 2 pixels to the cosmic-ray mask if
+they lie in the neighborhood of Run 1 cosmic-ray pixels.</p>
+<p>Users should consult
+the <a class="reference external" href="https://ccdproc.readthedocs.io/en/latest/api/ccdproc.cosmicray_lacosmic.html" rel="noreferrer" target="_blank"><code class="docutils literal notranslate"><span class="pre">cosmicray_lacosmic()</span></code> function
+documentation</a>
+provided by the <strong>ccdproc</strong> package.</p>
+</li>
+<li><p><strong>Additional Parameters</strong>: Here you can define a dilation factor that
+surrounds each cosmic-ray pixel with a ring of neighboring pixels, which
+helps define a more generous region when constructing the cosmic-ray mask.
+The second parameter, <em>border padding</em>, extends the cleaned image beyond its
+physical edge, making it easier to detect cosmic-ray pixels located at the
+image borders. If this padding is zero, the <code class="docutils literal notranslate"><span class="pre">cosmicray_lacosmic()</span></code> function
+cannot detect cosmic-ray pixels at the edges.</p></li>
+<li><p><strong>Region to be examined</strong>: Here you can define an arbitrary rectangular
+region in which to search for cosmic-ray pixels. By default, the entire image
+is examined.</p></li>
+</ul>
+<p>After clicking the <code class="docutils literal notranslate"><span class="pre">OK</span></code> button, <strong>tea-cleanest</strong> runs L.A.Cosmic twice and displays the detected cosmic-ray pixels in the main window, overlaid with red markers.</p>
+<img alt="../../_images/single_3_lacosmic.png" src="../../_images/single_3_lacosmic.png" />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The detected pixels are grouped into cosmic rays, each consisting of one or more connected pixels.</p>
+</div>
+<p>At this point, you can choose to automatically clean all detected cosmic rays
+by selecting the <code class="docutils literal notranslate"><span class="pre">Replace</span> <span class="pre">detected</span> <span class="pre">CRs</span></code> button, or perform an individual
+analysis of each cosmic ray. For individual analysis, you can sequentially
+review all detected cosmic rays by clicking the <code class="docutils literal notranslate"><span class="pre">Review</span> <span class="pre">detected</span> <span class="pre">CRs</span></code> button,
+or you can click on the image to examine the cosmic ray closest to the cursor
+position. If no cosmic ray is near the cursor, the program will display the
+region around the brightest point in the image.</p>
+<section id="automatic-cleaning-of-the-detected-crs">
+<h4>Automatic Cleaning of the Detected CRs<a class="headerlink" href="#automatic-cleaning-of-the-detected-crs" title="Link to this heading">#</a></h4>
+<p>If you choose to click the <code class="docutils literal notranslate"><span class="pre">Replace</span> <span class="pre">detected</span> <span class="pre">CRs</span></code> button, the program will
+display a new <em>Cleaning Parameters</em> window that allows you to define the
+interpolation method for replacing the signal in cosmic-ray pixels.</p>
+<img alt="../../_images/single_4a_lacosmic.png" src="../../_images/single_4a_lacosmic.png" />
+<p>The window is divided into four sections:</p>
+<ul class="simple">
+<li><p><strong>Select Cleaning Method</strong>: Here you can choose to interpolate along the
+X-axis (<code class="docutils literal notranslate"><span class="pre">x_interp.</span></code>), the Y-axis (<code class="docutils literal notranslate"><span class="pre">y_interp.</span></code>), fit a plane
+(<code class="docutils literal notranslate"><span class="pre">surface_interp.</span></code>), or replace the affected pixels using the <code class="docutils literal notranslate"><span class="pre">mean</span></code>,
+<code class="docutils literal notranslate"><span class="pre">median</span></code>, the values computed by L.A.Cosmic (<code class="docutils literal notranslate"><span class="pre">lacosmic</span></code>), or the result
+computed by the <code class="docutils literal notranslate"><span class="pre">maskfill</span></code> method described by <span id="id8">[<a class="reference internal" href="../../bibliography.html#id7" title="Pieter van Dokkum and Imad Pasha. A Robust and Simple Method for Filling in Masked Data in Astronomical Images. Publications of the Astronomical Society of the Pacific, 136(3):034503, March 2024. arXiv:2312.03064, doi:10.1088/1538-3873/ad2866.">van Dokkum and Pasha, 2024</a>]</span>.
+Is it also possible to replace the cosmic-ray pixels using the data in any of
+the auxiliary images (or combination of them), when these data have been
+loaded (see below).</p></li>
+<li><p><strong>Fitting Parameters</strong>: In this section, you can define the number of points
+to use in the neighborhood of the cosmic ray (to the right, left, or around
+it, depending on the chosen method) and the degree of the polynomial to use
+(for interpolations along X or Y).</p></li>
+<li><p><strong>Maskfill Parameters</strong>: Here are the four parameters relevant to the
+maskfill algorithm. It is recommended to consult the <a class="reference external" href="https://github.com/dokkum/maskfill/tree/main" rel="noreferrer" target="_blank">maskfill
+website</a> and the <a class="reference external" href="https://github.com/dokkum/maskfill/blob/main/maskfill/maskfill.py" rel="noreferrer" target="_blank"><code class="docutils literal notranslate"><span class="pre">maskfill()</span></code>
+function
+documentation</a>.</p></li>
+<li><p><strong>Region to be Examined</strong>: The rectangular region in which the interpolation
+of cosmic-ray pixels will be applied.</p></li>
+</ul>
+<p>After choosing, for example, <code class="docutils literal notranslate"><span class="pre">[s]urface</span> <span class="pre">interp.</span></code>, the program displays the
+progress of the cosmic-ray interpolation through a window showing the relevant
+execution times.</p>
+<img alt="../../_images/single_5a_lacosmic.png" src="../../_images/single_5a_lacosmic.png" />
+<p>At the end of the interpolation process, a window appears showing a summary of
+the results.</p>
+<img alt="../../_images/single_6a_lacosmic.png" src="../../_images/single_6a_lacosmic.png" />
+<p>After closing this window, the cosmic-ray-cleaned image is displayed.</p>
+<img alt="../../_images/single_7a_lacosmic.png" src="../../_images/single_7a_lacosmic.png" />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>After performing the cosmic-ray cleaning, remember to save the result by
+clicking the <code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">cleaned</span> <span class="pre">FITS</span></code> button in the main window.</p>
+<p><strong>Important</strong>: The saved image will contain the same extensions as the original
+image, with the cleaned image stored in the same extension specified when
+reading the original file. In addition, <strong>tea-cleanest</strong> adds an extra FITS
+extension called <code class="docutils literal notranslate"><span class="pre">CRMASK</span></code>, which contains a mask of the interpolated pixels.
+This mask contains only two values: 0 (unmodified pixels) and 1 (pixels
+interpolated during cosmic-ray correction).</p>
+<p>Alternatively, by clicking the <code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">CR</span> <span class="pre">mask</span></code> button, you can save a FITS file
+containing only the binary mask indicating the pixels detected as cosmic rays
+(the FITS file contains only the primary extension with that array).</p>
+</div>
+</section>
+<section id="manual-cleaning-of-the-detected-crs">
+<h4>Manual cleaning of the detected CRs<a class="headerlink" href="#manual-cleaning-of-the-detected-crs" title="Link to this heading">#</a></h4>
+<p>If you choose the <code class="docutils literal notranslate"><span class="pre">Review</span> <span class="pre">detected</span> <span class="pre">CRs</span></code> button in the main window instead of
+automatic cleaning, the program displays a new <em>Review Cosmic Rays</em> window
+where you can sequentially review the detected cosmic rays and, based on the
+preselected affected pixels in each case, make appropriate modifications before
+applying the desired interpolation method.</p>
+<img alt="../../_images/single_4b_lacosmic.png" src="../../_images/single_4b_lacosmic.png" />
+<p>In this window, the selected cosmic ray is displayed with each suspected pixel
+marked with a red X. You can then mark or unmark suspected pixels using the
+mouse. Interpolation can be performed using any of the following methods:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[x]</span> <span class="pre">interp.</span></code>: one-dimensional interpolation along the X-axis</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[y]</span> <span class="pre">interp.</span></code>: one-dimensional interpolation along the Y-axis</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[s]urface</span> <span class="pre">interp.</span></code>: 2D interpolation using a plane (degree 1)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">me[d]ian</span></code>: replacement with a constant value: the median of the pixels
+surrounding the cosmic ray</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[m]ean</span></code>: replacement with the mean value</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[L].A.Cosmic</span></code>, <code class="docutils literal notranslate"><span class="pre">PyCosmic</span></code>, or <code class="docutils literal notranslate"><span class="pre">deepCR</span></code>: the values determined by
+<em>L.A.Cosmic</em>, <em>PyCosmic</em>, or <em>deepCR</em> (only the option corresponding to the
+detection method used will be available)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mas[k]fill</span></code>: the values computed using the <em>maskfill</em> method described by
+<span id="id9">[<a class="reference internal" href="../../bibliography.html#id7" title="Pieter van Dokkum and Imad Pasha. A Robust and Simple Method for Filling in Masked Data in Astronomical Images. Publications of the Astronomical Society of the Pacific, 136(3):034503, March 2024. arXiv:2312.03064, doi:10.1088/1538-3873/ad2866.">van Dokkum and Pasha, 2024</a>]</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[a]ux.</span> <span class="pre">data</span></code>: the values present in any of the auxiliary images or a
+combination of them (available only if auxiliary images have been loaded)</p></li>
+</ul>
+<p>Before moving on to the next cosmic ray, you can undo the performed
+interpolation using the <code class="docutils literal notranslate"><span class="pre">[r]estore</span> <span class="pre">CR</span> <span class="pre">data</span></code> button. Once you move to a new
+cosmic ray, it is no longer possible to return to previous ones.</p>
+<p>The top-left button allows you to modify the number of neighboring points used
+in the interpolation, as well as the polynomial degree (for <code class="docutils literal notranslate"><span class="pre">[x]</span> <span class="pre">interp.</span></code> and
+<code class="docutils literal notranslate"><span class="pre">[y]</span> <span class="pre">interp.</span></code> cases). Similarly, the <code class="docutils literal notranslate"><span class="pre">Maskfill</span> <span class="pre">params.</span></code> button allows you to
+modify the four parameters employed by the maskfill algorithm.</p>
+<p>If in the example shown you choose to replace the affected pixels with a plane
+fit (by clicking the <code class="docutils literal notranslate"><span class="pre">[s]urface</span> <span class="pre">interp.</span></code> button), the result is as shown below.</p>
+<img alt="../../_images/single_5b_lacosmic.png" src="../../_images/single_5b_lacosmic.png" />
+<p>In this image, the pixels used for the plane fit are shown with superimposed
+filled magenta circles, while the interpolated pixels are indicated with filled
+orange circles.</p>
+<p>If you need to apply different interpolation strategies to clean a particular
+cosmic ray feature, you can apply them sequentially by clicking the <code class="docutils literal notranslate"><span class="pre">[f]ix</span> <span class="pre">CR</span></code>
+button after each interpolation. Note that in this case the interpolated data
+is permanently fixed and the <code class="docutils literal notranslate"><span class="pre">[r]estore</span> <span class="pre">CR</span></code> button will only undo new
+interpolations back to the last fixed result.</p>
+<p>Clicking the <code class="docutils literal notranslate"><span class="pre">[c]ontinue</span></code> button allows you to proceed to the next detected
+cosmic ray. You can exit the cleaning sequence at any time by clicking the
+<code class="docutils literal notranslate"><span class="pre">[e]xit</span> <span class="pre">review</span></code> button.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Although you can directly start selecting pixels to interpolate in the main
+window by first activating the cursor (clicking the <code class="docutils literal notranslate"><span class="pre">[c]ursor</span> <span class="pre">OFF</span></code> button,
+which should change to <code class="docutils literal notranslate"><span class="pre">[c]ursor</span> <span class="pre">ON</span></code>) and then clicking on a suspected pixel in
+the main window with the mouse, doing this without first running L.A.Cosmic has
+the drawback that <strong>tea-cleanest</strong> will only show a single pixel as a
+preselection for interpolation in the <code class="docutils literal notranslate"><span class="pre">Review</span> <span class="pre">Cosmic</span> <span class="pre">Rays</span></code> window. For this
+reason, it is more convenient to run L.A.Cosmic beforehand to generate a mask
+of suspected pixels, so that <strong>tea-cleanest</strong> preselects all neighboring pixels
+likely affected by the same cosmic ray.</p>
+<p>Alternatively, you can use the <code class="docutils literal notranslate"><span class="pre">Load</span> <span class="pre">CR</span> <span class="pre">mask</span></code> button in the main window to load
+a cosmic-ray mask from a FITS image (0: pixels not affected by cosmic rays; 1:
+pixels affected by cosmic rays; the image extension must have BITPIX equal to 8
+or 16). A dilation factor can be applied to this mask. Once loaded, the
+affected pixels are regrouped into cosmic rays, and their removal can proceed
+using either of the two methods described above: <code class="docutils literal notranslate"><span class="pre">Replace</span> <span class="pre">detected</span> <span class="pre">CRs</span></code> or
+<code class="docutils literal notranslate"><span class="pre">Review</span> <span class="pre">detected</span> <span class="pre">CRs</span></code>.</p>
+</div>
+</section>
+</section>
+<section id="run-pycosmic">
+<h3><code class="docutils literal notranslate"><span class="pre">Run</span> <span class="pre">PyCosmic</span></code><a class="headerlink" href="#run-pycosmic" title="Link to this heading">#</a></h3>
+<p>Similar to the previous case, after clicking the <code class="docutils literal notranslate"><span class="pre">Run</span> <span class="pre">PyCosmic</span></code> button in the
+main window, a new window opens showing the parameters to be configured for
+running this algorithm.</p>
+<img alt="../../_images/single_2_pycosmic.png" src="../../_images/single_2_pycosmic.png" />
+<p>Once the cosmic-ray pixels have been detected, the procedure for their
+interpolation is the same as that described for the L.A.Cosmic algorithm.</p>
+</section>
+<section id="run-deepcr">
+<h3><code class="docutils literal notranslate"><span class="pre">Run</span> <span class="pre">deepCR</span></code><a class="headerlink" href="#run-deepcr" title="Link to this heading">#</a></h3>
+<p>After clicking <code class="docutils literal notranslate"><span class="pre">Run</span> <span class="pre">deepCR</span></code>, the program will display some dialog windows
+asking for the probability threshold to consider a pixel as a cosmic ray (for
+Run 1 and Run 2) and an optional dilation factor (default zero).</p>
+<p>Once the cosmic-ray pixels have been detected, the procedure for their
+interpolation is the same as that described for the L.A.Cosmic algorithm.</p>
+</section>
+<section id="run-cosmic-conn">
+<h3><code class="docutils literal notranslate"><span class="pre">Run</span> <span class="pre">Cosmic-CoNN</span></code><a class="headerlink" href="#run-cosmic-conn" title="Link to this heading">#</a></h3>
+<p>After clicking <code class="docutils literal notranslate"><span class="pre">Run</span> <span class="pre">Cosmic-CoNN</span></code>, the program will display some dialog windows
+asking for the probability threshold to consider a pixel as a cosmic ray (for
+Run 1 and Run 2) and an optional dilation factor (default zero).</p>
+<p>Once the cosmic-ray pixels have been detected, the procedure for their
+interpolation is the same as that described for the L.A.Cosmic algorithm.</p>
+</section>
+</section>
+<section id="advanced-execution-multiple-equivalent-exposures">
+<h2>Advanced Execution (Multiple Equivalent Exposures)<a class="headerlink" href="#advanced-execution-multiple-equivalent-exposures" title="Link to this heading">#</a></h2>
+<p>In the case of having two or more equivalent exposures, you can use one as the
+main image to be cleaned of cosmic rays and the rest as auxiliary images (whose
+information can be used to replace the cosmic-ray pixels in the main image).
+After cleaning the first image, the procedure can be repeated by swapping the
+roles of the available exposures, so that in the end you obtain a
+cosmic-ray-cleaned version of each original exposure, which can then be
+combined as needed.</p>
+<p>Download the two additional sample files
+<a class="reference external" href="https://raw.githubusercontent.com/nicocardiel/teareduce-cookbook/main/notebooks/cleanest/examplecr2.fits" rel="noreferrer" target="_blank">examplecr2.fits</a>
+and
+<a class="reference external" href="https://raw.githubusercontent.com/nicocardiel/teareduce-cookbook/main/notebooks/cleanest/examplecr3.fits" rel="noreferrer" target="_blank">examplecr3.fits</a>.
+If you have not already done so, also download the first sample file
+<a class="reference external" href="https://raw.githubusercontent.com/nicocardiel/teareduce-cookbook/main/notebooks/cleanest/examplecr1.fits" rel="noreferrer" target="_blank">examplecr1.fits</a>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(venv_tea)</span> <span class="gp">$ </span>tea-cleanest<span class="w"> </span>examplecr1.fits<span class="w"> </span>--auxfile<span class="w"> </span><span class="s2">&quot;examplecr?.fits[0]&quot;</span>
+</pre></div>
+</div>
+<p>The wildcard <code class="docutils literal notranslate"><span class="pre">?</span></code> in the filename pattern matches <code class="docutils literal notranslate"><span class="pre">examplecr1.fits</span></code>,
+<code class="docutils literal notranslate"><span class="pre">examplecr2.fits</span></code>, and <code class="docutils literal notranslate"><span class="pre">examplecr3.fits</span></code>, loading all of them as auxiliary
+images. The extension can be provided between brackets (the default is the
+primary extension; in this example it is not necessary).</p>
+<p>You can also provide a comma-separated list of FITS files (each specifying a
+particular extension). When several files are defined as auxiliary images, the
+entire list should be enclosed in quotes to prevent misinterpretation by the
+command line shell.</p>
+<p>The auxiliary images can be loaded directly when starting <strong>tea-cleanest</strong> (as
+shown in the previous command line), or they can be read from any FITS file
+during program execution by using the <code class="docutils literal notranslate"><span class="pre">Load</span> <span class="pre">auxdata</span></code> button in the main window.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In this example we are using 3 exposures as auxiliary images, including the
+image we intend to clean. This can be useful, for example, when using the
+median combination of the 3 exposures to remove cosmic-ray pixels.  For
+slightly more sophisticated work, particularly when dealing with long-exposure
+images with many cosmic-ray hits, have a look at
+<a class="reference external" href="https://guaix-ucm.github.io/numina-tools/crmasks/crmasks.html" rel="noreferrer" target="_blank">numina-crmasks</a>.</p>
+</div>
+<p>Running L.A.Cosmic is done in the same way as previously explained. However,
+when using the <code class="docutils literal notranslate"><span class="pre">Replace</span> <span class="pre">detected</span> <span class="pre">CRs</span></code> button, an additional option now appears
+among the available interpolation methods: <code class="docutils literal notranslate"><span class="pre">Auxiliary</span> <span class="pre">data</span></code> (this method is
+only available when auxiliary images are loaded). Choosing this interpolation
+method causes <strong>tea-cleanest</strong> to activate a combobox from which you can
+replace the detected cosmic-ray pixels using information from one of the
+following options:</p>
+<ul class="simple">
+<li><p>a particular auxiliary image</p></li>
+<li><p>the mean of all the auxiliary images</p></li>
+<li><p>the median of all the auxiliary images</p></li>
+<li><p>the minimum of all the auxiliary images</p></li>
+</ul>
+<p>(The last three options are only available when the number of auxiliary images
+is larger than 1.)</p>
+<img alt="../../_images/double_4a_lacosmic.png" src="../../_images/double_4a_lacosmic.png" />
+<p>On the other hand, if you choose the <code class="docutils literal notranslate"><span class="pre">Review</span> <span class="pre">detected</span> <span class="pre">CRs</span></code> option, the
+<code class="docutils literal notranslate"><span class="pre">[a]uxiliary</span> <span class="pre">data</span></code> button will be active in the <em>Review Cosmic Rays</em> window,
+providing access to interpolation by replacing the pixels with the signal from
+the selected auxiliary image (or combination of auxiliary images).
+Additionally, this window simultaneously displays the image to be corrected
+(left panel) and the chosen auxiliary data (right panel).</p>
+<img alt="../../_images/double_4b_lacosmic.png" src="../../_images/double_4b_lacosmic.png" />
+<p>To facilitate the quick display of the different auxiliary images (and their
+combinations), note that the combobox displaying the different options shows
+that each potential auxiliary data source has an associated integer number in
+brackets:</p>
+<a class="reference internal image-reference" href="../../_images/double_4bb_lacosmic.png"><img alt="../../_images/double_4bb_lacosmic.png" src="../../_images/double_4bb_lacosmic.png" style="width: 60%;" />
+</a>
+<p>You can quickly blink between auxiliary images by pressing the corresponding
+number on the keyboard (valid for the first 9 items in the list). Once you have
+selected the desired auxiliary data, press the <code class="docutils literal notranslate"><span class="pre">[a]uxiliary</span> <span class="pre">data</span></code> button to
+perform the replacement of the marked pixels. The result of this action is
+displayed in the following figure.</p>
+<img alt="../../_images/double_5b_lacosmic.png" src="../../_images/double_5b_lacosmic.png" />
+<p>Note that in this case, information from neighboring pixels is not used for the
+previously selected pixels for interpolation (filled orange circles are shown,
+but no filled magenta circles).</p>
+</section>
+<section id="description-of-the-main-window-button-actions">
+<h2>Description of the Main Window Button Actions<a class="headerlink" href="#description-of-the-main-window-button-actions" title="Link to this heading">#</a></h2>
+<p>This section briefly describes the functionality associated with each button that appears in the main window of <strong>tea-cleanest</strong>.</p>
+<p><strong>First row of buttons</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Run</span> <span class="pre">L.A.Cosmic</span></code>: runs the generation of a mask of pixels affected by cosmic
+rays using <a class="reference external" href="http://www.astro.yale.edu/dokkum/lacosmic/" rel="noreferrer" target="_blank">L.A.Cosmic</a>: see
+<span id="id10">[<a class="reference internal" href="../../bibliography.html#id2" title="Pieter G. van Dokkum. Cosmic-Ray Rejection by Laplacian Edge Detection. Publications of the Astronomical Society of the Pacific, 113(789):1420-1427, November 2001. arXiv:astro-ph/0108003, doi:10.1086/323894.">van Dokkum, 2001</a>]</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Run</span> <span class="pre">PyCosmic</span></code>: runs the generation of a mask of pixels affected by cosmic
+rays using <a class="reference external" href="https://github.com/brandherd/PyCosmic.git" rel="noreferrer" target="_blank">PyCosmic</a>: see
+<span id="id11">[<a class="reference internal" href="../../bibliography.html#id3" title="B. Husemann, S. Kamann, C. Sandin, S. F. Sánchez, R. García-Benito, and D. Mast. PyCosmic: a robust method to detect cosmics in CALIFA and other fiber-fed integral-field spectroscopy datasets. \aap , 545:A137, September 2012. arXiv:1208.1696, doi:10.1051/0004-6361/201220102.">Husemann <em>et al.</em>, 2012</a>]</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Run</span> <span class="pre">deepCR</span></code>: runs the generation of a mask of pixels affected by cosmic rays
+using <a class="reference external" href="https://deepcr.readthedocs.io/en/latest/" rel="noreferrer" target="_blank">deepCR</a>: see
+<span id="id12">[<a class="reference internal" href="../../bibliography.html#id5" title="Keming Zhang and Joshua S. Bloom. deepCR: Cosmic Ray Rejection with Deep Learning. \apj , 889(1):24, January 2020. arXiv:1907.09500, doi:10.3847/1538-4357/ab3fa6.">Zhang and Bloom, 2020</a>]</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Run</span> <span class="pre">Cosmic-CoNN</span></code>: runs the generation of a mask of pixels affected by cosmic
+rays using
+<a class="reference external" href="https://cosmic-conn.readthedocs.io/en/latest/index.html" rel="noreferrer" target="_blank">Cosmic-CoNN</a>: see
+<span id="id13">[<a class="reference internal" href="../../bibliography.html#id6" title="Chengyuan Xu, Curtis McCully, Boning Dong, D. Andrew Howell, and Pradeep Sen. Cosmic-CoNN: A Cosmic-Ray Detection Deep-learning Framework, Data Set, and Toolkit. \apj , 942(2):73, January 2023. arXiv:2106.14922, doi:10.3847/1538-4357/ac9d91.">Xu <em>et al.</em>, 2023</a>]</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Stop</span> <span class="pre">program</span></code>: stops program execution.</p></li>
+</ul>
+<p><strong>Second row of buttons</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Load</span> <span class="pre">auxdata</span></code>: loads an auxiliary image whose information can be used to
+replace pixels affected by cosmic rays in the main image. If auxiliary data
+have already been loaded, you can overwrite any of them or simply add a new
+one.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Load</span> <span class="pre">CR</span> <span class="pre">mask</span></code>: loads a mask of pixels affected by cosmic rays from a FITS
+file. You can specify the extension where the mask is located.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Replace</span> <span class="pre">detected</span> <span class="pre">CRs</span></code>: enables automatic removal of all pixels affected by
+cosmic rays using any of the available interpolation methods.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Review</span> <span class="pre">detected</span> <span class="pre">CRs</span></code>: provides access to the individual visualization of
+each detected cosmic ray. This option allows interactive interpolation of the
+different cosmic rays.</p></li>
+</ul>
+<p><strong>Third row of buttons</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[c]ursor:</span> <span class="pre">OFF</span></code>: toggles the use of the cursor to select pixels for
+interactive interpolation after clicking anywhere on the image shown in the
+main window.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[t]oggle</span> <span class="pre">data</span></code> (button active only when an auxiliary image has been loaded):
+quickly switches the image displayed in the main window, alternating between
+the original image and the auxiliary image.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[a]spect:</span> <span class="pre">equal</span></code>: displays the image shown in the main window using aspect
+<code class="docutils literal notranslate"><span class="pre">equal</span></code> or <code class="docutils literal notranslate"><span class="pre">auto</span></code> (the latter distorts the X/Y pixel ratio but maximizes use
+of the plotting window).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">cleaned</span> <span class="pre">FITS</span></code>: saves the latest available version of the cleaned image.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">CR</span> <span class="pre">mask</span></code>: saves the latest available version of the CR mask.</p></li>
+</ul>
+<p><strong>Fourth row of buttons</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">vmin:</span> <span class="pre">???</span></code>: the <code class="docutils literal notranslate"><span class="pre">vmin</span></code> value used by matplotlib.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vmax:</span> <span class="pre">???</span></code>: the <code class="docutils literal notranslate"><span class="pre">vmax</span></code> value used by matplotlib.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">minmax[,]</span></code>: sets <code class="docutils literal notranslate"><span class="pre">vmin</span></code> and <code class="docutils literal notranslate"><span class="pre">vmax</span></code> to the minimum and maximum values,
+respectively, of the image shown in the main window.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zscale[/]</span></code>: adjusts <code class="docutils literal notranslate"><span class="pre">vmin</span></code> and <code class="docutils literal notranslate"><span class="pre">vmax</span></code> to use values close to the median of
+the image (IRAF-style).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CR</span> <span class="pre">overlay:</span> <span class="pre">ON</span></code>: toggles overlaying the detected cosmic rays on the image
+displayed in the main window.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Help</span></code>: shows help information for all buttons.</p></li>
+</ul>
+</section>
+<section id="using-the-functionality-programmatically">
+<h2>Using the Functionality Programmatically<a class="headerlink" href="#using-the-functionality-programmatically" title="Link to this heading">#</a></h2>
+<p>It is possible to use part of the functionality provided by <strong>tea-cleanest</strong>
+programmatically from Python code, which is convenient if you need to automate
+the workflow or work from a Jupyter notebook. See section <a class="reference internal" href="../../notebooks/cleanest/interactive_cleanest.html"><span class="doc std std-doc">Interactive use of
+cleanest functionality</span></a>.</p>
+</section>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./docs/cleanest"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../../notebooks/simulateccd/simulateccd.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Simulation of CCD images</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../notebooks/cleanest/interactive_cleanest.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Interactive use of cleanest functionality</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-execution-single-image">Simple execution (single image)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-l-a-cosmic"><code class="docutils literal notranslate"><span class="pre">Run</span> <span class="pre">L.A.Cosmic</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#automatic-cleaning-of-the-detected-crs">Automatic Cleaning of the Detected CRs</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-cleaning-of-the-detected-crs">Manual cleaning of the detected CRs</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-pycosmic"><code class="docutils literal notranslate"><span class="pre">Run</span> <span class="pre">PyCosmic</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-deepcr"><code class="docutils literal notranslate"><span class="pre">Run</span> <span class="pre">deepCR</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-cosmic-conn"><code class="docutils literal notranslate"><span class="pre">Run</span> <span class="pre">Cosmic-CoNN</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-execution-multiple-equivalent-exposures">Advanced Execution (Multiple Equivalent Exposures)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description-of-the-main-window-button-actions">Description of the Main Window Button Actions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-functionality-programmatically">Using the Functionality Programmatically</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Nicolás Cardiel
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
