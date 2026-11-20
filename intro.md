@@ -34,6 +34,8 @@ have found to be more practical for use in Master's level classes.
 
 ### Creating a Python virtual environment
 
+Note that **teareduce** requires Python 3.12 or later.
+
 It is strongly recommended to install **teareduce** in a clean Python
 environment to avoid dependency conflicts. You can create and activate a new
 virtual environment using one of the following methods:
@@ -48,7 +50,7 @@ $ venv_tea\Scripts\activate  # On Windows
 
 **Using conda:**
 ```console
-$ conda create -n venv_tea python=3
+$ conda create -n venv_tea python=3.12
 $ conda activate venv_tea 
 ```
 
@@ -68,7 +70,7 @@ Once your environment is activated, install `teareduce` with:
 To verify the installation:
 ```console
 (venv_tea) $ python3 -c "import teareduce; print(teareduce.__version__)"
-0.6.8
+0.8.0
 ```
 
 ````{warning}
